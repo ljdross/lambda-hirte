@@ -6,4 +6,4 @@
 * Scrum-Master: @charzwin
 * Product-Owner: @manneken
 * Merge-Request-Manager/DevOps: @arsvivendi
-* Team: @manneken, @charzwin, @ali, @arsvivendi, @kim_jana, @kubi9803
+* Team: @manneken, @charzwin, @ali, @arsvivendi, @kim_jana, @lennart
