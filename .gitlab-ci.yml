@@ -1,0 +1,35 @@
+stages:
+  - test
+  - deploy
+
+image: node:13
+
+cache:
+  key: "lambda-hirte"
+  paths:
+    - node_modules/
+
+before_script:
+  # Run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+merge_request:
+  stage: test
+  script:
+    - npm install
+    - npm run test
+
+deploy_production:
+  stage: deploy
+  environment: Production
+  only:
+    - master
+  script:
+    # Connect to Server. Pull and Rebuild Project. Restart Daemon.
+    - ssh arsvivendi@$SERVER "cd /home/modysy/lambda-prototype/ && git pull && npm rebuild && sudo /etc/init.d/lambdahirte restart"
