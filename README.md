@@ -11,7 +11,7 @@
 Lambda Hirte ist ein Puzzle-Spiel wo der Spieler (Hirte) seine Schafe so schnell wie möglich ins Ziel bringen muss. 
 Der Spieler nutzt Teleporter, welche aus Lambda Termen bestehen, zum Transport.
 Das Berechnen (Teleportieren) wird über verschieden Ebenen dargestellt, wodurch die Verschachtelung der Lambda Terme veranschaulicht wird.  
-Durch das Teleportieren könnten die Schafe z.B. vervielfältigt werden.
+Durch das Teleportieren könnten die Schafe z.B. vervielfacht werden.
 
 Test:
 `npm run test` triggers pretest, test and postest (see package.json scripts)
