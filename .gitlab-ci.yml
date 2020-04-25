@@ -32,4 +32,4 @@ deploy_production:
     - master
   script:
     # Connect to Server. Pull and Rebuild Project. Restart Daemon.
-    - ssh arsvivendi@$SERVER "cd /home/modysy/lambda-prototype/ && git pull && npm rebuild && sudo /etc/init.d/lambdahirte restart"
+    - ssh arsvivendi@$SERVER "cd /home/modysy/lambda-hirte/ && git pull && npm rebuild && sudo /etc/init.d/lambdahirte restart"
