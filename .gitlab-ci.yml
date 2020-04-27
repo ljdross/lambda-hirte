@@ -1,6 +1,6 @@
 stages:
   - test
-  - deploy
+#  - deploy
 
 image: node:13
 
@@ -25,11 +25,11 @@ merge_request:
     - npm install
     - npm run test
 
-deploy_production:
-  stage: deploy
-  environment: Production
-  only:
-    - master
-  script:
-    # Connect to Server. Pull and Rebuild Project. Restart Daemon.
-    - ssh arsvivendi@$SERVER "cd /home/modysy/lambda-hirte/ && git pull && npm rebuild && sudo /etc/init.d/lambdahirte restart"
+#deploy_production:
+#  stage: deploy
+#  environment: Production
+#  only:
+#    - master
+#  script:
+#    # Connect to Server. Pull and Rebuild Project. Restart Daemon.
+#    - ssh arsvivendi@$SERVER "cd /home/modysy/lambda-hirte/ && git pull && npm rebuild && sudo /etc/init.d/lambdahirte restart"
