@@ -1,11 +1,15 @@
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
-  active: false,
-  visible: false,
+  active: true,
+  visible: true,
   key: 'MainMenu',
 };
 
 export class MainMenu extends Phaser.Scene {
-    public preload() {
+    constructor() {
+        super(sceneConfig);
+    }
+
+    preload(): void {
         this.load.setBaseURL('https://labs.phaser.io');
 
         this.load.image('sky', 'assets/skies/space3.png');
@@ -13,7 +17,7 @@ export class MainMenu extends Phaser.Scene {
         this.load.image('red', 'assets/particles/red.png');
     }
 
-    public create() {
+    create(): void {
         const sky = this.add.image(0, 0, 'sky');
         sky.setDisplaySize(2 * this.sys.canvas.width, this.sys.canvas.height);
 
@@ -27,13 +31,18 @@ export class MainMenu extends Phaser.Scene {
 
         const dude = this.physics.add.image(400, 100, 'dude');
 
-        const canvasWidth = this.sys.game.canvas.width;
-
-        const changeScene = this.add.text(canvasWidth - 200, 10, `Change Scene`, {fill: '#0f0'});
+        const changeScene = this.add.text(this.sys.game.canvas.width - 200, 10, `Change Scene`, {fill: '#0f0'});
         changeScene.setInteractive();
         changeScene.on('pointerdown', () => {
-            const mainScene = this.scene.get('MainScene');
-            mainScene.scene.restart();
+            this.scene.pause('MainMenu')
+            this.scene.start('Level1');
+        });
+
+        const restart = this.add.text(this.sys.game.canvas.width - 400, 10, `Restart`, {fill: '#0f0'});
+        restart.setInteractive();
+        restart.on('pointerdown', () => {
+            const mainMenu = this.scene.get('MainMenu');
+            mainMenu.scene.restart();
         });
 
         dude.setVelocity(100, 200);

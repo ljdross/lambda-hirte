@@ -11,12 +11,19 @@ export class Level1 extends Phaser.Scene {
     super(sceneConfig);
   }
 
-  public create() {
+  create(): void {
     this.square = this.add.rectangle(400, 400, 100, 100, 0xFFFFFF) as any;
-    this.physics.add.existing(this.square);
+
+    const mainMenu = this.add.text(this.sys.game.canvas.width - 200, 10, `Main Menu`, {fill: '#0f0'});
+    mainMenu.setInteractive();
+    mainMenu.on('pointerdown', () => {
+        this.scene.pause('Level1')
+        this.scene.start('MainMenu');
+    });
+
   }
 
-  public update() {
+  update(): void {
     // TODO
   }
 }
