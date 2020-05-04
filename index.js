@@ -6,6 +6,7 @@ const index = express();
 index.set('view engine', 'pug');
 
 index.use(express.static('dist'));
+index.use(express.static('src'));
 
 index.get('/', (req, res) => {
   res.render('index');

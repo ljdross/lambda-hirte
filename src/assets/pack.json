@@ -1,0 +1,21 @@
+{
+  "preload": {
+    "files": [
+      {
+        "type": "image",
+        "key": "sand",
+        "url": "assets/sprites/sand.png"
+      },
+      {
+        "type": "image",
+        "key": "sheep_horizontal",
+        "url": "assets/sprites/sheep_horizontal.png"
+      },
+      {
+        "type": "image",
+        "key": "grass",
+        "url": "assets/sprites/grass.png"
+      }
+    ]
+  }
+}
