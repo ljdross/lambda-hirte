@@ -12,13 +12,18 @@ export class Sheep extends Phaser.GameObjects.Sprite {
     movement stoppen wenn auf Ziel (muss nicht prüfen ob auf Ziel, kann auch eine Methode sein, die von woanders gecallt wird)
     */
 
-    constructor(config) {
-        super(config.scene,config.x,config.y,"sheep");
+    //axis: 0 vertical, 1 horizontal
+    constructor(config, axis: number) {
+        if(axis==0) {
+            super(config.scene,config.x,config.y,"sheep_vertical");
+        } else {
+            super(config.scene,config.x,config.y,"sheep_horizontal");
+        }
         config.scene.add.existing(this);
 
         //speed, direction
+        this.data.set('axis', axis);
         this.data.set('speed', Phaser.Math.Between(0,50));
-        this.data.set('vertical', Phaser.Math.RND.pick([true, false]));
         this.data.set('dir', Phaser.Math.RND.pick([1, -1]))
     }
 
@@ -42,7 +47,7 @@ export class Sheep extends Phaser.GameObjects.Sprite {
     onGoal(): void{
         //is on Goal?
         //then stop movement
-        this.anims.pause();
+        //this.anims.pause();
     }
 
     overstepped(): void {
@@ -50,10 +55,13 @@ export class Sheep extends Phaser.GameObjects.Sprite {
         //can i walk on
         //else changeDir()
     }
-    getDirection(): string {
-        if(this.data.get('vertical') == true) {
+    getAxis(): string {
+        if(this.data.get('axis') == 0) {
             return "v"; //vertical
-        } else return "h"; //horizontal
+        } else if(this.data.get('axis') == 1) {
+            return "h"; //horizontal
+        }
+        return null;
     }
 
     getTile() {
@@ -62,9 +70,11 @@ export class Sheep extends Phaser.GameObjects.Sprite {
 
     move(): void {
         this.anims.play("sheep", true); //left and right sprites?
-        if(this.getDirection() === "v") {
+        if(this.getAxis() === "v") {
+            this.anims.play('sheep_vertical', true);
             this.y += this.data.get('dir') * this.data.get('speed');
-        } else {
+        } else if(this.getAxis() === "h") {
+            this.anims.play('sheep_horizontal', true);
             this.x += this.data.get('dir') * this.data.get('speed');
         }
     }
