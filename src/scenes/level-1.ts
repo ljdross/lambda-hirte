@@ -17,7 +17,7 @@ export class Level1 extends Phaser.Scene {
 
   create(): void {
     const grass = this.add.image(50, 50, 'grass');
-    grass.setScale(5);
+    //grass.setScale(5);
 
     const mainMenu = this.add.text(this.sys.game.canvas.width - 200, 10, `Main Menu`, {fill: '#0f0'});
     mainMenu.setInteractive();
