@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Game about Lambda and Sheeps",
   "scripts": {
+    "build": "webpack --mode production",
     "pretest": "webpack --mode development",
     "test": "mocha test/*.test.js --exit",
     "posttest": "npm run lint",
