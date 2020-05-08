@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "Game about Lambda and Sheeps",
   "scripts": {
+    "build": "webpack --mode production",
     "pretest": "webpack --mode development",
     "test": "mocha test/*.test.js --exit",
     "posttest": "npm run lint",
     "lint": "eslint . --ext .ts",
-    "start": "webpack --mode production && webpack-dev-server --mode production"
+    "start": "webpack --mode development && webpack-dev-server --mode development"
   },
   "dependencies": {
     "common-js": "^0.3.8",
