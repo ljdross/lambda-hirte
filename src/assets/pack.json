@@ -18,6 +18,16 @@
       },
       {
         "type": "image",
+        "key": "stone",
+        "url": "assets/sprites/stone.png"
+      },
+      {
+        "type": "image",
+        "key": "sheep_small",
+        "url": "assets/sprites/sheep_small.png"
+      },
+      {
+        "type": "image",
         "key": "menu",
         "url": "assets/menu/menu.png"
       },
