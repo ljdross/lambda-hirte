@@ -18,14 +18,25 @@ export class MainMenu extends Phaser.Scene {
     }
 
     create(): void {
+        const width = this.sys.game.canvas.width;
+        const height = this.sys.game.canvas.height;
         const grass = this.add.image(0, 0, 'grass');
         grass.setDisplaySize(2 * this.sys.canvas.width, 2 * this.sys.canvas.height);
 
         const sheep = this.physics.add.image(400, 100, 'sheep_horizontal');
 
-        const changeScene = this.add.text(this.sys.game.canvas.width - 200, 10, `Change Scene`, {fill: '#0f0'});
-        changeScene.setInteractive();
-        changeScene.on('pointerdown', () => {
+        const levels = this.add.image(width / 2, height / 2, 'levels');
+        levels.setDisplaySize(0.1 * width, 0.1 * height);
+        levels.setInteractive(({ useHandCursor: true }));
+        levels.on('pointerdown', () => {
+            // this.scene.pause('MainMenu')
+            // this.scene.start('Level1');
+        });
+
+        const menu = this.add.image(this.sys.game.canvas.width - 50, 20, 'menu');
+        menu.setDisplaySize(0.05 * this.sys.canvas.width, 0.05 * this.sys.canvas.height);
+        menu.setInteractive(({ useHandCursor: true }));
+        menu.on('pointerdown', () => {
             this.scene.pause('MainMenu')
             this.scene.start('Level1');
         });

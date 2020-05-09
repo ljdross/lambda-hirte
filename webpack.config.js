@@ -12,8 +12,9 @@ module.exports = {
     module: {
         rules: [
             {test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/'},
-            {test: /phaser\.js$/, loader: 'expose-loader?Phaser'}
-        ]
+            {test: /phaser\.js$/, loader: 'expose-loader?Phaser'},
+            {test: /\.css$/i, use: ['style-loader', 'css-loader']}
+        ],
     },
     devServer: {
         contentBase: path.resolve(__dirname, './dist/'),

@@ -15,6 +15,36 @@
         "type": "image",
         "key": "grass",
         "url": "assets/sprites/grass.png"
+      },
+      {
+        "type": "image",
+        "key": "menu",
+        "url": "assets/menu/menu.png"
+      },
+      {
+        "type": "image",
+        "key": "levels",
+        "url": "assets/menu/levels.png"
+      },
+      {
+        "type": "image",
+        "key": "settings",
+        "url": "assets/menu/settings.png"
+      },
+      {
+        "type": "image",
+        "key": "restart",
+        "url": "assets/menu/restart.png"
+      },
+      {
+        "type": "image",
+        "key": "continue",
+        "url": "assets/menu/continue.png"
+      },
+      {
+        "type": "image",
+        "key": "exit",
+        "url": "assets/menu/exit.png"
       }
     ]
   }
