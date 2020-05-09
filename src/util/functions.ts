@@ -12,10 +12,10 @@ export function randomInt(min, max): number{
     return Math.floor(Math.random() * (max - min + 1)) + min;
  }
 
- export function generateSheeps(amount, physics, width, heigth): void{
+ export function generateSheeps(amount, physics, width, height): void{
     let counter = 0;
     while (counter < amount){
-        const sheep = physics.add.image(randomInt(0, width), randomInt(0, heigth), 'sheep_small');
+        const sheep = physics.add.image(randomInt(0, width), randomInt(0, height), 'sheep_small');
         sheep.setVelocity(randomInt(50, 200), randomInt(50, 200));
         sheep.setBounce(1, 1);
         sheep.setCollideWorldBounds(true);

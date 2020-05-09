@@ -31,7 +31,7 @@ export class MainMenu extends Phaser.Scene {
         initButton(levels);
         levels.on('pointerdown', () => {
             this.scene.stop('MainMenu');
-            this.scene.start('Gui');
+            this.scene.start('Gui', {currentLevel: 'Level1'});
             this.scene.start('Level1');
         });
 
@@ -40,7 +40,7 @@ export class MainMenu extends Phaser.Scene {
         initButton(settings);
         settings.on('pointerdown', () => {
             this.scene.stop('MainMenu');
-            this.scene.start('Gui');
+            this.scene.start('Gui', {currentLevel: 'Level1'});
             this.scene.start('Level1');
         });
         generateSheeps(10, this.physics, width, height);
