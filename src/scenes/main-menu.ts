@@ -13,6 +13,7 @@ export class MainMenu extends Phaser.Scene {
     }
 
     preload(): void {
+        this.load.spritesheet('portal','assets/sprites/teleporter_portal.png',{frameHeight:128 ,frameWidth: 128});
         this.load.pack(
             "preload",
             "assets/pack.json",

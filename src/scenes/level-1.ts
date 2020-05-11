@@ -1,6 +1,6 @@
 import {Tile, Type, Board} from "../objects/board"
 import {generateSheeps} from "../util/functions";
-
+import{Portal} from "../objects/Teleport";
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
@@ -25,6 +25,11 @@ export class Level1 extends Phaser.Scene {
     board.draw(this);
 
     generateSheeps(5, this.physics, this.sys.game.canvas.width, this.sys.game.canvas.height);
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const portal = new Portal(this,[2,2],[0,0],0,"portal");
+    portal.creat(this);
   }
   
   update(): void {
