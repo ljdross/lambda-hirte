@@ -44,6 +44,5 @@ export class MainMenu extends Phaser.Scene {
             this.scene.start('Gui', {currentLevel: 'Level1'});
             this.scene.start('Level1');
         });
-        generateSheeps(10, this.physics, width, height);
     }
 }
