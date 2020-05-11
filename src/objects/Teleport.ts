@@ -35,7 +35,7 @@ export abstract class Portal extends Phaser.GameObjects.Sprite{
         this.context = context;
     }
 
-    public creat(scene: Phaser.Scene) {
+    public createAnim(scene: Phaser.Scene) {
 
         const pStart = scene.add.sprite(this.fromTile[0] * 128 + 64 + this.sizeOfTile, this.fromTile[1] * 128 + 64 + this.sizeOfTile, 'portal');
         const pEnd = scene.add.sprite(this.toTile[0] * 128 + 64 + this.sizeOfTile, this.toTile[1] * 128 + 64 + this.sizeOfTile, 'portal');

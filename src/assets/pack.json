@@ -6,7 +6,11 @@
         "key": "sand",
         "url": "assets/sprites/sand.png"
       },
-
+      {
+        "type": "image",
+        "key": "sheep_horizontal",
+        "url": "assets/sprites/sheep_horizontal.png"
+      },
 
       {
         "type": "image",
