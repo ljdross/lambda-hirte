@@ -1,6 +1,8 @@
 import 'phaser';
 import {MainMenu} from "./scenes/main-menu";
 import {Level1} from "./scenes/level-1";
+import {GuiScene} from "./scenes/gui";
+import {Sheep} from "./objects/sheep";
 
 const config = {
     type: Phaser.AUTO,
@@ -10,7 +12,7 @@ const config = {
         mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [MainMenu, Level1],
+    scene: [MainMenu, Level1, GuiScene],
     physics: {
         default: 'arcade',
         arcade: {

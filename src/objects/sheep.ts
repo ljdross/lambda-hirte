@@ -1,16 +1,19 @@
 import 'phaser';
+import {Board} from "./board";
 
 export abstract class Sheep extends Phaser.GameObjects.Sprite {
-    protected speed: integer;
+    protected speed: number;
     protected gameWidth: number;
     protected gameHeight: number;
+    protected goal: boolean;
 
-    protected constructor(config) {
-        super(config.scene, config.x, config.y, "sheep_small");
+    protected constructor(private config, sprite) {
+        super(config.scene, config.x, config.y, sprite);
         config.scene.add.existing(this);
         this.speed = Phaser.Math.Between(0.3 , 1);
         this.gameWidth = config.gameWidth;
         this.gameHeight = config.gameHeight;
+        this.goal = false;
         this.setInteractive();
     }
 
@@ -23,20 +26,24 @@ export abstract class Sheep extends Phaser.GameObjects.Sprite {
 
     abstract move(): void;
 
+    //changes Direction at Border or if scene.data.get('collision') = 1;
     abstract obstacle(): void;
+
+    onGoal(): void {
+        // TODO check if on Goal or make public
+        this.goal = true;
+    }
 
 }
 
 export class SheepVertical extends Sheep {
     constructor(config) {
-        super(config);
+        super(config, "sheep_small");
     }
 
     move(): void {
-        if(this.speed == 0 ) {
-            this.speed = -0.3;
-        }
-        this.y += this.speed;
+        if(this.speed == 0 ) this.speed = -0.3;
+        if(this.goal == false) this.y += this.speed;
     }
 
     obstacle(): void {
@@ -48,14 +55,12 @@ export class SheepVertical extends Sheep {
 
 export class SheepHorizontal extends Sheep {
     constructor(config) {
-        super(config);
+        super(config, "sheep_small");
     }
 
     move(): void {
-        if(this.speed == 0 ) {
-            this.speed = -0.3;
-        }
-        this.x += this.speed;
+        if(this.speed == 0 ) this.speed = -0.3;
+        if(this.goal == false) this.x += this.speed;
     }
 
     obstacle(): void {
@@ -64,5 +69,4 @@ export class SheepHorizontal extends Sheep {
             this.speed *= (-1);
         }
     }
-
 }
