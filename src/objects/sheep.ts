@@ -1,5 +1,4 @@
 import 'phaser';
-import {Board} from "./board";
 
 export abstract class Sheep extends Phaser.GameObjects.Sprite {
     protected speed: number;

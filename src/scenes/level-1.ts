@@ -1,13 +1,12 @@
 import {Tile, Type, Board} from "../objects/board"
-import {generateSheeps, randomInt} from "../util/functions";
 import {Sheep,  SheepHorizontal, SheepVertical} from "../objects/sheep";
-import Systems = Phaser.Scenes.Systems;
+
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
   key: 'Level1',
-}
+};
 
 export class Level1 extends Phaser.Scene {
   private square: Phaser.GameObjects.Rectangle & { body: Phaser.Physics.Arcade.Body };
