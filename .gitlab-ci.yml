@@ -1,35 +1,35 @@
 stages:
+  - compile
   - test
-#  - deploy
+  - deploy
 
-image: node:13
 
-cache:
-  key: "lambda-hirte"
-  paths:
-    - node_modules/
+build:
+  stage: compile
+  script:
+    - "npm install"
+    - "npm prune"
+    - "npm run build"
+  cache:
+    key: "lambda-hirte"
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - dist
+    expire_in: 2 days
 
-before_script:
-  # Run ssh-agent (inside the build environment)
-  - eval $(ssh-agent -s)
-  # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
-  - chmod 644 ~/.ssh/known_hosts
-
-merge_request:
+lint:
+  cache:
+    key: "lambda-hirte"
+    policy: pull
+    paths:
+      - node_modules/
   stage: test
   script:
-    - npm install
-    - npm run test
+    - "npm run lint"
 
-#deploy_production:
-#  stage: deploy
-#  environment: Production
-#  only:
-#    - master
-#  script:
-#    # Connect to Server. Pull and Rebuild Project. Restart Daemon.
-#    - ssh arsvivendi@$SERVER "cd /home/modysy/lambda-hirte/ && git pull && npm rebuild && sudo /etc/init.d/lambdahirte restart"
+publish:
+  stage: deploy
+  script:
+  - "~/copy_files.sh"
