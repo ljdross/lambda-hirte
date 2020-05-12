@@ -11,6 +11,7 @@
         "key": "sheep_horizontal",
         "url": "assets/sprites/sheep_horizontal.png"
       },
+
       {
         "type": "image",
         "key": "grass",
