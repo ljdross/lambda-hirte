@@ -2,36 +2,42 @@ import {Tile, Type} from "./tile";
 export {Tile, Type}
 
 export class Board {
-  width: number;
-  height: number;
-  frameWidth: number;
-  tiles: Tile[][];
+
+  private _width: number;
+  private _height: number;
+  private _frameWidth: number;
+  private _tiles: Tile[][];
   
-  constructor(windthInNmbrOfTiles: number, heightInNmbrOfTiles: number, frameWidthInPixels: number) {
-    this.width = windthInNmbrOfTiles;
-    this.height = heightInNmbrOfTiles;
-    this.frameWidth = frameWidthInPixels;
+  constructor(widthInNmbrOfTiles: number, heightInNmbrOfTiles: number, frameWidthInPixels: number) {
+    this._width = widthInNmbrOfTiles;
+    this._height = heightInNmbrOfTiles;
+    this._frameWidth = frameWidthInPixels;
     
-    this.tiles = [];
-    for (let x = 0; x < windthInNmbrOfTiles; x++) {
-      this.tiles[x] = [];
+    this._tiles = [];
+    for (let x = 0; x < widthInNmbrOfTiles; x++) {
+      this._tiles[x] = [];
       for (let y = 0; y < heightInNmbrOfTiles; y++) {
-        this.tiles[x][y] = new Tile(Type.Grass);
+        this._tiles[x][y] = new Tile(Type.Grass);
       }
     }
   }
   
   draw(scene: Phaser.Scene): void{
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
-        if (this.tiles[x][y].type == Type.Grass) {
-          this.tiles[x][y].ref = scene.add.image(x * 128 + 64 + this.frameWidth, y * 128 + 64 + this.frameWidth, 'grass');
-        } else if (this.tiles[x][y].type == Type.Sand) {
-          this.tiles[x][y].ref = scene.add.image(x * 128 + 64 + this.frameWidth, y * 128 + 64 + this.frameWidth, 'sand');
-        } else if (this.tiles[x][y].type == Type.Stone) {
-          this.tiles[x][y].ref = scene.add.image(x * 128 + 64 + this.frameWidth, y * 128 + 64 + this.frameWidth, 'stone');
+    for (let x = 0; x < this._width; x++) {
+      for (let y = 0; y < this._height; y++) {
+        if (this._tiles[x][y].type == Type.Grass) {
+          this._tiles[x][y].ref = scene.add.image(x * 128 + 64 + this._frameWidth, y * 128 + 64 + this._frameWidth, 'grass');
+        } else if (this._tiles[x][y].type == Type.Sand) {
+          this._tiles[x][y].ref = scene.add.image(x * 128 + 64 + this._frameWidth, y * 128 + 64 + this._frameWidth, 'sand');
+        } else if (this._tiles[x][y].type == Type.Stone) {
+          this._tiles[x][y].ref = scene.add.image(x * 128 + 64 + this._frameWidth, y * 128 + 64 + this._frameWidth, 'stone');
         }
       }   
     }
   }
+
+  get tiles(): Tile[][] {
+    return this._tiles;
+  }
+
 }
