@@ -2,6 +2,7 @@ import {initButton} from "../util/functions"
 
 export class GuiScene extends Phaser.Scene {
     private currentLevel: string;
+    private winningScore: number;
 
     constructor() {
         super({
@@ -12,6 +13,7 @@ export class GuiScene extends Phaser.Scene {
 
     init(data): void {
         this.currentLevel = data.currentLevel;
+        this.winningScore = data.winningScore;
     }
 
     create(): void {
@@ -21,7 +23,8 @@ export class GuiScene extends Phaser.Scene {
         const restart = this.add.image(width / 2, height / 2, `restart`);
         const continueGame = this.add.image(width / 2, height / 2 - 100, `continue`);
         const exitGame = this.add.image(width / 2, height / 2 + 100, `exit`);
-        const menu = this.add.image(width - 50, 40, 'menu');
+        const menu = this.add.image(width - 100, 50, 'menu');
+        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.winningScore + " more sheeps!");
 
         restart.visible = false;
         restart.setDisplaySize(0.1 * width, 0.1 * height);

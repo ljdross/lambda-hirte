@@ -13,7 +13,7 @@ export function initLevelButton(name, scene, width, height): void {
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         scene.stop('MainMenu');
-        scene.start('Gui', {currentLevel: 'Level1'});
+        scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
         scene.start('Level1');
     });
     name.visible = false;
