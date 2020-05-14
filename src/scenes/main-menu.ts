@@ -38,6 +38,15 @@ export class MainMenu extends Phaser.Scene {
             this.scene.start('Level1');
         });
 
+        const level1 = this.add.image(width / 2, height / 2, 'one');
+        level1.setDisplaySize(0.05   * width, 0.1 * height);
+        level1.setInteractive(({ useHandCursor: true }));
+        level1.on('pointerdown', () => {
+            this.scene.stop('MainMenu');
+            this.scene.start('Gui', {currentLevel: 'Level1'});
+            this.scene.start('Level1');
+        });
+
         const settings = this.add.image(width / 2, height / 2 - 100, 'settings');
         settings.setDisplaySize(0.1 * width, 0.1 * height);
         initButton(settings);
