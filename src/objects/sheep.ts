@@ -10,7 +10,6 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         config.scene.add.existing(this);
         this.speed = Phaser.Math.Between(30 , 100) / 100;
         this.goal = false;
-        this.scale = 0.5;
     }
 
     //needs to be called in scene for each sheep
