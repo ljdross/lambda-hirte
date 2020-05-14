@@ -8,6 +8,17 @@ export function initButton(name): void {
     });
 }
 
+export function initLevelButton(name, scene, width, height): void {
+    name.setDisplaySize(0.05   * width, 0.1 * height);
+    name.setInteractive(({ useHandCursor: true }));
+    name.on('pointerdown', () => {
+        scene.stop('MainMenu');
+        scene.start('Gui', {currentLevel: 'Level1'});
+        scene.start('Level1');
+    });
+    name.visible = false;
+}
+
 export function randomInt(min, max): number{
     return Math.floor(Math.random() * (max - min + 1)) + min;
  }
