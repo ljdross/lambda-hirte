@@ -31,6 +31,11 @@ export class Level1 extends Phaser.Scene {
     super(sceneConfig);
   }
 
+  init(): void {
+      this.data.set('playerScore', 0);
+      this.data.set('playerWinningScore', 10);
+  }
+
   create(): void {
 
     this.board = new Board(16, 12, 0);
