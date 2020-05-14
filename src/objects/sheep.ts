@@ -10,7 +10,6 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         config.scene.add.existing(this);
         this.speed = Phaser.Math.Between(30 , 100) / 100;
         this.goal = false;
-        this.setInteractive();
         this.scale = 0.5;
     }
 
@@ -18,13 +17,13 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     update(...args): void {
         super.update(...args);
         this.move();
-        this.obstacle();
+        this.atBorder();
+        this.onGoal(this.config.scene.board);
     }
 
     abstract move(): void;
 
-    //changes Direction at Border or if scene.data.get('collision') = 1;
-    abstract obstacle(): void;
+    abstract atBorder(): void;
 
     public onGoal(board: Board): void {
         // TODO check if on Goal or make public
@@ -49,17 +48,22 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         return null
     }
 
-    protected collision(): boolean {
-        return this.scene.data.get('collision') == 1;
-    }
+    abstract obstacle(): void;
+
 }
 
 export class SheepVertical extends Sheep {
     constructor(config) {
         super(config, 'sheep_v');
-        this.config.scene.anims.create({
-            key: 'walk_vertical',
-            frames: this.config.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 3}),
+        this.scene.anims.create({
+            key: 'walk_down',
+            frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 7}),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.scene.anims.create({
+            key: 'walk_up',
+            frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 8, end: 11}),
             frameRate: 10,
             repeat: -1,
         });
@@ -67,26 +71,29 @@ export class SheepVertical extends Sheep {
 
     move(): void {
         if(this.goal == false) {
-            this.play('walk_vertical', true);
+            if(this.speed < 0) this.play('walk_up', true);
+            else this.play('walk_down', true);
             this.y += this.speed;
         }
     }
 
-    obstacle(): void {
-        if((this.speed < 0 && this.y <= 0) || (this.speed > 0 && this.y >= this.config.scene.sys.game.canvas.height)
-            || this.collision()) {
-            this.speed *= (-1);
-            this.scaleY *= (-1);
+    atBorder(): void {
+        if((this.speed < 0 && this.y <= 0) || (this.speed > 0 && this.y >= this.scene.sys.game.canvas.height)) {
+            this.obstacle();
         }
+    }
+
+    obstacle() {
+        this.speed *= (-1);
     }
 }
 
 export class SheepHorizontal extends Sheep {
     constructor(config) {
         super(config, 'sheep_h');
-        this.config.scene.anims.create({
+        this.scene.anims.create({
             key: 'walk_horizontal',
-            frames: this.config.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
             frameRate: 10,
             repeat: -1,
         });
@@ -99,11 +106,14 @@ export class SheepHorizontal extends Sheep {
         }
     }
 
-    obstacle(): void {
-        if((this.speed < 0 && this.x <= 0) || (this.speed > 0 && this.x >= this.config.scene.sys.game.canvas.width)
-            || this.collision()) {
-            this.speed *= (-1);
-            this.scaleX *= (-1);
+    atBorder(): void {
+        if((this.speed < 0 && this.x <= 0) || (this.speed > 0 && this.x >= this.scene.sys.game.canvas.width)) {
+            this.obstacle();
         }
+    }
+
+    obstacle() {
+        this.speed *= (-1);
+        this.scaleX *= (-1);
     }
 }

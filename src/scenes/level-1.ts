@@ -9,9 +9,23 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class Level1 extends Phaser.Scene {
+  get sheep(): Phaser.GameObjects.Group {
+    return this._sheep;
+  }
+
+  set sheep(value: Phaser.GameObjects.Group) {
+    this._sheep = value;
+  }
+  set board(value: Board) {
+    this._board = value;
+  }
+  get board(): Board {
+    return this._board;
+  }
+
   private square: Phaser.GameObjects.Rectangle & { body: Phaser.Physics.Arcade.Body };
-  private list: Array<Sheep>; //List of all Sheep
-  private board: Board;
+  private _sheep: Phaser.GameObjects.Group; //List of all Sheep
+  private _board: Board;
   
   constructor() {
     super(sceneConfig);
@@ -36,17 +50,17 @@ export class Level1 extends Phaser.Scene {
     //generate Sheep like this
     const s1=new SheepVertical({scene:this,x:500,y:400});
     const s2=new SheepHorizontal({scene:this,x:300,y:400});
-    const s3=new SheepHorizontal({scene:this,x:100,y:270});
+    const s3=new SheepHorizontal({scene:this,x:100,y:270})
     //add to List
-    this.list = [s1, s2, s3];
+    this.sheep = this.add.group();
+    this.sheep.addMultiple([s1, s2, s3]);
 
   }
-  
+
   update(): void {
     //update all sheep
-    for(const s of this.list) {
+    for(const s of this.sheep.getChildren()) {
       s.update();
-      s.onGoal(this.board);
     }
     // TODO
   }
