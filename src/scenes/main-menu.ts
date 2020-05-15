@@ -1,4 +1,4 @@
-import {initButton, initLevelButton} from "../util/functions"
+import {initLevelButton} from "../util/functions"
 import {Board} from "../objects/board";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -29,8 +29,8 @@ export class MainMenu extends Phaser.Scene {
         const board = new Board(16, 12, 0);
         board.draw(this);
 
-        const levels = this.add.image(width / 2, height / 2, 'levels');
-        const settings = this.add.image(width / 2, height / 2 - 100, 'settings');
+        const play = this.add.image(width / 2, height / 2 - 75, 'levels');
+        const settings = this.add.image(width / 2, height / 2, 'settings');
 
         const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
         initLevelButton(level1, this.scene, width, height)
@@ -64,7 +64,7 @@ export class MainMenu extends Phaser.Scene {
         back.setInteractive(({ useHandCursor: true }));
         back.visible = false;
         back.on('pointerdown', () => {
-            levels.visible = true;
+            play.visible = true;
             settings.visible = true;
             back.visible = false;
             level1.visible = false;
@@ -79,17 +79,17 @@ export class MainMenu extends Phaser.Scene {
         });
 
         settings.setDisplaySize(0.1 * width, 0.1 * height);
-        initButton(settings);
+        settings.setInteractive(({ useHandCursor: true }));
         settings.on('pointerdown', () => {
-            levels.visible = false;
+            play.visible = false;
             settings.visible = false;
             back.visible = true;
         });
 
-        levels.setDisplaySize(0.1 * width, 0.1 * height);
-        initButton(levels);
-        levels.on('pointerdown', () => {
-            levels.visible = false;
+        play.setDisplaySize(0.1 * width, 0.1 * height);
+        play.setInteractive(({ useHandCursor: true }));
+        play.on('pointerdown', () => {
+            play.visible = false;
             settings.visible = false;
             back.visible = true;
             level1.visible = true;
