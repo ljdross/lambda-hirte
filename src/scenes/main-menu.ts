@@ -21,6 +21,8 @@ export class MainMenu extends Phaser.Scene {
             "assets/pack.json",
             "preload"
         );
+        this.load.audio('mainsong', ['assets/sounds/mainsong.ogg']);
+
     }
 
     create(): void {
@@ -29,35 +31,42 @@ export class MainMenu extends Phaser.Scene {
         const board = new Board(16, 12, 0);
         board.draw(this);
 
+        this.sound.play('mainsong', {
+            loop: true,
+            volume: 1
+        })
+
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const currentscene = this;
         const play = this.add.image(width / 2, height / 2 - 75, 'levels');
         const settings = this.add.image(width / 2, height / 2, 'settings');
 
         const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
-        initLevelButton(level1, this.scene, width, height)
+        initLevelButton(currentscene, level1, width, height)
 
         const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
-        initLevelButton(level2, this.scene, width, height)
+        initLevelButton(currentscene, level2, width, height)
 
         const level3 = this.add.image(width / 2 + 100, height / 2 - 100, 'three');
-        initLevelButton(level3, this.scene, width, height)
+        initLevelButton(currentscene, level3, width, height)
 
         const level4 = this.add.image(width / 2 - 100 , height / 2, 'four');
-        initLevelButton(level4, this.scene, width, height)
+        initLevelButton(currentscene, level4, width, height)
 
         const level5 = this.add.image(width / 2, height / 2, 'five');
-        initLevelButton(level5, this.scene, width, height)
+        initLevelButton(currentscene, level5, width, height)
 
         const level6 = this.add.image(width / 2 + 100, height / 2, 'six');
-        initLevelButton(level6, this.scene, width, height)
+        initLevelButton(currentscene, level6, width, height)
 
         const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
-        initLevelButton(level7, this.scene, width, height)
+        initLevelButton(currentscene, level7, width, height)
 
         const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
-        initLevelButton(level8, this.scene, width, height)
+        initLevelButton(currentscene, level8, width, height)
 
         const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
-        initLevelButton(level9, this.scene, width, height)
+        initLevelButton(currentscene,level9, width, height)
 
         const back = this.add.image(width / 2 + 200, height / 2 - 100, 'back');
         back.setDisplaySize(0.05   * width, 0.1 * height);
