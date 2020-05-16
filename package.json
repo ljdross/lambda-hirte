@@ -15,7 +15,7 @@
     "copy-webpack-plugin": "^5.0.2",
     "css-loader": "^3.5.3",
     "expose-loader": "0.7.5",
-    "phaser": "^3.22.0",
+    "phaser": "^3.23.0",
     "phaser3-rex-plugins": "^1.1.14",
     "ts-loader": "6.0.4",
     "typescript": "^3.0.1",

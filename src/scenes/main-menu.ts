@@ -12,6 +12,7 @@ const COLOR_DARK = 0xFFFFFF;
 
 export class MainMenu extends Phaser.Scene {
     private rexUI: any;
+    private song: Phaser.Sound.BaseSound;
     constructor() {
         super(sceneConfig);
     }
@@ -25,7 +26,7 @@ export class MainMenu extends Phaser.Scene {
             "assets/pack.json",
             "preload"
         );
-        this.load.audio('mainsong', ['assets/sounds/mainsong.mp3']);
+        this.load.audio('mainsong', 'assets/sounds/mainsong.mp3', {instances: 1 });
         this.load.scenePlugin({
             key: 'rexuiplugin',
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -39,12 +40,12 @@ export class MainMenu extends Phaser.Scene {
         const board = new Board(16, 12, 0);
         board.draw(this);
 
-        const mainSong = this.sound.add('mainsong');
+        this.song = this.sound.add('mainsong');
         const musicConfig = {
             volume: 1,
             loop: true,
         }
-        mainSong.play(musicConfig);
+        this.song.play(musicConfig);
 
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
@@ -65,6 +66,7 @@ export class MainMenu extends Phaser.Scene {
         const volumeSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
             y: height / 2 - 100,
+            value: 0.5,
             width: 200,
             height: 20,
             orientation: 'x',
@@ -72,11 +74,7 @@ export class MainMenu extends Phaser.Scene {
             indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             input: 'drag', // 'drag'|'click'
-            valuechangeCallback: function (value) {
-                if (value){
-                    this.setVolume = value;
-                }
-            },
+            valuechangeCallback: value => this.sound.volume = value,
             space: {
                 top: 4,
                 bottom: 4
