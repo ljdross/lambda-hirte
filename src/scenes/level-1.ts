@@ -1,6 +1,6 @@
 import {Tile, Type, Board} from "../objects/board"
 import{Portal} from "../objects/Teleport";
-import {Sheep,  SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {SheepHorizontal, SheepVertical} from "../objects/sheep";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -44,6 +44,8 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[1][3] = new Tile(Type.Stone);
     this.board.tiles[2][3] = new Tile(Type.Stone);
     this.board.tiles[3][3] = new Tile(Type.Stone);
+    this.board.tiles[7][3] = new Tile(Type.Sand);
+    this.board.tiles[8][3] = new Tile(Type.Sand);
     this.board.tiles[2][2].isDestination = true;
     this.board.draw(this);
 
@@ -53,7 +55,7 @@ export class Level1 extends Phaser.Scene {
     portal.createAnim(this);
 
     //generate Sheep like this
-    const s1=new SheepVertical({scene:this,x:500,y:400});
+    const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
     const s2=new SheepHorizontal({scene:this,x:300,y:400});
     const s3=new SheepHorizontal({scene:this,x:100,y:270})
     //add to List
