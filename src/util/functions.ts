@@ -6,7 +6,7 @@ export function initButton(name): void {
     name.on('pointerout', () => {
         name.setTintFill(0xFFFFFF);
     });
-};
+}
 
 export const initLevelButton = ((currentscene, name, width, height) => {
     name.setDisplaySize(0.05   * width, 0.1 * height);
@@ -21,7 +21,7 @@ export const initLevelButton = ((currentscene, name, width, height) => {
 
 export function randomInt(min, max): number{
     return Math.floor(Math.random() * (max - min + 1)) + min;
- };
+ }
 
  export function generateSheeps(amount, physics, width, height): void{
     let counter = 0;
@@ -32,4 +32,4 @@ export function randomInt(min, max): number{
         sheep.setCollideWorldBounds(true);
         counter = counter + 1;
     }
- };
+ }

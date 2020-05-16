@@ -47,15 +47,18 @@ export class MainMenu extends Phaser.Scene {
         }
         this.song.play(musicConfig);
 
+        const camera = this.cameras.main;
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
             y: height / 2,
+            value: 0.5,
             width: 200,
             height: 20,
             orientation: 'x',
             track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
             indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            valuechangeCallback: value => camera.setAlpha(value * 2),
             input: 'drag', // 'drag'|'click'
             space: {
                 top: 4,
@@ -63,6 +66,7 @@ export class MainMenu extends Phaser.Scene {
             },
         }).layout();
         brightnessSlider.visible = false;
+
         const volumeSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
             y: height / 2 - 100,
