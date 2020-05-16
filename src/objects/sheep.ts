@@ -1,5 +1,5 @@
 import 'phaser';
-import {Tile, Type, Board} from "../objects/board";
+import {Tile, Type} from "../objects/board";
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected speed: number;
@@ -93,7 +93,7 @@ export class SheepVertical extends Sheep {
         }
     }
 
-    obstacle() {
+    obstacle(): void {
         this.speed *= (-1);
         this.sandSpeed *= (-1);
     }
@@ -121,7 +121,7 @@ export class SheepHorizontal extends Sheep {
         }
     }
 
-    obstacle() {
+    obstacle(): void {
         this.speed *= (-1);
         this.scaleX *= (-1);
         this.sandSpeed *= (-1);
