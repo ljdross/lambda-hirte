@@ -7,7 +7,12 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   key: 'MainMenu',
 };
 
+const COLOR_LIGHT = 0xAEFFFD;
+const COLOR_DARK = 0xFFFFFF;
+
 export class MainMenu extends Phaser.Scene {
+    private rexUI: any;
+    private song: Phaser.Sound.BaseSound;
     constructor() {
         super(sceneConfig);
     }
@@ -21,8 +26,12 @@ export class MainMenu extends Phaser.Scene {
             "assets/pack.json",
             "preload"
         );
-        this.load.audio('mainsong', ['assets/sounds/mainsong.ogg']);
-
+        this.load.audio('mainsong', 'assets/sounds/mainsong.mp3', {instances: 1 });
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
     }
 
     create(): void {
@@ -31,42 +40,89 @@ export class MainMenu extends Phaser.Scene {
         const board = new Board(16, 12, 0);
         board.draw(this);
 
-        this.sound.play('mainsong', {
+        this.song = this.sound.add('mainsong');
+        const musicConfig = {
+            volume: 1,
             loop: true,
-            volume: 1
-        })
+        }
+        this.song.play(musicConfig);
 
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const currentscene = this;
+        const camera = this.cameras.main;
+        const brightnessSlider = this.rexUI.add.slider({
+            x: width / 2 + 50,
+            y: height / 2,
+            value: 0.5,
+            width: 200,
+            height: 20,
+            orientation: 'x',
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            valuechangeCallback: value => camera.setAlpha(value * 2),
+            input: 'drag', // 'drag'|'click'
+            space: {
+                top: 4,
+                bottom: 4
+            },
+        }).layout();
+        brightnessSlider.visible = false;
+
+        const volumeSlider = this.rexUI.add.slider({
+            x: width / 2 + 50,
+            y: height / 2 - 100,
+            value: 0.5,
+            width: 200,
+            height: 20,
+            orientation: 'x',
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            input: 'drag', // 'drag'|'click'
+            valuechangeCallback: value => this.sound.volume = value,
+            space: {
+                top: 4,
+                bottom: 4
+            },
+        }).layout();
+        volumeSlider.visible = false;
+
         const play = this.add.image(width / 2, height / 2 - 75, 'levels');
         const settings = this.add.image(width / 2, height / 2, 'settings');
 
+        const volume = this.add.image(width / 2 - 100, height / 2 - 100, 'volume');
+        volume.setDisplaySize(0.05   * width, 0.1 * height);
+        volume.visible = false;
+
+        const brightness = this.add.image(width / 2 - 100, height / 2, 'brightness');
+        brightness.setDisplaySize(0.05   * width, 0.1 * height);
+        brightness.visible = false;
+
         const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
-        initLevelButton(currentscene, level1, width, height)
+        initLevelButton(this, level1, width, height)
 
         const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
-        initLevelButton(currentscene, level2, width, height)
+        initLevelButton(this, level2, width, height)
 
         const level3 = this.add.image(width / 2 + 100, height / 2 - 100, 'three');
-        initLevelButton(currentscene, level3, width, height)
+        initLevelButton(this, level3, width, height)
 
         const level4 = this.add.image(width / 2 - 100 , height / 2, 'four');
-        initLevelButton(currentscene, level4, width, height)
+        initLevelButton(this, level4, width, height)
 
         const level5 = this.add.image(width / 2, height / 2, 'five');
-        initLevelButton(currentscene, level5, width, height)
+        initLevelButton(this, level5, width, height)
 
         const level6 = this.add.image(width / 2 + 100, height / 2, 'six');
-        initLevelButton(currentscene, level6, width, height)
+        initLevelButton(this, level6, width, height)
 
         const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
-        initLevelButton(currentscene, level7, width, height)
+        initLevelButton(this, level7, width, height)
 
         const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
-        initLevelButton(currentscene, level8, width, height)
+        initLevelButton(this, level8, width, height)
 
         const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
-        initLevelButton(currentscene,level9, width, height)
+        initLevelButton(this,level9, width, height)
 
         const back = this.add.image(width / 2 + 200, height / 2 - 100, 'back');
         back.setDisplaySize(0.05   * width, 0.1 * height);
@@ -85,6 +141,10 @@ export class MainMenu extends Phaser.Scene {
             level7.visible = false;
             level8.visible = false;
             level9.visible = false;
+            brightness.visible = false;
+            volume.visible = false;
+            brightnessSlider.visible = false;
+            volumeSlider.visible = false;
         });
 
         settings.setDisplaySize(0.1 * width, 0.1 * height);
@@ -93,6 +153,10 @@ export class MainMenu extends Phaser.Scene {
             play.visible = false;
             settings.visible = false;
             back.visible = true;
+            brightness.visible = true;
+            volume.visible = true;
+            brightnessSlider.visible = true;
+            volumeSlider.visible = true;
         });
 
         play.setDisplaySize(0.1 * width, 0.1 * height);

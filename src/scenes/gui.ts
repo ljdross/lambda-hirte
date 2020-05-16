@@ -51,6 +51,7 @@ export class GuiScene extends Phaser.Scene {
         exitGame.setDisplaySize(0.1 * width, 0.1 * height);
         exitGame.setInteractive(({ useHandCursor: true }));
         exitGame.on('pointerdown', () => {
+            this.sound.stopAll();
             this.scene.stop(this.currentLevel);
             this.scene.stop('GuiScene');
             this.scene.start('MainMenu');
