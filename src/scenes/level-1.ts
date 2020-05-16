@@ -1,6 +1,6 @@
 import {Tile, Type, Board} from "../objects/board"
 import{Portal} from "../objects/Teleport";
-import {Sheep,  SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {SheepHorizontal, SheepVertical} from "../objects/sheep";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -44,6 +44,8 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[1][3] = new Tile(Type.Stone);
     this.board.tiles[2][3] = new Tile(Type.Stone);
     this.board.tiles[3][3] = new Tile(Type.Stone);
+    this.board.tiles[7][3] = new Tile(Type.Sand);
+    this.board.tiles[8][3] = new Tile(Type.Sand);
     this.board.tiles[2][2].isDestination = true;
     this.board.draw(this);
 
