@@ -1,33 +1,38 @@
 import 'phaser';
-import {Board, Tile} from "./board";
+import {Tile, Type} from "../objects/board";
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected speed: number;
+    protected sandSpeed: number;
     protected goal: boolean;
 
-    protected constructor(protected config, sprite) {
+    protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
         config.scene.add.existing(this);
-        this.speed = Phaser.Math.Between(30 , 100) / 100;
+        if (speed) this.speed = speed;
+        else this.speed = Phaser.Math.Between(40 , 100) / 100;
         this.goal = false;
+        this.sandSpeed = this.speed - (this.speed / 3);
     }
 
     //needs to be called in scene for each sheep
     update(...args): void {
         super.update(...args);
-        this.move();
+        this.walk();
         this.atBorder();
-        this.onGoal(this.config.scene.board);
+        this.onGoal();
+        this.onSand();
     }
 
-    abstract move(): void;
+    abstract move(speed: number): void;
 
     abstract atBorder(): void;
 
-    public onGoal(board: Board): void {
-        // TODO check if on Goal or make public
-        if(this.getTile(board) != null) {
-            if(this.getTile(board).isDestination) {
+    abstract obstacle(): void;
+
+    public onGoal(): void {
+        if(this.getTile()) {
+            if(this.getTile().isDestination) {
                 this.goal = true;
                 this.anims.pause();
             } else {
@@ -35,25 +40,34 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
                 this.anims.resume();
             }
         }
-
     }
 
-    public getTile(board: Board): Tile {
+    public getTile(): Tile {
+        const board = this.config.scene.board;
         const column = Math.floor(this.x / 128);
-        if(board.tiles[column] != null) {
+        if(board.tiles[column]) {
             const row = Math.floor(this.y / 128);
             return board.tiles[column][row];
         }
         return null
     }
 
-    abstract obstacle(): void;
+    protected onSand(): boolean {
+        return this.getTile() && this.getTile().type == Type.Sand;
+    }
+
+    protected walk(): void {
+        if(this.goal == false) {
+            if(this.onSand()) this.move(this.sandSpeed);
+            else this.move(this.speed);
+        }
+    }
 
 }
 
 export class SheepVertical extends Sheep {
-    constructor(config) {
-        super(config, 'sheep_v');
+    constructor(config, speed?: number) {
+        super(config, 'sheep_v', speed);
         this.scene.anims.create({
             key: 'walk_down',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 7}),
@@ -68,12 +82,10 @@ export class SheepVertical extends Sheep {
         });
     }
 
-    move(): void {
-        if(this.goal == false) {
-            if(this.speed < 0) this.play('walk_up', true);
-            else this.play('walk_down', true);
-            this.y += this.speed;
-        }
+    move(speed: number): void {
+        if(speed < 0) this.play('walk_up', true);
+        else this.play('walk_down', true);
+        this.y += speed;
     }
 
     atBorder(): void {
@@ -82,14 +94,15 @@ export class SheepVertical extends Sheep {
         }
     }
 
-    obstacle() {
+    obstacle(): void {
         this.speed *= (-1);
+        this.sandSpeed *= (-1);
     }
 }
 
 export class SheepHorizontal extends Sheep {
-    constructor(config) {
-        super(config, 'sheep_h');
+    constructor(config, speed?: number) {
+        super(config, 'sheep_h', speed);
         this.scene.anims.create({
             key: 'walk_horizontal',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
@@ -98,11 +111,9 @@ export class SheepHorizontal extends Sheep {
         });
     }
 
-    move(): void {
-        if(this.goal == false) {
-            this.play('walk_horizontal', true);
-            this.x += this.speed;
-        }
+    move(speed: number): void {
+        this.play('walk_horizontal', true);
+        this.x += speed;
     }
 
     atBorder(): void {
@@ -111,8 +122,9 @@ export class SheepHorizontal extends Sheep {
         }
     }
 
-    obstacle() {
+    obstacle(): void {
         this.speed *= (-1);
         this.scaleX *= (-1);
+        this.sandSpeed *= (-1);
     }
 }
