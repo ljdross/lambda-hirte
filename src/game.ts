@@ -17,7 +17,7 @@ const config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }
+    },
 };
 
 const game = new Phaser.Game(config);
