@@ -15,7 +15,6 @@ export const initLevelButton = ((currentscene, name, width, height) => {
         currentscene.scene.stop('MainMenu');
         currentscene.scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
         currentscene.scene.start('Level1');
-        currentscene.sound.stopAll();
     });
     name.visible = false;
 });
