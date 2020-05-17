@@ -1,6 +1,5 @@
 import "phaser";
-import {Board} from "./board";
-import {Tile,Type} from "./tile";
+import {Board, Tile, Type} from "./board";
 import List = Phaser.Structs.List;
 
 
