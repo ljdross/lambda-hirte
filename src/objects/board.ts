@@ -25,7 +25,7 @@ export class Board {
   }
   
   draw(scene: Phaser.Scene): void{
-    this._numberOfTilesByType.length = 0
+    this._numberOfTilesByType.length = 0;
     this._numberOfTilesByType[Type.Grass] = 0;
     this._numberOfTilesByType[Type.Sand] = 0;
     this._numberOfTilesByType[Type.Stone] = 0;
@@ -50,7 +50,7 @@ export class Board {
   }
 
   
-  get numberOfTilesByType() : number[] {
+  get numberOfTilesByType(): number[] {
     return this._numberOfTilesByType;
   }
   
