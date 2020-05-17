@@ -49,7 +49,9 @@ export class Board {
     return this._tiles;
   }
 
-  
+// Dies ist ein Array und kann von ausserhalb zB so aufgerufen werden:
+// this._board.numberOfTilesByType[Type.Grass]
+// Dies wuerde die Anzahl an Tiles vom Typ Grass ausgeben.
   get numberOfTilesByType(): number[] {
     return this._numberOfTilesByType;
   }
