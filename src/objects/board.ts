@@ -45,12 +45,12 @@ export class Board {
     }
   }
 
-  public get tiles(): Tile[][] {
+  get tiles(): Tile[][] {
     return this._tiles;
   }
 
   
-  public get numberOfTilesByType() : number[] {
+  get numberOfTilesByType() : number[] {
     return this._numberOfTilesByType;
   }
   

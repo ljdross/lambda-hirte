@@ -50,8 +50,8 @@ export class Level1 extends Phaser.Scene {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    const portal = new Portal(this,[2,2],[0,0],0,"portal");
-    portal.createAnim(this);
+    // const portal = new Portal(this,[2,2],[0,0],0,"portal");
+    // portal.createAnim(this);
 
     //generate Sheep like this
     const s1=new SheepVertical({scene:this,x:500,y:400});
