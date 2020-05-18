@@ -7,6 +7,7 @@ export enum Type {
 export class Tile {
   private _type: Type;
   private _ref: object;
+  private _tileNumber: number;
   private _isDestination: boolean;
   
   constructor(typeOfTile: Type) {
@@ -27,5 +28,13 @@ export class Tile {
   }
   get type(): Type {
     return this._type;
+  }
+
+  
+  set tileNumber(v: number) {
+    this._tileNumber = v;
+  }
+  get tileNumber(): number {
+    return this._tileNumber;
   }
 }
