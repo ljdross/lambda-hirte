@@ -37,16 +37,16 @@ export class Level1 extends Phaser.Scene {
 
   create(): void {
 
-    this._board = new Board(16, 12, 0);
-    this._board.tiles[2][2] = new Tile(Type.Sand);
-    this._board.tiles[3][2] = new Tile(Type.Sand);
-    this._board.tiles[1][3] = new Tile(Type.Stone);
-    this._board.tiles[2][3] = new Tile(Type.Stone);
-    this._board.tiles[3][3] = new Tile(Type.Stone);
-    this._board.tiles[7][3] = new Tile(Type.Sand);
-    this._board.tiles[8][3] = new Tile(Type.Sand);
-    this._board.tiles[2][2].isDestination = true;
-    this._board.draw(this);
+    this.board = new Board(16, 12, 0);
+    this.board.tiles[2][2] = new Tile(Type.Sand);
+    this.board.tiles[3][2] = new Tile(Type.Sand);
+    this.board.tiles[1][3] = new Tile(Type.Stone);
+    this.board.tiles[2][3] = new Tile(Type.Stone);
+    this.board.tiles[3][3] = new Tile(Type.Stone);
+    this.board.tiles[7][3] = new Tile(Type.Sand);
+    this.board.tiles[8][3] = new Tile(Type.Sand);
+    this.board.tiles[2][2].isDestination = true;
+    this.board.draw(this);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore

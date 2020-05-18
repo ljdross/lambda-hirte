@@ -9,10 +9,12 @@ export class Tile {
   private _ref: object;
   private _tileNumber: number;
   private _isDestination: boolean;
+  private _teleporterList: object; //should actually be private _teleporterList: Teleporter[];
   
   constructor(typeOfTile: Type) {
     this._type = typeOfTile;
     this._isDestination = false;
+    this._teleporterList = [];
   }
 
   get isDestination(): boolean {
@@ -37,4 +39,14 @@ export class Tile {
   get tileNumber(): number {
     return this._tileNumber;
   }
+
+  
+  set teleporterList(v: object) {
+    this._teleporterList = v;
+  }
+  get teleporterList(): object {
+    return this._teleporterList;
+  }
+  
+  
 }
