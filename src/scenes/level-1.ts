@@ -55,7 +55,7 @@ export class Level1 extends Phaser.Scene {
     portal.createAnim(this);
 
     //generate Sheep like this
-    const s1=new SheepVertical({scene:this,x:500,y:400});
+    const s1=new SheepVertical({scene:this,x:480,y:400}, 1.3);
     const s2=new SheepHorizontal({scene:this,x:300,y:400});
     const s3=new SheepHorizontal({scene:this,x:100,y:270})
     //add to List
