@@ -1,3 +1,5 @@
+import {Portal} from "./Teleport";
+
 export enum Type {
   Grass,
   Sand,
@@ -10,11 +12,14 @@ export class Tile {
   private _tileNumber: number;
   private _isDestination: boolean;
   private _teleporterList: object; //should actually be private _teleporterList: Teleporter[];
+  private _hasPortal: boolean;
+  private _portal: Portal;
   
-  constructor(typeOfTile: Type) {
+  constructor(typeOfTile: Type, hasPortal=false) {
     this._type = typeOfTile;
     this._isDestination = false;
     this._teleporterList = [];
+    this._hasPortal = hasPortal;
   }
 
   get isDestination(): boolean {
@@ -49,4 +54,18 @@ export class Tile {
   }
   
   
+  get hasPortal(): boolean {
+    return this._hasPortal;
+  }
+
+  set hasPortal(value: boolean) {
+    this._hasPortal = value;
+  }
+  get portal(): Portal {
+    return this._portal;
+  }
+
+  set portal(value: Portal) {
+    this._portal = value;
+  }
 }

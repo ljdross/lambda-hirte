@@ -1,4 +1,5 @@
 import {Tile, Type} from "./tile";
+import {Portal} from "./Teleport";
 export {Tile, Type}
 
 export class Board {
@@ -35,14 +36,23 @@ export class Board {
           this._tiles[x][y].ref = scene.add.image(x * 128 + 64 + this._frameWidth, y * 128 + 64 + this._frameWidth, 'grass');
           this._tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Grass];
           this._numberOfTilesByType[Type.Grass]++;
+          if(this._tiles[x][y].hasPortal == true){
+            this._tiles[x][y].portal = new Portal(scene,x * 128 + 64 + this._frameWidth,y * 128 + 64 + this._frameWidth,"portal","g->g").setVisible(false);
+          }
         } else if (this._tiles[x][y].type == Type.Sand) {
           this._tiles[x][y].ref = scene.add.image(x * 128 + 64 + this._frameWidth, y * 128 + 64 + this._frameWidth, 'sand');
           this._tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Sand];
           this._numberOfTilesByType[Type.Sand]++;
+          if(this._tiles[x][y].hasPortal == true){
+            this._tiles[x][y].portal = new Portal(scene,x * 128 + 64 + this._frameWidth,y * 128 + 64 + this._frameWidth,"portal","g->g").setVisible(false);
+          }
         } else if (this._tiles[x][y].type == Type.Stone) {
           this._tiles[x][y].ref = scene.add.image(x * 128 + 64 + this._frameWidth, y * 128 + 64 + this._frameWidth, 'stone');
           this._tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Stone];
           this._numberOfTilesByType[Type.Stone]++;
+          if(this._tiles[x][y].hasPortal == true){
+            this._tiles[x][y].portal = new Portal(scene,x * 128 + 64 + this._frameWidth,y * 128 + 64 + this._frameWidth,"portal","g->g").setVisible(false);
+          }
         }
       }   
     }
