@@ -1,5 +1,4 @@
 import {Tile, Type, Board} from "../objects/board"
-import{Portal} from "../objects/Teleport";
 import {SheepHorizontal, SheepVertical} from "../objects/sheep";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
