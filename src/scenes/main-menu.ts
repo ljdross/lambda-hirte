@@ -1,4 +1,4 @@
-import {initLevelButton, createButton, initSettings} from "../util/functions"
+import {initLevelButton, createButton, initSettings, updateLevelButton} from "../util/functions"
 import {Board} from "../objects/board";
 import {physicsSettings} from "../util/data";
 
@@ -78,7 +78,16 @@ export class MainMenu extends Phaser.Scene {
             track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
             indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
-            valuechangeCallback: value => camera.setAlpha(value * 2),
+            valuechangeCallback: value => {
+                camera.setAlpha(value * 2);
+                this.brightness = value;
+                const settingsDataNew = {
+                    showGrid: this.showGrid,
+                    musicVolume: this.musicVolume,
+                    brightness: this.brightness,
+                };
+                updateLevelButton(this, level1, settingsDataNew);
+            },
             input: 'drag', // 'drag'|'click'
             space: {
                 top: 4,
@@ -106,7 +115,7 @@ export class MainMenu extends Phaser.Scene {
                     musicVolume: this.musicVolume,
                     brightness: this.brightness,
                 };
-                initLevelButton(this, level1, width, height, settingsDataNew);
+                updateLevelButton(this, level1, settingsDataNew);
             },
             space: {
                 top: 4,

@@ -29,6 +29,24 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
     name.visible = false;
 });
 
+export const updateLevelButton = ((currentScene, name, settingsData): void => {
+    name.on('pointerdown', () => {
+        currentScene.scene.stop('MainMenu');
+        currentScene.scene.start('Gui', {
+            currentLevel: 'Level1',
+            winningScore: 20,
+            showGrid: settingsData.showGrid,
+            brightness: settingsData.brightness,
+            musicVolume: settingsData.musicVolume
+        });
+        currentScene.scene.start('Level1', {
+            showGrid: settingsData.showGrid,
+            brightness: settingsData.brightness,
+            musicVolume: settingsData.musicVolume
+        });
+    });
+});
+
 export function randomInt(min, max): number{
     return Math.floor(Math.random() * (max - min + 1)) + min;
  }
