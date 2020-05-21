@@ -1,8 +1,9 @@
 import "phaser";
 import {Board} from "./board";
 import {Tile,Type} from "./tile";
-import {Sheep} from "./sheep";
+import {Sheep, SheepHorizontal} from "./sheep";
 import List = Phaser.Structs.List;
+import Scene = Phaser.Scene;
 
 
 
@@ -13,6 +14,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     sizeOfTile: number;
     fromTile: Tile;
     toTile: Tile;
+    origin: boolean;
 
 
     constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , type: string) {
@@ -23,10 +25,12 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.setInteractive();
-        this.type = type
+        this.type = type;
+        this.origin = false;
     }
     public setGoal(tile: Tile): void{
         this.toTile= tile;
+        this.origin= true;
     }
 
 
@@ -66,7 +70,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
         const goal = this.whereToGo(this.fromTile , this.toTile);
 
-        this.reappear( goal);
+        //this.reappear( );
     }
 
     /*
@@ -76,7 +80,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
      */
     public vanish(scene: Phaser.Scene , sheep: Sheep): void{
         //TODO
-        if(this.visible == true){
+        if(this.visible == true && this.origin == true){
             sheep.destroy();
         }
     }
@@ -94,9 +98,21 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     *
     *need a sprites for the side effect .
      */
-    public reappear ( goal: any): void{
+    public reappear ( scene: Scene ,sheeps: Phaser.GameObjects.Group): void{
         //TODO
+        if(this.toTile != null && this.toTile.hasPortal == true && this.visible == true){
 
+            const s = new SheepHorizontal({scene: scene ,x: this.toTile.portal.x, y: this.toTile.portal.y+64});
+            s.setScale(0.5,0.5);
+            sheeps.add(s);
+            this.toTile.portal.setVisible(true);
+            this.toTile.portal.setDepth(1);
+            this.toTile.portal.play("Portal3");
+            this.toTile.portal.on("animationcomplete",()=> {
+                this.toTile.portal.setVisible(false);
+            });
+
+        }
     }
 
 }

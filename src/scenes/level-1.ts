@@ -34,6 +34,7 @@ export class Level1 extends Phaser.Scene {
   private _sheep: Phaser.GameObjects.Group; //List of all Sheep
   private _board: Board;
   private _portals: Phaser.GameObjects.Group;
+
   constructor() {
     super(sceneConfig);
   }
@@ -68,11 +69,14 @@ export class Level1 extends Phaser.Scene {
     this.board.draw(this);
 
     //portals grouped
+    this.board.tiles[3][3].portal.setGoal(this.board.tiles[8][3]);
     this.portals = this.physics.add.group();
     this.portals.addMultiple([this.board.tiles[1][3].portal, this.board.tiles[3][3].portal, this.board.tiles[8][3].portal]);
+    //
+
 
       //make the portal visible ..
-      this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+    this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
         const t =this.getTile(pointer.x,pointer.y);
         if(t.hasPortal == true){
           t.portal.setVisible(true);
@@ -98,6 +102,7 @@ export class Level1 extends Phaser.Scene {
     //the portal vanish the sheep , a sprite for side effect needed.
     this.physics.world.addCollider(this.portals ,this.sheep, (s: Sheep, p: Portal) => {
       p.vanish(this,s);
+      p.reappear(this , this.sheep);
 
     })
 
