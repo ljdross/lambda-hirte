@@ -17,19 +17,16 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
     constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , type: string) {
 
-
         super(scene, x, y,texture);
 
         this.scene.add.existing(this);
-        this.scene.physics.add.existing(this);
         this.setInteractive();
         this.type = type
     }
+
     public setGoal(tile: Tile): void{
         this.toTile= tile;
     }
-
-
 
     public createAnim(scene: Phaser.Scene) {
 

@@ -8,13 +8,13 @@ export function initButton(name): void {
     });
 }
 
-export const initLevelButton = ((currentscene, name, width, height) => {
+export const initLevelButton = ((currentscene, name, width, height, showGrid): void => {
     name.setDisplaySize(0.05   * width, 0.1 * height);
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentscene.scene.stop('MainMenu');
         currentscene.scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
-        currentscene.scene.start('Level1');
+        currentscene.scene.start('Level1', {showGrid: showGrid});
     });
     name.visible = false;
 });

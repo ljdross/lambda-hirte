@@ -30,7 +30,9 @@ export class Board {
     this.numberOfTilesByType[Type.Grass] = 0;
     this.numberOfTilesByType[Type.Sand] = 0;
     this.numberOfTilesByType[Type.Stone] = 0;
-    const physics = this.showGrid ? scene.physics : scene.matter;
+    alert(this.showGrid);
+    const physics = (this.showGrid) ? (scene.physics) : (scene.matter);
+
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         if (this.tiles[x][y].type == Type.Grass) {
@@ -38,7 +40,7 @@ export class Board {
           this.tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Grass];
           this.numberOfTilesByType[Type.Grass]++;
           if(this.tiles[x][y].hasPortal == true){
-            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64 ,y * 128 + 64,"portal","g->g").setVisible(false);
+            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64 ,y * 128 + 64,'portal','g->g').setVisible(false);
           }
         } else if (this.tiles[x][y].type == Type.Sand) {
           this.tiles[x][y].ref = physics.add.image(x * 128 + 64, y * 128 + 64, 'sand');
