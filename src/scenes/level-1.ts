@@ -1,6 +1,6 @@
 import {Tile, Type, Board} from "../objects/board"
 import{Portal} from "../objects/Teleport";
-import {SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -22,11 +22,18 @@ export class Level1 extends Phaser.Scene {
   get board(): Board {
     return this._board;
   }
+  get portals(): Phaser.GameObjects.Group {
+    return this._portals;
+  }
+
+  set portals(value: Phaser.GameObjects.Group) {
+    this._portals = value;
+  }
 
   private square: Phaser.GameObjects.Rectangle & { body: Phaser.Physics.Arcade.Body };
   private _sheep: Phaser.GameObjects.Group; //List of all Sheep
   private _board: Board;
-  
+  private _portals: Phaser.GameObjects.Group;
   constructor() {
     super(sceneConfig);
   }
@@ -45,6 +52,7 @@ export class Level1 extends Phaser.Scene {
     }
     return null
   }
+
   create(): void {
 
     this.board = new Board(16, 12, 0);
@@ -58,6 +66,10 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[8][3] = new Tile(Type.Sand,true);
     this.board.tiles[2][2].isDestination = true;
     this.board.draw(this);
+
+    //portals grouped
+    this.portals = this.physics.add.group();
+    this.portals.addMultiple([this.board.tiles[1][3].portal, this.board.tiles[3][3].portal, this.board.tiles[8][3].portal]);
 
       //make the portal visible ..
       this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
@@ -83,7 +95,11 @@ export class Level1 extends Phaser.Scene {
     this.sheep = this.add.group();
     this.sheep.addMultiple([s1, s2, s3]);
 
-    //
+    //the portal vanish the sheep , a sprite for side effect needed.
+    this.physics.world.addCollider(this.portals ,this.sheep, (s: Sheep, p: Portal) => {
+      p.vanish(this,s);
+
+    })
 
   }
 

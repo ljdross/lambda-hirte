@@ -74,9 +74,11 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     *
     * need a sprites for the side effect.
      */
-    public vanish(scene: Phaser.Scene , sheep: Sheep): any{
+    public vanish(scene: Phaser.Scene , sheep: Sheep): void{
         //TODO
-
+        if(this.visible == true){
+            sheep.destroy();
+        }
     }
 
     /*
