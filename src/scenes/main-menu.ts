@@ -1,4 +1,4 @@
-import {initLevelButton, createButton} from "../util/functions"
+import {initLevelButton, createButton, initSettings} from "../util/functions"
 import {Board} from "../objects/board";
 import {physicsSettings} from "../util/data";
 
@@ -16,13 +16,15 @@ export class MainMenu extends Phaser.Scene {
     private rexUI: any;
     private song: Phaser.Sound.BaseSound;
     public showGrid: boolean;
+    public musicVolume: number;
+    public brightness: number;
 
     constructor() {
         super(sceneConfig);
     }
 
-      init(): void {
-        if (this.showGrid === undefined) this.showGrid = true;
+      init(data): void {
+        initSettings(this, data);
       }
 
     preload(): void {
@@ -45,12 +47,12 @@ export class MainMenu extends Phaser.Scene {
     create(): void {
         const width = this.sys.game.canvas.width;
         const height = this.sys.game.canvas.height;
-        const board = new Board(16, 12, false);
+        const board = new Board(16, 12, this.showGrid);
         board.draw(this);
 
         this.song = this.sound.add('mainsong');
         const musicConfig = {
-            volume: 1,
+            volume: this.musicVolume,
             loop: true,
         }
         this.song.play(musicConfig);
@@ -59,7 +61,7 @@ export class MainMenu extends Phaser.Scene {
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
             y: height / 2,
-            value: 0.5,
+            value: this.brightness,
             width: 200,
             height: 20,
             orientation: 'x',
@@ -78,7 +80,7 @@ export class MainMenu extends Phaser.Scene {
         const volumeSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
             y: height / 2 - 100,
-            value: 0.5,
+            value: this.musicVolume,
             width: 200,
             height: 20,
             orientation: 'x',

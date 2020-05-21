@@ -8,13 +8,13 @@ export function initButton(name): void {
     });
 }
 
-export const initLevelButton = ((currentscene, name, width, height, showGrid): void => {
+export const initLevelButton = ((currentScene, name, width, height, showGrid): void => {
     name.setDisplaySize(0.05   * width, 0.1 * height);
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
-        currentscene.scene.stop('MainMenu');
-        currentscene.scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
-        currentscene.scene.start('Level1', {showGrid: showGrid});
+        currentScene.scene.stop('MainMenu');
+        currentScene.scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
+        currentScene.scene.start('Level1', {showGrid: showGrid});
     });
     name.visible = false;
 });
@@ -56,3 +56,15 @@ export function randomInt(min, max): number{
 
     return button;
 }
+
+export const initSettings = (currentScene, data): void => {
+    if (data.volume === undefined) {
+        currentScene.musicVolume = 0.5;
+        currentScene.brightness = 0.5;
+        currentScene.showGrid = false;
+    } else {
+        currentScene.musicVolume = data.volume;
+        currentScene.brightness = data.brightness;
+        currentScene.showGrid = data.showGrid;
+    }
+};
