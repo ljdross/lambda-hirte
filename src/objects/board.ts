@@ -6,15 +6,13 @@ export class Board {
 
   private width: number;
   private height: number;
-  private frameWidth: number;
   public tiles: Tile[][];
   public numberOfTilesByType: number[];
   public showGrid: boolean;
 
-  constructor(widthInNmbrOfTiles: number, heightInNmbrOfTiles: number, frameWidthInPixels: number) {
+  constructor(widthInNmbrOfTiles: number, heightInNmbrOfTiles: number) {
     this.width = widthInNmbrOfTiles;
     this.height = heightInNmbrOfTiles;
-    this.frameWidth = frameWidthInPixels;
     this.numberOfTilesByType = [];
 
     this.tiles = [];
@@ -34,25 +32,25 @@ export class Board {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         if (this.tiles[x][y].type == Type.Grass) {
-          this.tiles[x][y].ref = scene.physics.add.image(x * 128 + 64 + this.frameWidth, y * 128 + 64 + this.frameWidth, 'grass');
+          this.tiles[x][y].ref = scene.physics.add.image(x * 128 + 64, y * 128 + 64, 'grass');
           this.tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Grass];
           this.numberOfTilesByType[Type.Grass]++;
           if(this.tiles[x][y].hasPortal == true){
-            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64 + this.frameWidth,y * 128 + 64 + this.frameWidth,"portal","g->g").setVisible(false);
+            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64 ,y * 128 + 64,"portal","g->g").setVisible(false);
           }
         } else if (this.tiles[x][y].type == Type.Sand) {
-          this.tiles[x][y].ref = scene.physics.add.image(x * 128 + 64 + this.frameWidth, y * 128 + 64 + this.frameWidth, 'sand');
+          this.tiles[x][y].ref = scene.physics.add.image(x * 128 + 64, y * 128 + 64, 'sand');
           this.tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Sand];
           this.numberOfTilesByType[Type.Sand]++;
           if(this.tiles[x][y].hasPortal == true){
-            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64 + this.frameWidth,y * 128 + 64 + this.frameWidth,"portal","g->g").setVisible(false);
+            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64,y * 128 + 64,"portal","g->g").setVisible(false);
           }
         } else if (this.tiles[x][y].type == Type.Stone) {
-          this.tiles[x][y].ref = scene.physics.add.image(x * 128 + 64 + this.frameWidth, y * 128 + 64 + this.frameWidth, 'stone');
+          this.tiles[x][y].ref = scene.physics.add.image(x * 128 + 64, y * 128 + 64, 'stone');
           this.tiles[x][y].tileNumber = this.numberOfTilesByType[Type.Stone];
           this.numberOfTilesByType[Type.Stone]++;
           if(this.tiles[x][y].hasPortal == true){
-            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64 + this.frameWidth,y * 128 + 64 + this.frameWidth,"portal","g->g").setVisible(false);
+            this.tiles[x][y].portal = new Portal(scene,x * 128 + 64,y * 128 + 64  ,"portal","g->g").setVisible(false);
           }
         }
       }   
