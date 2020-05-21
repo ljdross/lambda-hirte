@@ -1,6 +1,7 @@
 import {Tile, Type, Board} from "../objects/board"
 import {SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
+import {initSettings} from "../util/functions";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -14,7 +15,9 @@ export class Level1 extends Phaser.Scene {
   public sheep: Phaser.GameObjects.Group; //List of all Sheep
   public board: Board;
   public showGrid: boolean;
-  
+  public musicVolume: number;
+  public brightness: number;
+
   constructor() {
     super(sceneConfig);
   }
@@ -22,7 +25,7 @@ export class Level1 extends Phaser.Scene {
   init(data): void {
       this.data.set('playerScore', 0);
       this.data.set('playerWinningScore', 10);
-      this.showGrid = data.showGrid;
+      initSettings(this, data);
   }
 
   // give back the tile with the coordinate(x,y)
