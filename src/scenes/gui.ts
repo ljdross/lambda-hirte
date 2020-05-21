@@ -1,6 +1,11 @@
+import {initSettings} from "../util/functions";
+
 export class GuiScene extends Phaser.Scene {
-    private currentLevel: string;
-    private winningScore: number;
+    public currentLevel: string;
+    public winningScore: number;
+    public showGrid: boolean;
+    public musicVolume: number;
+    public brightness: number;
 
     constructor() {
         super({
@@ -12,6 +17,7 @@ export class GuiScene extends Phaser.Scene {
     init(data): void {
         this.currentLevel = data.currentLevel;
         this.winningScore = data.winningScore;
+        initSettings(this, data);
     }
 
     create(): void {
@@ -54,7 +60,11 @@ export class GuiScene extends Phaser.Scene {
             this.sound.stopAll();
             this.scene.stop(this.currentLevel);
             this.scene.stop('GuiScene');
-            this.scene.start('MainMenu');
+            this.scene.start('MainMenu', {
+                showGrid: this.showGrid,
+                brightness: this.brightness,
+                musicVolume: this.musicVolume
+            });
         });
 
         menu.setDisplaySize(50, 50);

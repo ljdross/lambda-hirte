@@ -8,13 +8,23 @@ export function initButton(name): void {
     });
 }
 
-export const initLevelButton = ((currentScene, name, width, height, showGrid): void => {
+export const initLevelButton = ((currentScene, name, width, height, settingsData): void => {
     name.setDisplaySize(0.05   * width, 0.1 * height);
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
-        currentScene.scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
-        currentScene.scene.start('Level1', {showGrid: showGrid});
+        currentScene.scene.start('Gui', {
+            currentLevel: 'Level1',
+            winningScore: 20,
+            showGrid: settingsData.showGrid,
+            brightness: settingsData.brightness,
+            musicVolume: settingsData.musicVolume
+        });
+        currentScene.scene.start('Level1', {
+            showGrid: settingsData.showGrid,
+            brightness: settingsData.brightness,
+            musicVolume: settingsData.musicVolume
+        });
     });
     name.visible = false;
 });
@@ -58,12 +68,12 @@ export function randomInt(min, max): number{
 }
 
 export const initSettings = (currentScene, data): void => {
-    if (data.volume === undefined) {
+    if (data.musicVolume === undefined) {
         currentScene.musicVolume = 0.5;
         currentScene.brightness = 0.5;
         currentScene.showGrid = false;
     } else {
-        currentScene.musicVolume = data.volume;
+        currentScene.musicVolume = data.musicVolume;
         currentScene.brightness = data.brightness;
         currentScene.showGrid = data.showGrid;
     }

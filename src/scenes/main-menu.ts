@@ -11,6 +11,7 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 
 const COLOR_LIGHT = 0xAEFFFD;
 const COLOR_DARK = 0xFFFFFF;
+const COLOR_DARK_BLUE = 0x00008B;
 
 export class MainMenu extends Phaser.Scene {
     private rexUI: any;
@@ -57,6 +58,15 @@ export class MainMenu extends Phaser.Scene {
         }
         this.song.play(musicConfig);
 
+        const settingsData = {
+            showGrid: this.showGrid,
+            musicVolume: this.musicVolume,
+            brightness: this.brightness,
+        }
+
+        const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
+        initLevelButton(this, level1, width, height, settingsData);
+
         const camera = this.cameras.main;
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
@@ -88,7 +98,16 @@ export class MainMenu extends Phaser.Scene {
             indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             input: 'drag', // 'drag'|'click'
-            valuechangeCallback: value => this.sound.volume = value,
+            valuechangeCallback: value => {
+                this.sound.volume = value;
+                this.musicVolume = value;
+                const settingsDataNew = {
+                    showGrid: this.showGrid,
+                    musicVolume: this.musicVolume,
+                    brightness: this.brightness,
+                };
+                initLevelButton(this, level1, width, height, settingsDataNew);
+            },
             space: {
                 top: 4,
                 bottom: 4
@@ -100,15 +119,17 @@ export class MainMenu extends Phaser.Scene {
         const gridCheckbox = this.rexUI.add.buttons({
             x: width / 2 + 50,
             y: height / 2 + 100,
+            value: this.showGrid,
             orientation: 'y',
-            background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_LIGHT),
+            background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_DARK_BLUE),
             buttons: [
-                createButton(this, 'Grid aktivieren', 'Grid')
+                createButton(this, 'Grid on', 'Grid')
             ],
             type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
-            setValueCallback: function (button, value) {
+            setValueCallback: (button, value) => {
                 button.getElement('icon')
                     .setFillStyle((value)? COLOR_LIGHT : undefined);
+                this.showGrid = value;
             }
         }).layout();
         gridCheckbox.visible = false;
@@ -127,9 +148,6 @@ export class MainMenu extends Phaser.Scene {
         const grid = this.add.image(width / 2 - 100, height / 2 + 100, 'grid');
         grid.setDisplaySize(0.05   * width, 0.1 * height);
         grid.visible = false;
-
-        const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
-        initLevelButton(this, level1, width, height, this.showGrid)
 
         const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
         initLevelButton(this, level2, width, height, this.showGrid)
