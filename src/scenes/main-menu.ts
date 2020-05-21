@@ -39,7 +39,7 @@ export class MainMenu extends Phaser.Scene {
     create(): void {
         const width = this.sys.game.canvas.width;
         const height = this.sys.game.canvas.height;
-        const board = new Board(16, 12);
+        const board = new Board(16, 12, false);
         board.draw(this);
 
         this.song = this.sound.add('mainsong');
