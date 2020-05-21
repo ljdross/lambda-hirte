@@ -1,10 +1,12 @@
-import {initLevelButton} from "../util/functions"
+import {initLevelButton, createButton} from "../util/functions"
 import {Board} from "../objects/board";
+import {physicsSettings} from "../util/data";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
-  active: true,
-  visible: true,
-  key: 'MainMenu',
+    active: true,
+    visible: true,
+    key: 'MainMenu',
+    physics: physicsSettings
 };
 
 const COLOR_LIGHT = 0xAEFFFD;
@@ -13,9 +15,15 @@ const COLOR_DARK = 0xFFFFFF;
 export class MainMenu extends Phaser.Scene {
     private rexUI: any;
     private song: Phaser.Sound.BaseSound;
+    public showGrid: boolean;
+
     constructor() {
         super(sceneConfig);
     }
+
+      init(): void {
+        if (this.showGrid === undefined) this.showGrid = true;
+      }
 
     preload(): void {
         this.load.spritesheet('portal','assets/sprites/teleporter_portal.png',{frameHeight:128 ,frameWidth: 128});
@@ -37,7 +45,7 @@ export class MainMenu extends Phaser.Scene {
     create(): void {
         const width = this.sys.game.canvas.width;
         const height = this.sys.game.canvas.height;
-        const board = new Board(16, 12, 0);
+        const board = new Board(16, 12, false);
         board.draw(this);
 
         this.song = this.sound.add('mainsong');
@@ -86,6 +94,23 @@ export class MainMenu extends Phaser.Scene {
         }).layout();
         volumeSlider.visible = false;
 
+        const CheckboxesMode = true;  // False = radio mode
+        const gridCheckbox = this.rexUI.add.buttons({
+            x: width / 2 + 50,
+            y: height / 2 + 100,
+            orientation: 'y',
+            background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_LIGHT),
+            buttons: [
+                createButton(this, 'Grid aktivieren', 'Grid')
+            ],
+            type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
+            setValueCallback: function (button, value) {
+                button.getElement('icon')
+                    .setFillStyle((value)? COLOR_LIGHT : undefined);
+            }
+        }).layout();
+        gridCheckbox.visible = false;
+
         const play = this.add.image(width / 2, height / 2 - 75, 'levels');
         const settings = this.add.image(width / 2, height / 2, 'settings');
 
@@ -97,32 +122,36 @@ export class MainMenu extends Phaser.Scene {
         brightness.setDisplaySize(0.05   * width, 0.1 * height);
         brightness.visible = false;
 
+        const grid = this.add.image(width / 2 - 100, height / 2 + 100, 'grid');
+        grid.setDisplaySize(0.05   * width, 0.1 * height);
+        grid.visible = false;
+
         const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
-        initLevelButton(this, level1, width, height)
+        initLevelButton(this, level1, width, height, this.showGrid)
 
         const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
-        initLevelButton(this, level2, width, height)
+        initLevelButton(this, level2, width, height, this.showGrid)
 
         const level3 = this.add.image(width / 2 + 100, height / 2 - 100, 'three');
-        initLevelButton(this, level3, width, height)
+        initLevelButton(this, level3, width, height, this.showGrid)
 
         const level4 = this.add.image(width / 2 - 100 , height / 2, 'four');
-        initLevelButton(this, level4, width, height)
+        initLevelButton(this, level4, width, height, this.showGrid)
 
         const level5 = this.add.image(width / 2, height / 2, 'five');
-        initLevelButton(this, level5, width, height)
+        initLevelButton(this, level5, width, height, this.showGrid)
 
         const level6 = this.add.image(width / 2 + 100, height / 2, 'six');
-        initLevelButton(this, level6, width, height)
+        initLevelButton(this, level6, width, height, this.showGrid)
 
         const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
-        initLevelButton(this, level7, width, height)
+        initLevelButton(this, level7, width, height, this.showGrid)
 
         const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
-        initLevelButton(this, level8, width, height)
+        initLevelButton(this, level8, width, height, this.showGrid)
 
         const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
-        initLevelButton(this,level9, width, height)
+        initLevelButton(this,level9, width, height, this.showGrid)
 
         const back = this.add.image(width / 2 + 200, height / 2 - 100, 'back');
         back.setDisplaySize(0.05   * width, 0.1 * height);
@@ -145,6 +174,8 @@ export class MainMenu extends Phaser.Scene {
             volume.visible = false;
             brightnessSlider.visible = false;
             volumeSlider.visible = false;
+            grid.visible = false;
+            gridCheckbox.visible = false;
         });
 
         settings.setDisplaySize(0.1 * width, 0.1 * height);
@@ -157,6 +188,8 @@ export class MainMenu extends Phaser.Scene {
             volume.visible = true;
             brightnessSlider.visible = true;
             volumeSlider.visible = true;
+            grid.visible = true;
+            gridCheckbox.visible = true;
         });
 
         play.setDisplaySize(0.1 * width, 0.1 * height);

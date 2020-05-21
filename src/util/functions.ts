@@ -8,13 +8,13 @@ export function initButton(name): void {
     });
 }
 
-export const initLevelButton = ((currentscene, name, width, height) => {
+export const initLevelButton = ((currentscene, name, width, height, showGrid): void => {
     name.setDisplaySize(0.05   * width, 0.1 * height);
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentscene.scene.stop('MainMenu');
         currentscene.scene.start('Gui', {currentLevel: 'Level1', winningScore: 20});
-        currentscene.scene.start('Level1');
+        currentscene.scene.start('Level1', {showGrid: showGrid});
     });
     name.visible = false;
 });
@@ -33,3 +33,26 @@ export function randomInt(min, max): number{
         counter = counter + 1;
     }
  }
+
+ export function createButton(scene, text, name): any {
+    const COLOR_DARK = 0xFFFFFF;
+    if (name === undefined) {
+        name = text;
+    }
+    const button = scene.rexUI.add.label({
+        width: 100,
+        height: 40,
+        text: scene.add.text(0, 0, text, {
+            fontSize: 18
+        }),
+        icon: scene.add.circle(0, 0, 10).setStrokeStyle(1, COLOR_DARK),
+        space: {
+            left: 10,
+            right: 10,
+            icon: 10
+        },
+        name: name
+    });
+
+    return button;
+}
