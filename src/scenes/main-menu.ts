@@ -1,10 +1,12 @@
 import {initLevelButton} from "../util/functions"
 import {Board} from "../objects/board";
+import {physicsSettings} from "../util/data";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
-  active: true,
-  visible: true,
-  key: 'MainMenu',
+    active: true,
+    visible: true,
+    key: 'MainMenu',
+    physics: physicsSettings
 };
 
 const COLOR_LIGHT = 0xAEFFFD;

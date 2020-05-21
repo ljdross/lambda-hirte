@@ -1,10 +1,12 @@
 import {Tile, Type, Board} from "../objects/board"
 import {SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {physicsSettings} from "../util/data";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
   visible: false,
   key: 'Level1',
+  physics: physicsSettings
 };
 
 export class Level1 extends Phaser.Scene {
