@@ -1,4 +1,4 @@
-import {initLevelButton} from "../util/functions"
+import {initLevelButton, createButton} from "../util/functions"
 import {Board} from "../objects/board";
 import {physicsSettings} from "../util/data";
 
@@ -22,7 +22,7 @@ export class MainMenu extends Phaser.Scene {
     }
 
       init(): void {
-        if (this.showGrid == null) this.showGrid = true;
+        if (this.showGrid === undefined) this.showGrid = true;
       }
 
     preload(): void {
@@ -94,6 +94,23 @@ export class MainMenu extends Phaser.Scene {
         }).layout();
         volumeSlider.visible = false;
 
+        const CheckboxesMode = true;  // False = radio mode
+        const gridCheckbox = this.rexUI.add.buttons({
+            x: width / 2 + 50,
+            y: height / 2 + 100,
+            orientation: 'y',
+            background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_LIGHT),
+            buttons: [
+                createButton(this, 'Grid aktivieren', 'Grid')
+            ],
+            type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
+            setValueCallback: function (button, value) {
+                button.getElement('icon')
+                    .setFillStyle((value)? COLOR_LIGHT : undefined);
+            }
+        }).layout();
+        gridCheckbox.visible = false;
+
         const play = this.add.image(width / 2, height / 2 - 75, 'levels');
         const settings = this.add.image(width / 2, height / 2, 'settings');
 
@@ -158,6 +175,7 @@ export class MainMenu extends Phaser.Scene {
             brightnessSlider.visible = false;
             volumeSlider.visible = false;
             grid.visible = false;
+            gridCheckbox.visible = false;
         });
 
         settings.setDisplaySize(0.1 * width, 0.1 * height);
@@ -171,6 +189,7 @@ export class MainMenu extends Phaser.Scene {
             brightnessSlider.visible = true;
             volumeSlider.visible = true;
             grid.visible = true;
+            gridCheckbox.visible = true;
         });
 
         play.setDisplaySize(0.1 * width, 0.1 * height);
@@ -188,12 +207,6 @@ export class MainMenu extends Phaser.Scene {
             level7.visible = true;
             level8.visible = true;
             level9.visible = true;
-        });
-
-        grid.setInteractive(({ useHandCursor: true }));
-        grid.on('pointerdown', () => {
-            this.showGrid = !this.showGrid;
-            alert(this.showGrid);
         });
     }
 }
