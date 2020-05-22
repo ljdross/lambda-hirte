@@ -118,7 +118,11 @@ export class SheepHorizontal extends Sheep {
     }
 
     atBorder(): void {
-        if((this.speed < 0 && this.x <= 0) || (this.speed > 0 && this.x >= this.scene.sys.game.canvas.width)) {
+        if((this.speed < 0 && this.x <= 0) ) {
+            this.obstacle();
+            this.setOffset(0,0);
+        }
+        if((this.speed > 0 && this.x >= this.scene.sys.game.canvas.width)){
             this.obstacle();
             this.setOffset(100,0);
         }
