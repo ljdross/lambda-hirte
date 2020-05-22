@@ -14,7 +14,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     sizeOfTile: number;
     fromTile: Tile;
     toTile: Tile;
-    origin: boolean;
+    chosen: boolean;
 
 
     constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , type: string) {
@@ -24,12 +24,12 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);
         this.setInteractive();
         this.type = type;
-        this.origin = false;
+        this.chosen= false;
     }
 
     public setGoal(tile: Tile): void{
         this.toTile= tile;
-        this.origin= true;
+
     }
 
     public createAnim(scene: Phaser.Scene) {
@@ -57,29 +57,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
             yoyo: true,
 
         })
-
-
-    }
-
-    public executeTeleport(): void {
-
-        //const pos = this.vanish(this.fromTile);
-
-        const goal = this.whereToGo(this.fromTile , this.toTile);
-
-        //this.reappear( );
-    }
-
-    /*
-    * vanish the sheep from the tile.
-    *
-    * need a sprites for the side effect.
-     */
-    public vanish(scene: Phaser.Scene , sheep: Sheep): void{
-        //TODO
-        if(this.visible == true && this.origin == true){
-            sheep.destroy();
-        }
     }
 
     /*
@@ -91,23 +68,28 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     public whereToGo(tileID: any, tileID1: any): any{
         //TODO
     }
-    /*take the goal calculation and recreate the sheep in the goal position.
-    *
+
+    /*perform the teleport from this portal to the "toTile" portal.
+    *conditions:
+    * must be bind with another portal.
+    * must be Active (visible).
+    *must be chosen .
+    * //
     *need a sprites for the side effect .
      */
-    public reappear ( scene: Scene ,sheeps: Phaser.GameObjects.Group): void{
+    public executeTeleport ( scene: Scene ,s: Sheep): void{
         //TODO
-        if(this.toTile != null && this.toTile.hasPortal == true && this.visible == true){
+        if(this.toTile != null && this.toTile.hasPortal == true && this.visible == true && this.chosen == true){
 
-            const s = new SheepHorizontal({scene: scene ,x: this.toTile.portal.x, y: this.toTile.portal.y+64});
-            s.setScale(0.5,0.5);
-            sheeps.add(s);
+            s.x= this.toTile.portal.x;
+            s.y= this.toTile.portal.y;
             this.toTile.portal.setVisible(true);
             this.toTile.portal.setDepth(1);
             this.toTile.portal.play("Portal3");
             this.toTile.portal.on("animationcomplete",()=> {
                 this.toTile.portal.setVisible(false);
             });
+            this.chosen= false;
 
         }
     }

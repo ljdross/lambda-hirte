@@ -57,8 +57,11 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[2][2].isDestination = true;
     this.board.draw(this);
 
-    //portals grouped
+    //bind to portals.
     this.board.tiles[3][3].portal.setGoal(this.board.tiles[8][3]);
+    this.board.tiles[8][3].portal.setGoal(this.board.tiles[1][3]);
+    this.board.tiles[1][3].portal.setGoal(this.board.tiles[3][3]);
+    //portals grouped
     this.portals = this.physics.add.group();
     this.portals.addMultiple([this.board.tiles[1][3].portal, this.board.tiles[3][3].portal, this.board.tiles[8][3].portal]);
     //
@@ -72,6 +75,7 @@ export class Level1 extends Phaser.Scene {
           title.portal.setVisible(true);
           title.portal.createAnim(this);
           title.portal.play("Portal2");
+          title.portal.chosen = true;
           title.portal.on("animationcomplete",()=>{
             title.portal.setVisible(false);
 
@@ -88,10 +92,9 @@ export class Level1 extends Phaser.Scene {
     this.sheep.addMultiple([s1, s2, s3]);
 
 
-    //the portal vanish the sheep , a sprite for side effect needed.
-    this.physics.world.addCollider(this.portals ,this.sheep, (s: Sheep, p: Portal) => {
-      p.vanish(this,s);
-      p.reappear(this , this.sheep);
+    //.
+    this.physics.world.addCollider(this.portals ,this.sheep, (sheep: Sheep, portal: Portal) => {
+      portal.executeTeleport (this , sheep);
 
     })
 
