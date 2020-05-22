@@ -11,7 +11,6 @@
         "key": "sheep_horizontal",
         "url": "assets/sprites/sheep_horizontal.png"
       },
-
       {
         "type": "image",
         "key": "grass",
@@ -106,6 +105,21 @@
         "type": "image",
         "key": "back",
         "url": "assets/menu/back.png"
+      },
+      {
+        "type": "image",
+        "key": "volume",
+        "url": "assets/menu/volume.png"
+      },
+      {
+        "type": "image",
+        "key": "brightness",
+        "url": "assets/menu/brightness.png"
+      },
+      {
+        "type": "image",
+        "key": "grid",
+        "url": "assets/menu/grid.png"
       }
     ]
   }

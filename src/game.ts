@@ -2,7 +2,6 @@ import 'phaser';
 import {MainMenu} from "./scenes/main-menu";
 import {Level1} from "./scenes/level-1";
 import {GuiScene} from "./scenes/gui";
-import {Sheep} from "./objects/sheep";
 
 const config = {
     type: Phaser.AUTO,
@@ -16,9 +15,9 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 200 }
+            gravity: { y: 0}
         }
-    }
+    },
 };
 
 const game = new Phaser.Game(config);
