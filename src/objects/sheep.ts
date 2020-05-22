@@ -6,13 +6,18 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected sandSpeed: number;
     protected goal: boolean;
 
-    protected constructor(protected config, sprite) {
+    protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
         config.scene.add.existing(this);
+<<<<<<< HEAD
         this.scene.physics.add.existing(this);
         this.speed = Phaser.Math.Between(40 , 100) / 100;
+=======
+        if (speed) this.speed = speed;
+        else this.speed = Phaser.Math.Between(40 , 100) / 100;
+>>>>>>> b62a59d151dbea73cbefdccb2815e7fdfc698508
         this.goal = false;
-        this.sandSpeed = this.speed - 0.25;
+        this.sandSpeed = this.speed - (this.speed / 3);
     }
 
     //needs to be called in scene for each sheep
@@ -31,7 +36,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     abstract obstacle(): void;
 
     public onGoal(): void {
-        if(this.getTile() != null) {
+        if(this.getTile()) {
             if(this.getTile().isDestination) {
                 this.goal = true;
                 this.anims.pause();
@@ -45,7 +50,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     public getTile(): Tile {
         const board = this.config.scene.board;
         const column = Math.floor(this.x / 128);
-        if(board.tiles[column] != null) {
+        if(board.tiles[column]) {
             const row = Math.floor(this.y / 128);
             return board.tiles[column][row];
         }
@@ -53,7 +58,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected onSand(): boolean {
-        return this.getTile() != null && this.getTile().type == Type.Sand;
+        return this.getTile() && this.getTile().type == Type.Sand;
     }
 
     protected walk(): void {
@@ -66,8 +71,8 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 }
 
 export class SheepVertical extends Sheep {
-    constructor(config) {
-        super(config, 'sheep_v');
+    constructor(config, speed?: number) {
+        super(config, 'sheep_v', speed);
         this.scene.anims.create({
             key: 'walk_down',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 7}),
@@ -102,8 +107,8 @@ export class SheepVertical extends Sheep {
 }
 
 export class SheepHorizontal extends Sheep {
-    constructor(config) {
-        super(config, 'sheep_h');
+    constructor(config, speed?: number) {
+        super(config, 'sheep_h', speed);
         this.scene.anims.create({
             key: 'walk_horizontal',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
