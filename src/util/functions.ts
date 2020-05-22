@@ -62,29 +62,6 @@ export function randomInt(min, max): number{
     }
  }
 
- export function createButton(scene, text, name): any {
-    const COLOR_DARK = 0xFFFFFF;
-    if (name === undefined) {
-        name = text;
-    }
-    const button = scene.rexUI.add.label({
-        width: 100,
-        height: 40,
-        text: scene.add.text(0, 0, text, {
-            fontSize: 18
-        }),
-        icon: scene.add.circle(0, 0, 10).setStrokeStyle(1, COLOR_DARK),
-        space: {
-            left: 10,
-            right: 10,
-            icon: 10
-        },
-        name: name
-    });
-
-    return button;
-}
-
 export const initSettings = (currentScene, data): void => {
     if (data.musicVolume === undefined) {
         currentScene.musicVolume = 0.5;
@@ -95,4 +72,35 @@ export const initSettings = (currentScene, data): void => {
         currentScene.brightness = data.brightness;
         currentScene.showGrid = data.showGrid;
     }
+    currentScene.cameras.main.setAlpha(currentScene.brightness * 2);
 };
+
+export const initOptionsButton = ((currentScene, width, height): any => {
+    const settings = currentScene.add.image(width / 2, height / 2 + 75, 'settings');
+    const volume = currentScene.add.image(width / 2 - 100, height / 2 - 100, 'volume');
+    const brightness = currentScene.add.image(width / 2 - 100, height / 2, 'brightness');
+    const grid = currentScene.add.image(width / 2 - 100, height / 2 + 100, 'grid');
+    const back = currentScene.add.image(width / 2 + 200, height / 2 - 100, 'back');
+
+    volume.setDisplaySize(0.05   * width, 0.1 * height);
+    volume.visible = false;
+    brightness.setDisplaySize(0.05   * width, 0.1 * height);
+    brightness.visible = false;
+    grid.setDisplaySize(0.05   * width, 0.1 * height);
+    grid.visible = false;
+    back.setDisplaySize(0.05   * width, 0.1 * height);
+    back.setInteractive(({ useHandCursor: true }));
+    back.visible = false;
+    settings.setDisplaySize(0.1 * width, 0.1 * height);
+    settings.setInteractive(({ useHandCursor: true }));
+    settings.visible = false;
+
+    const settingsData = {
+        settings: settings,
+        volume: volume,
+        brightness: brightness,
+        grid: grid,
+        backButton: back
+    }
+    return settingsData;
+});
