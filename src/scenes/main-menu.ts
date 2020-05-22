@@ -65,9 +65,25 @@ export class MainMenu extends Phaser.Scene {
         }
 
         const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
+        const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
+        const level3 = this.add.image(width / 2 + 100, height / 2 - 100, 'three');
+        const level4 = this.add.image(width / 2 - 100 , height / 2, 'four');
+        const level5 = this.add.image(width / 2, height / 2, 'five');
+        const level6 = this.add.image(width / 2 + 100, height / 2, 'six');
+        const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
+        const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
+        const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
+        // TODO rework buttons Init to pass all levels at once
         initLevelButton(this, level1, width, height, settingsData);
+        initLevelButton(this, level2, width, height, settingsData)
+        initLevelButton(this, level3, width, height, settingsData)
+        initLevelButton(this, level4, width, height, settingsData)
+        initLevelButton(this, level5, width, height, settingsData)
+        initLevelButton(this, level6, width, height, settingsData)
+        initLevelButton(this, level7, width, height, settingsData)
+        initLevelButton(this, level8, width, height, settingsData)
+        initLevelButton(this,level9, width, height, settingsData)
 
-        const camera = this.cameras.main;
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
             y: height / 2,
@@ -79,7 +95,7 @@ export class MainMenu extends Phaser.Scene {
             indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
             valuechangeCallback: value => {
-                camera.setAlpha(value * 2);
+                this.cameras.main.setAlpha(value * 2);
                 this.brightness = value;
                 const settingsDataNew = {
                     showGrid: this.showGrid,
@@ -145,44 +161,17 @@ export class MainMenu extends Phaser.Scene {
 
         const play = this.add.image(width / 2, height / 2 - 75, 'levels');
         const settings = this.add.image(width / 2, height / 2, 'settings');
-
         const volume = this.add.image(width / 2 - 100, height / 2 - 100, 'volume');
+        const brightness = this.add.image(width / 2 - 100, height / 2, 'brightness');
+        const grid = this.add.image(width / 2 - 100, height / 2 + 100, 'grid');
+        const back = this.add.image(width / 2 + 200, height / 2 - 100, 'back');
+
         volume.setDisplaySize(0.05   * width, 0.1 * height);
         volume.visible = false;
-
-        const brightness = this.add.image(width / 2 - 100, height / 2, 'brightness');
         brightness.setDisplaySize(0.05   * width, 0.1 * height);
         brightness.visible = false;
-
-        const grid = this.add.image(width / 2 - 100, height / 2 + 100, 'grid');
         grid.setDisplaySize(0.05   * width, 0.1 * height);
         grid.visible = false;
-
-        const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
-        initLevelButton(this, level2, width, height, this.showGrid)
-
-        const level3 = this.add.image(width / 2 + 100, height / 2 - 100, 'three');
-        initLevelButton(this, level3, width, height, this.showGrid)
-
-        const level4 = this.add.image(width / 2 - 100 , height / 2, 'four');
-        initLevelButton(this, level4, width, height, this.showGrid)
-
-        const level5 = this.add.image(width / 2, height / 2, 'five');
-        initLevelButton(this, level5, width, height, this.showGrid)
-
-        const level6 = this.add.image(width / 2 + 100, height / 2, 'six');
-        initLevelButton(this, level6, width, height, this.showGrid)
-
-        const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
-        initLevelButton(this, level7, width, height, this.showGrid)
-
-        const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
-        initLevelButton(this, level8, width, height, this.showGrid)
-
-        const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
-        initLevelButton(this,level9, width, height, this.showGrid)
-
-        const back = this.add.image(width / 2 + 200, height / 2 - 100, 'back');
         back.setDisplaySize(0.05   * width, 0.1 * height);
         back.setInteractive(({ useHandCursor: true }));
         back.visible = false;

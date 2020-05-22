@@ -30,6 +30,7 @@ export class Board {
     this.numberOfTilesByType[Type.Grass] = 0;
     this.numberOfTilesByType[Type.Sand] = 0;
     this.numberOfTilesByType[Type.Stone] = 0;
+    // Dependent on Settings, physics with debug (Grid on) or without is activated
     const physics = (this.showGrid) ? (scene.physics) : (scene.matter);
 
     for (let x = 0; x < this.width; x++) {
