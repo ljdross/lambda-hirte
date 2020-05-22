@@ -1,4 +1,5 @@
 import {Portal} from "./Teleport";
+import 'phaser';
 
 export enum Type {
   Grass,
@@ -8,7 +9,8 @@ export enum Type {
 
 export class Tile {
   private _type: Type;
-  private _ref: object;
+  public image: object; // should be type Phaser.Physics.Arcade.Image maybe?
+  public text: object; //maybe also not object but a different type
   private _tileNumber: number;
   private _isDestination: boolean;
   private _teleporterList: object; //should actually be private _teleporterList: Teleporter[];
@@ -30,9 +32,6 @@ export class Tile {
     this._isDestination = value;
   }
 
-  set ref(value: object) {
-    this._ref = value;
-  }
   get type(): Type {
     return this._type;
   }
