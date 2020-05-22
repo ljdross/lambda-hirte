@@ -60,4 +60,8 @@ export class Board {
       }   
     }
   }
+
+  getNumberOfTilesByType(type: Type): number {
+    return this.numberOfTilesByType[type];
+  }
 }
