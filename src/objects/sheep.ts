@@ -9,13 +9,9 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
         config.scene.add.existing(this);
-<<<<<<< HEAD
         this.scene.physics.add.existing(this);
-        this.speed = Phaser.Math.Between(40 , 100) / 100;
-=======
         if (speed) this.speed = speed;
         else this.speed = Phaser.Math.Between(40 , 100) / 100;
->>>>>>> b62a59d151dbea73cbefdccb2815e7fdfc698508
         this.goal = false;
         this.sandSpeed = this.speed - (this.speed / 3);
     }
