@@ -1,6 +1,12 @@
-import {initOptionsButton, initSettings} from "../util/functions";
+import {initOptionsButton, initSettings, updateLevelButton} from "../util/functions";
+import {createButton} from "../util/plugins";
+
+const COLOR_LIGHT = 0xAEFFFD;
+const COLOR_DARK = 0xFFFFFF;
+const COLOR_DARK_BLUE = 0x00008B;
 
 export class GuiScene extends Phaser.Scene {
+    private rexUI: any;
     public currentLevel: string;
     public winningScore: number;
     public showGrid: boolean;
@@ -20,6 +26,14 @@ export class GuiScene extends Phaser.Scene {
         initSettings(this, data);
     }
 
+    preload(): void {
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
+    }
+
     create(): void {
         const width = this.sys.game.canvas.width;
         const height = this.sys.game.canvas.height;
@@ -36,6 +50,69 @@ export class GuiScene extends Phaser.Scene {
         const grid = settingsData.grid;
         const back = settingsData.backButton;
 
+        const brightnessSlider = this.rexUI.add.slider({
+            x: width / 2 + 50,
+            y: height / 2,
+            value: this.brightness,
+            width: 200,
+            height: 20,
+            orientation: 'x',
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            valuechangeCallback: value => {
+                this.cameras.main.setAlpha(value * 2);
+                this.brightness = value;
+            },
+            input: 'drag', // 'drag'|'click'
+            space: {
+                top: 4,
+                bottom: 4
+            },
+        }).layout();
+        brightnessSlider.visible = false;
+
+        const volumeSlider = this.rexUI.add.slider({
+            x: width / 2 + 50,
+            y: height / 2 - 100,
+            value: this.musicVolume,
+            width: 200,
+            height: 20,
+            orientation: 'x',
+            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
+            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
+            input: 'drag', // 'drag'|'click'
+            valuechangeCallback: value => {
+                this.sound.volume = value;
+                this.musicVolume = value;
+            },
+            space: {
+                top: 4,
+                bottom: 4
+            },
+        }).layout();
+        volumeSlider.visible = false;
+
+        const CheckboxesMode = true;  // False = radio mode
+        const gridCheckbox = this.rexUI.add.buttons({
+            x: width / 2 + 50,
+            y: height / 2 + 100,
+            value: this.showGrid,
+            orientation: 'y',
+            background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_DARK_BLUE),
+            buttons: [
+                createButton(this, 'Grid on', 'Grid')
+            ],
+            type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
+            setValueCallback: (button, value) => {
+                button.getElement('icon')
+                    .setFillStyle((value)? COLOR_LIGHT : undefined);
+                this.showGrid = value;
+            }
+        }).layout();
+        gridCheckbox.visible = false;
+
         settings.on('pointerdown', () => {
             menu.visible = false;
             restart.visible = false;
@@ -45,10 +122,10 @@ export class GuiScene extends Phaser.Scene {
             back.visible = true;
             brightness.visible = true;
             volume.visible = true;
-            // brightnessSlider.visible = true;
-            // volumeSlider.visible = true;
+            brightnessSlider.visible = true;
+            volumeSlider.visible = true;
             grid.visible = true;
-            // gridCheckbox.visible = true;
+            gridCheckbox.visible = true;
         });
 
         back.on('pointerdown', () => {
@@ -60,10 +137,10 @@ export class GuiScene extends Phaser.Scene {
             back.visible = false;
             brightness.visible = false;
             volume.visible = false;
-            // brightnessSlider.visible = false;
-            // volumeSlider.visible = false;
+            brightnessSlider.visible = false;
+            volumeSlider.visible = false;
             grid.visible = false;
-            // gridCheckbox.visible = false;
+            gridCheckbox.visible = false;
         });
 
         restart.visible = false;

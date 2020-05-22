@@ -1,4 +1,5 @@
-import {initLevelButton, createButton, initSettings, updateLevelButton} from "../util/functions"
+import {initLevelButton, initSettings, updateLevelButton} from "../util/functions"
+import {createButton} from "../util/plugins";
 import {Board} from "../objects/board";
 import {physicsSettings} from "../util/data";
 
