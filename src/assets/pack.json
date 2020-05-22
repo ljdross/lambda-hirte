@@ -3,7 +3,7 @@
     "files": [
       {
         "type": "image",
-        "key": "sand",
+        "key": "Sand",
         "url": "assets/sprites/sand.png"
       },
       {
@@ -13,12 +13,12 @@
       },
       {
         "type": "image",
-        "key": "grass",
+        "key": "Grass",
         "url": "assets/sprites/grass.png"
       },
       {
         "type": "image",
-        "key": "stone",
+        "key": "Stone",
         "url": "assets/sprites/stone.png"
       },
       {
