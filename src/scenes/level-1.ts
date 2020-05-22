@@ -42,8 +42,8 @@ export class Level1 extends Phaser.Scene {
     this.board = new Board(16, 12, this.showGrid);
     this.board.tiles[2][2] = new Tile(Type.Sand);
     this.board.tiles[3][2] = new Tile(Type.Sand);
+    this.board.tiles[4][2] = new Tile(Type.Sand);
     this.board.tiles[5][2] = new Tile(Type.Sand);
-    this.board.tiles[3][2] = new Tile(Type.Sand);
     //create a Portal object using the Attribut (hasPortal) ,see the classes Tile and board.
     this.board.tiles[1][3] = new Tile(Type.Stone,true);
     this.board.tiles[2][3] = new Tile(Type.Stone);

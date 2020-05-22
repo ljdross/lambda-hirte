@@ -191,20 +191,5 @@ export class GuiScene extends Phaser.Scene {
             exitGame.visible = true;
             settings.visible = true;
         });
-
-        // settings.setDisplaySize(0.1 * width, 0.1 * height);
-        // settings.setInteractive(({ useHandCursor: true }));
-        // settings.on('pointerdown', () => {
-        //     play.visible = false;
-        //     settings.visible = false;
-        //     back.visible = true;
-        //     brightness.visible = true;
-        //     volume.visible = true;
-        //     brightnessSlider.visible = true;
-        //     volumeSlider.visible = true;
-        //     grid.visible = true;
-        //     gridCheckbox.visible = true;
-        // });
     }
-
 }

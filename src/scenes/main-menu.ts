@@ -156,6 +156,12 @@ export class MainMenu extends Phaser.Scene {
                 button.getElement('icon')
                     .setFillStyle((value)? COLOR_LIGHT : undefined);
                 this.showGrid = value;
+                const settingsDataNew = {
+                    showGrid: this.showGrid,
+                    musicVolume: this.musicVolume,
+                    brightness: this.brightness,
+                };
+                updateLevelButton(this, level1, settingsDataNew);
             }
         }).layout();
         gridCheckbox.visible = false;
