@@ -1,44 +1,34 @@
 import "phaser";
 import {Board} from "./board";
 import {Tile,Type} from "./tile";
+import {Sheep} from "./sheep";
 import List = Phaser.Structs.List;
 
 
-// eslint-disable-next-line @typescript-eslint/class-name-casing
-export abstract class Portal extends Phaser.GameObjects.Sprite{
 
-    private context: Phaser.Structs.List<any> ;
+export class Portal extends Phaser.Physics.Arcade.Sprite{
 
-    sizeOfTile: number
-
-    fromTile: [number, number];
-
-    toTile: [number, number];
+    private context: Phaser.Structs.List<[Tile,Tile]> ;
+    type: string;
+    sizeOfTile: number;
+    fromTile: Tile;
+    toTile: Tile;
 
 
-    protected constructor(scene: Phaser.Scene ,from: [number, number] , to: [number,number],size: number , texture: string ,context: List<any> ) {
+    constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , type: string) {
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        super(scene, from, to ,texture);
+        super(scene, x, y,texture);
 
         this.scene.add.existing(this);
-        this.scene.physics.add.existing(this);
         this.setInteractive();
+        this.type = type
+    }
 
-        this.sizeOfTile = size;
-
-        this.fromTile = from ;
-
-        this.toTile = to ;
-
-        this.context = context;
+    public setGoal(tile: Tile): void{
+        this.toTile= tile;
     }
 
     public createAnim(scene: Phaser.Scene) {
-
-        const pStart = scene.add.sprite(this.fromTile[0] * 128 + 64 + this.sizeOfTile, this.fromTile[1] * 128 + 64 + this.sizeOfTile, 'portal');
-        const pEnd = scene.add.sprite(this.toTile[0] * 128 + 64 + this.sizeOfTile, this.toTile[1] * 128 + 64 + this.sizeOfTile, 'portal');
 
         scene.anims.create({
             key: 'Portal1',
@@ -49,6 +39,7 @@ export abstract class Portal extends Phaser.GameObjects.Sprite{
         })
         scene.anims.create({
             key: 'Portal2',
+            delay: 200,
             frames: scene.anims.generateFrameNumbers('portal', {start: 4, end: 0}),
             frameRate: 7,
             yoyo: true,
@@ -63,24 +54,12 @@ export abstract class Portal extends Phaser.GameObjects.Sprite{
 
         })
 
-        pStart.play('Portal1');
-        pEnd.play('Portal1');
-
-        pStart.setInteractive();
-        scene.input.on('pointerdown',()=>{pStart.play('Portal2');
-                                                    pEnd.play('Portal3');});
-        pEnd.setInteractive();
-        scene.input.on('pointerdown',()=> {pEnd.play('Portal3');
-                                                    pStart.play('Portal2');});
-
-
-
 
     }
 
     public executeTeleport(): void {
 
-        const pos = this.vanish(this.fromTile);
+        //const pos = this.vanish(this.fromTile);
 
         const goal = this.whereToGo(this.fromTile , this.toTile);
 
@@ -92,7 +71,7 @@ export abstract class Portal extends Phaser.GameObjects.Sprite{
     *
     * need a sprites for the side effect.
      */
-    public vanish(tileID: any): any{
+    public vanish(scene: Phaser.Scene , sheep: Sheep): any{
         //TODO
 
     }
