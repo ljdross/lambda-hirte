@@ -9,6 +9,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
         config.scene.add.existing(this);
+        this.scene.physics.add.existing(this);
         if (speed) this.speed = speed;
         else this.speed = Phaser.Math.Between(40 , 100) / 100;
         this.goal = false;
@@ -91,6 +92,7 @@ export class SheepVertical extends Sheep {
     atBorder(): void {
         if((this.speed < 0 && this.y <= 0) || (this.speed > 0 && this.y >= this.scene.sys.game.canvas.height)) {
             this.obstacle();
+
         }
     }
 
@@ -117,8 +119,13 @@ export class SheepHorizontal extends Sheep {
     }
 
     atBorder(): void {
-        if((this.speed < 0 && this.x <= 0) || (this.speed > 0 && this.x >= this.scene.sys.game.canvas.width)) {
+        if((this.speed < 0 && this.x <= 0) ) {
             this.obstacle();
+            this.setOffset(0,0);
+        }
+        if((this.speed > 0 && this.x >= this.scene.sys.game.canvas.width)){
+            this.obstacle();
+            this.setOffset(100,0);
         }
     }
 
