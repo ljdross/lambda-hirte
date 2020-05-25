@@ -36,13 +36,12 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     abstract obstacle(): void;
 
     public onGoal(): void {
+        const tileX = Math.floor(this.x / 64);
         if(this.getTile()) {
-            if(this.getTile().isDestination) {
+            if(this.getTile().isDestination && tileX % 2 == 1) {
                 this.goal = true;
                 this.anims.pause();
-            } else {
-                this.goal = false;
-                this.anims.resume();
+                this.visible = false;
             }
         }
     }

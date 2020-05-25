@@ -86,7 +86,8 @@ export class Level1 extends Phaser.Scene {
     //generate Sheep like this
     const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
     const s2=new SheepHorizontal({scene:this,x:300,y:400});
-    const s3=new SheepHorizontal({scene:this,x:100,y:270})
+    const s3=new SheepHorizontal({scene:this,x:100,y:270});
+
     //add to List
     this.sheep = this.add.group();
     this.sheep.addMultiple([s1, s2, s3]);
