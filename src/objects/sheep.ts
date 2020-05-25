@@ -5,15 +5,19 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected speed: number;
     protected sandSpeed: number;
     protected goal: boolean;
+    protected eating: boolean;
+    protected cooldown: number;
 
     protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
         config.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if (speed) this.speed = speed;
-        else this.speed = Phaser.Math.Between(40 , 100) / 100;
-        this.goal = false;
+        else this.speed = Phaser.Math.Between(40, 100) / 100;
         this.sandSpeed = this.speed - (this.speed / 3);
+        this.goal = false;
+        this.eating = false;
+        this.cooldown = 20;
     }
 
     //needs to be called in scene for each sheep
@@ -57,12 +61,28 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         return this.getTile() && this.getTile().type == Type.Sand;
     }
 
+    protected onGrass(): boolean {
+        return this.getTile() && this.getTile().type == Type.Grass;
+    }
+
+    protected eatGrass(): void {
+        if(this.onGrass() && Phaser.Math.Between(0, 300) == 7) {
+            this.eating = !this.eating;
+            this.cooldown = 20;
+            if (this.eating) this.anims.pause();
+        }
+    }
+
     protected walk(): void {
-        if(this.goal == false) {
+        if (this.cooldown == 0) this.eatGrass();
+        else this.cooldown -= 1;
+        if (this.eating) this.anims.stop();
+        else if(!this.goal) {
             if(this.onSand()) this.move(this.sandSpeed);
             else this.move(this.speed);
         }
     }
+
 
 }
 
