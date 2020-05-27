@@ -87,18 +87,27 @@ export class Level1 extends Phaser.Scene {
     const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
     const s2=new SheepHorizontal({scene:this,x:300,y:400});
     const s3=new SheepHorizontal({scene:this,x:100,y:270});
+    const s4=new SheepVertical({scene:this,x:480,y:500});
+    const s5=new SheepVertical({scene:this,x:700,y:800});
+    const s6=new SheepHorizontal({scene:this,x:100,y:100});
+    const s7=new SheepHorizontal({scene:this,x:700,y:600});
+    const s8=new SheepVertical({scene:this,x:700,y:900});
 
     //add to List
     this.sheep = this.add.group();
-    this.sheep.addMultiple([s1, s2, s3]);
+    this.sheep.addMultiple([s1, s2, s3, s4, s5, s6, s7, s8]);
 
 
     //.
-    this.physics.world.addCollider(this.portals ,this.sheep, (sheep: Sheep, portal: Portal) => {
+    this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
       portal.executeTeleport (this , sheep);
 
     })
 
+    this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
+      sheep1.collide(sheep2);
+      sheep2.collide(sheep1);
+    })
 
   }
 
