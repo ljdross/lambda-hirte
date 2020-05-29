@@ -25,9 +25,11 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.setOffset(17, 85);
     }
 
-    //needs to be called in scene for each sheep
+    //needs to be updated in scene for each sheep
     update(...args): void {
         super.update(...args);
+        if(this.y >= 0) this.depth = this.y;
+        else this.depth = 0;
         this.walk();
         this.atBorder();
         this.onGoal();
@@ -121,9 +123,6 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
             this.obstacle();
         }
     }
-
-
-
 }
 
 export class SheepVertical extends Sheep {
@@ -146,7 +145,7 @@ export class SheepVertical extends Sheep {
             repeat: -1,
         });
         this.scene.anims.create({
-            key: 'eat_v',
+            key: 'eat_down',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 12, end: 24}),
             frameRate: 10,
             repeat: -1,
@@ -173,7 +172,7 @@ export class SheepVertical extends Sheep {
     }
 
     eatAnim(): void {
-        this.anims.play('eat_v', true);
+        this.anims.play('eat_down', true);
     }
 
     front(): number {
@@ -190,13 +189,27 @@ export class SheepHorizontal extends Sheep {
         else this.frontX = this.x + (this.height / 2);
 
         this.scene.anims.create({
-            key: 'walk_horizontal',
+            key: 'walk_right',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
             frameRate: 10,
             repeat: -1,
         });
         this.scene.anims.create({
-            key: 'eat_h',
+            key: 'eat_right',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 4, end: 17}),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        //TODO change frames
+        this.scene.anims.create({
+            key: 'walk_left',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.scene.anims.create({
+            key: 'eat_left',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 4, end: 17}),
             frameRate: 10,
             repeat: -1,
@@ -204,7 +217,8 @@ export class SheepHorizontal extends Sheep {
     }
 
     move(speed: number): void {
-        this.play('walk_horizontal', true);
+        if(speed < 0) this.play('walk_left', true);
+        else this.play('walk_right', true);
         this.x += speed;
     }
 
@@ -221,7 +235,8 @@ export class SheepHorizontal extends Sheep {
     }
 
     eatAnim(): void {
-        this.anims.play('eat_h', true);
+        if(this.speed < 0) this.play('eat_left', true);
+        else this.play('eat_right', true);
     }
 
     front(): number {

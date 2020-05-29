@@ -64,25 +64,19 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[6][1] = new Tile(Type.Stone);
     this.board.tiles[6][0] = new Tile(Type.Stone);
 
-
-
     this.board.tiles[4][3].isDestination = true;
     this.board.draw(this);
-
-    //generate Sheep like this
-    const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
-    const s2=new SheepHorizontal({scene:this,x:300,y:400});
-    const s3=new SheepHorizontal({scene:this,x:100,y:270});
-    const s4=new SheepVertical({scene:this,x:480,y:500});
-    const s6=new SheepHorizontal({scene:this,x:100,y:100});
-    const s7=new SheepHorizontal({scene:this,x:700,y:600});
-
-    //add to List
     this.sheep = this.add.group();
-    this.sheep.addMultiple([s1, s2, s3, s4, s6, s7]);
 
-
-
+    let i: number;
+    for(i = 0; i < 5; i++) {
+      const sheep=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
+      this.sheep.add(sheep);
+    }
+    for(i = 0; i < 5; i++) {
+      const sheep=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
+      this.sheep.add(sheep);
+    }
 
     this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
       sheep1.collide(sheep2);
@@ -95,6 +89,7 @@ export class Level1 extends Phaser.Scene {
     //update all sheep
     for(const sheep of this.sheep.getChildren()) {
       sheep.update();
+
     }
     // TODO
   }
