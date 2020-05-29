@@ -1,4 +1,5 @@
-export function initButton(name): void {
+export function
+initButton(name): void {
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerover', () => {
         name.setTintFill(0xAEFFFD);
