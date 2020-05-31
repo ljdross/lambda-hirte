@@ -1,8 +1,9 @@
 import 'phaser';
 import {Tile, Type} from "../objects/board";
+import GameObject = Phaser.GameObjects.GameObject;
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
-    protected speed: number;
+    public speed: number;
     protected sandSpeed: number;
     protected goal: boolean;
     protected eating: boolean;
@@ -35,6 +36,11 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     abstract obstacle(): void;
 
+    abstract eatAnim(): void;
+
+    //1 up, 2 left, 3 down, 4 right
+    abstract front(): number;
+
     public onGoal(): void {
         const tileX = Math.floor(this.x / 64);
         if(this.getTile()) {
@@ -65,23 +71,28 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected eatGrass(): void {
-        if(this.onGrass() && Phaser.Math.Between(0, 300) == 7) {
+        if(this.onGrass() && Phaser.Math.Between(0, 300) == 7 && this.front() != 1) {
             this.eating = !this.eating;
             this.cooldown = 20;
-            if (this.eating) this.anims.pause();
         }
     }
 
     protected walk(): void {
         if (this.cooldown == 0) this.eatGrass();
         else this.cooldown -= 1;
-        if (this.eating) this.anims.stop();
+        if (this.eating) this.eatAnim();
         else if(!this.goal) {
             if(this.onSand()) this.move(this.sandSpeed);
             else this.move(this.speed);
         }
     }
 
+    public collide(obj: Phaser.GameObjects.Sprite): void {
+        if((this.front() == 1 && this.y > obj.y) || (this.front() == 2 && this.x < obj.x)
+            || (this.front() == 3 && this.y < obj.y) || (this.front() == 4 && this.x > obj.x)) {
+            this.obstacle();
+        }
+    }
 
 }
 
@@ -97,6 +108,12 @@ export class SheepVertical extends Sheep {
         this.scene.anims.create({
             key: 'walk_up',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 8, end: 11}),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.scene.anims.create({
+            key: 'eat_v',
+            frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 12, end: 24}),
             frameRate: 10,
             repeat: -1,
         });
@@ -119,6 +136,15 @@ export class SheepVertical extends Sheep {
         this.speed *= (-1);
         this.sandSpeed *= (-1);
     }
+
+    eatAnim(): void {
+        this.anims.play('eat_v', true);
+    }
+
+    front(): number {
+        if(this.speed < 0) return 1;
+        return 3;
+    }
 }
 
 export class SheepHorizontal extends Sheep {
@@ -127,6 +153,12 @@ export class SheepHorizontal extends Sheep {
         this.scene.anims.create({
             key: 'walk_horizontal',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.scene.anims.create({
+            key: 'eat_h',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 4, end: 17}),
             frameRate: 10,
             repeat: -1,
         });
@@ -152,5 +184,14 @@ export class SheepHorizontal extends Sheep {
         this.speed *= (-1);
         this.scaleX *= (-1);
         this.sandSpeed *= (-1);
+    }
+
+    eatAnim(): void {
+        this.anims.play('eat_h', true);
+    }
+
+    front(): number {
+        if(this.speed < 0) return 4;
+        return 2;
     }
 }
