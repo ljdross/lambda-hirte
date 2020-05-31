@@ -70,12 +70,9 @@ export class Level1 extends Phaser.Scene {
 
     let i: number;
     for(i = 0; i < 5; i++) {
-      const sheep=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
-      this.sheep.add(sheep);
-    }
-    for(i = 0; i < 5; i++) {
-      const sheep=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
-      this.sheep.add(sheep);
+      const sheep1=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
+      const sheep2=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
+      this.sheep.addMultiple([sheep1, sheep2]);
     }
 
     this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
