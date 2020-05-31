@@ -9,23 +9,38 @@ initButton(name): void {
     });
 }
 
-export const initLevelButton = ((currentScene, name, width, height, settingsData): void => {
+export const initLevelButton = ((currentScene, name, width, height, settingsData, level): void => {
     name.setDisplaySize(0.05   * width, 0.1 * height);
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
-        currentScene.scene.start('Gui', {
-            currentLevel: 'Level1',
-            winningScore: 20,
-            showGrid: settingsData.showGrid,
-            brightness: settingsData.brightness,
-            musicVolume: settingsData.musicVolume
-        });
-        currentScene.scene.start('Level1', {
-            showGrid: settingsData.showGrid,
-            brightness: settingsData.brightness,
-            musicVolume: settingsData.musicVolume
-        });
+        if(level == "level2") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level2',
+                winningScore: 20,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level2', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        } else {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level1',
+                winningScore: 20,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level1', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
     });
     name.visible = false;
 });
