@@ -23,7 +23,7 @@ export class Board {
     for (let x = 0; x < widthInTiles; x++) {
       this.tiles[x] = [];
       for (let y = 0; y < heightInTiles; y++) {
-        this.tiles[x][y] = new Tile(Type.Grass);
+        this.tiles[x][y] = new Tile(Type.Grass,true);
       }
     }
   }

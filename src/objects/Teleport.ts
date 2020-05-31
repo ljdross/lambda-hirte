@@ -43,7 +43,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         })
         scene.anims.create({
             key: 'Portal2',
-            delay: 200,
             frames: scene.anims.generateFrameNumbers('portal', {start: 4, end: 0}),
             frameRate: 7,
             yoyo: true,

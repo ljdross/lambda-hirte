@@ -44,7 +44,9 @@ export class Level1 extends Phaser.Scene {
 
   create(): void {
     this.board = new Board(16, 12, this.showGrid);
-    this.board.tiles[2][2] = new Tile(Type.Sand);
+    this.board.tiles[1][0] = new Tile(Type.Grass,true);
+    this.board.tiles[8][0] = new Tile(Type.Grass,true);
+    this.board.tiles[2][2] = new Tile(Type.Sand,true);
     this.board.tiles[3][2] = new Tile(Type.Sand);
     this.board.tiles[4][2] = new Tile(Type.Sand);
     this.board.tiles[5][2] = new Tile(Type.Sand);
@@ -59,11 +61,14 @@ export class Level1 extends Phaser.Scene {
 
     //bind to portals.
     this.board.tiles[3][3].portal.setGoal(this.board.tiles[8][3]);
-    this.board.tiles[8][3].portal.setGoal(this.board.tiles[1][3]);
+    this.board.tiles[8][3].portal.setGoal(this.board.tiles[1][0]);
     this.board.tiles[1][3].portal.setGoal(this.board.tiles[3][3]);
+    this.board.tiles[1][0].portal.setGoal(this.board.tiles[8][0]);
+    this.board.tiles[2][2].portal.setGoal(this.board.tiles[1][0]);
+    this.board.tiles[8][0].portal.setGoal(this.board.tiles[1][3]);
     //portals grouped
     this.portals = this.physics.add.group();
-    this.portals.addMultiple([this.board.tiles[1][3].portal, this.board.tiles[3][3].portal, this.board.tiles[8][3].portal]);
+    this.portals.addMultiple([this.board.tiles[1][0].portal, this.board.tiles[2][2].portal,this.board.tiles[3][3].portal,this.board.tiles[1][3].portal,this.board.tiles[8][3].portal,this.board.tiles[8][0].portal]);
     //
 
 
