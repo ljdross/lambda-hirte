@@ -37,11 +37,12 @@ export class Board {
 
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        if (this.tiles[x][y].type == Type.Grass) {
+        const currentTile = this.tiles[x][y];
+        if (currentTile.type == Type.Grass) {
           this.drawHelper(scene, x, y, Type.Grass);
-        } else if (this.tiles[x][y].type == Type.Sand) {
+        } else if (currentTile.type == Type.Sand) {
           this.drawHelper(scene, x, y, Type.Sand);
-        } else if (this.tiles[x][y].type == Type.Stone) {
+        } else if (currentTile.type == Type.Stone) {
           this.drawHelper(scene, x, y, Type.Stone);
         }
       }   
@@ -52,9 +53,16 @@ export class Board {
     // Dependent on Settings, physics with debug (Grid on) or without is activated
     const physics = (this.showGrid) ? (scene.physics) : (scene.matter);
 
-    this.tiles[x][y].image = physics.add.image(x * 128 + 64, y * 128 + 64, Type[type]);
-    this.tiles[x][y].tileNumber = this.numberOfTilesByType[type];
-    if (this.showTileNumbers) this.tiles[x][y].text = scene.add.text(x * 128 + 64, y * 128 + 64, this.tiles[x][y].tileNumber.toString(), {font: "25px Arial", fill: "black"});
+    const currentTile = this.tiles[x][y];
+    currentTile.image = physics.add.image(x * 128 + 64, y * 128 + 64, Type[type]);
+    currentTile.tileNumber = this.numberOfTilesByType[type];
+    if (this.showTileNumbers) {
+      currentTile.text = scene.add.text(x * 128 + 64, y * 128 + 64, currentTile.tileNumber.toString(), {
+        font: "25px Arial",
+        fill: "black"
+      });
+      currentTile.text.setOrigin(0.5, 0.5);
+    }
     this.numberOfTilesByType[type]++;
     if (this.tiles[x][y].hasPortal) this.tiles[x][y].portal = new Portal(scene, x * 128 + 64, y * 128 + 64, "portal", portalType.gtog).setVisible(false);
   }
@@ -77,8 +85,8 @@ export class Board {
       }
     }
   }
-  // give back the coordination of a passed tile.
 
+  // give back the coordination of a passed tile.
   public findTileCoord(tile: Tile): number[]{
     const coord = [];
     for (let x = 0; x < this.width; x++) {
@@ -97,4 +105,5 @@ export class Board {
     }
 
   }
+
 }
