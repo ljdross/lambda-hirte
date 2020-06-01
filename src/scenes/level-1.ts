@@ -3,6 +3,7 @@ import{Portal} from "../objects/Teleport";
 import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
 import {initSettings} from "../util/functions";
+import { Fence } from "../objects/fence";
 
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -16,6 +17,7 @@ export class Level1 extends Phaser.Scene {
 
 
   public sheep: Phaser.GameObjects.Group; //List of all Sheep
+  public fences: Phaser.GameObjects.Group; // List of all fences
   public board: Board;
   public showGrid: boolean;
   public musicVolume: number;
@@ -108,6 +110,22 @@ export class Level1 extends Phaser.Scene {
       sheep1.collide(sheep2);
       sheep2.collide(sheep1);
     })
+
+    //fancy fences
+    const f1 = new Fence(this, 128 + 0, 128 * 3, 0).setOrigin(0, 1);
+    const f2 = new Fence(this, 128 + 32, 128 * 3, 1).setOrigin(0, 1);
+    const f3 = new Fence(this, 128 + 64, 128 * 3, 1).setOrigin(0, 1);
+    const f4 = new Fence(this, 128 + 96, 128 * 3, 2).setOrigin(0, 1);
+
+    this.fences = this.add.group();
+    this.fences.addMultiple([f1, f2, f3, f4]);
+    this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
+      sheep.collide(fences);
+    })
+    // this.physics.world.addCollider(this.sheep, this.fences, (sheep: Sheep, fences: Fence) => {
+    //   sheep.collide(fences);
+    // })
+
 
   }
 
