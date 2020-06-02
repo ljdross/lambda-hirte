@@ -13,8 +13,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class Level1 extends Phaser.Scene {
-
-
   public sheep: Phaser.GameObjects.Group; //List of all Sheep
   public board: Board;
   public showGrid: boolean;
@@ -44,7 +42,6 @@ export class Level1 extends Phaser.Scene {
     }
     return null
   }
-
 
   create(): void {
     this.board = new Board(16, 12, this.showGrid);

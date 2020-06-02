@@ -49,6 +49,7 @@ export class GuiScene extends Phaser.Scene {
         const brightness = settingsData.brightness;
         const grid = settingsData.grid;
         const back = settingsData.backButton;
+        const teleporters = this.add.image(width - 100, 125, 'teleporters');
 
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
@@ -191,5 +192,8 @@ export class GuiScene extends Phaser.Scene {
             exitGame.visible = true;
             settings.visible = true;
         });
+
+        teleporters.setDisplaySize(0.04 * width, 0.08 * height);
+        teleporters.setInteractive(({ useHandCursor: true }));
     }
 }

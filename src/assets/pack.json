@@ -120,6 +120,11 @@
         "type": "image",
         "key": "grid",
         "url": "assets/menu/grid.png"
+      },
+      {
+        "type": "image",
+        "key": "teleporters",
+        "url": "assets/menu/teleporters.png"
       }
     ]
   }
