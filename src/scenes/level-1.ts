@@ -43,7 +43,6 @@ export class Level1 extends Phaser.Scene {
       return coor;
     }
     return null
-
   }
 
 
@@ -63,33 +62,26 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[8][3] = new Tile(Type.Sand);
     this.board.draw(this);
 
-
-
     this.portals = this.physics.add.group();
 
+    //make the portal visible ..
+    this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+      //place the portal in the chosen tile.
+      const coor =this.getTile(pointer.x,pointer.y);
+      const tile= this.board.tiles[coor[0]][coor[1]];
+        tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
+        tile.portal.createAnim(this);
+        tile.portal.play("Portal2");
 
-
-      //make the portal visible ..
-
-      this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-        //place the portal in the chosen tile.
-        const coor =this.getTile(pointer.x,pointer.y);
-        const tile= this.board.tiles[coor[0]][coor[1]];
-          tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
-          tile.portal.createAnim(this);
-          tile.portal.play("Portal2");
-
-          //find and set the goal-tile (based on a funkion ).
-          const goal =tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
-          tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
-          this.portals.add(tile.portal);
-          tile.portal.chosen = true;
-          tile.portal.on("animationcomplete",()=>{
-            tile.portal.destroy();
-
-          })
-
-      })
+        //find and set the goal-tile (based on a funkion ).
+        const goal =tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+        tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
+        this.portals.add(tile.portal);
+        tile.portal.chosen = true;
+        tile.portal.on("animationcomplete",()=>{
+          tile.portal.destroy();
+        })
+    })
 
     //generate Sheep like this
     const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
@@ -106,17 +98,14 @@ export class Level1 extends Phaser.Scene {
     this.sheep.addMultiple([s1, s2, s3, s4, s5, s6, s7, s8]);
 
 
-    //.
     this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
       portal.executeTeleport (this, this.board, sheep);
-
     })
 
     this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
       sheep1.collide(sheep2);
       sheep2.collide(sheep1);
     })
-
   }
 
   update(): void {
@@ -124,6 +113,5 @@ export class Level1 extends Phaser.Scene {
     for(const s of this.sheep.getChildren()) {
       s.update();
     }
-    // TODO
   }
 }

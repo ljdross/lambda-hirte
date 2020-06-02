@@ -26,11 +26,8 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     toTile: Tile;
     chosen: boolean;
 
-
     constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , ptyp: portalType) {
-
         super(scene, x, y,texture);
-
         this.scene.add.existing(this);
         this.setInteractive();
         this.ptype = ptyp;
@@ -39,7 +36,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
     public setGoal(tile: Tile): void{
         this.toTile= tile;
-
     }
 
     public createAnim(scene: Phaser.Scene) {
@@ -48,15 +44,13 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
             key: 'Portal1',
             frames: [{key:'portal' , frame:4}],
             frameRate: 20,
-
-
         })
+
         scene.anims.create({
             key: 'Portal2',
             frames: scene.anims.generateFrameNumbers('portal', {start: 4, end: 0}),
             frameRate: 7,
             yoyo: true,
-
         })
 
         scene.anims.create({
@@ -64,17 +58,13 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
             frames: scene.anims.generateFrameNumbers('portal', {start: 5, end: 9}),
             frameRate: 7,
             yoyo: true,
-
         })
     }
 
     /*
-    *getting the goal-tile ID , based on a given funktion.
-    *
-    * and calculate where to go
-    *
-    *
-     */
+    Getting the goal-tile ID , based on a given function.
+    Calculate where to go
+    */
     public whereToGo(board: Board, id: number, tileTyp: Type): number{
 
         if (tileTyp == Type.Grass ){
@@ -97,15 +87,14 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
     }
 
-    /*perform the teleport from this portal to the "toTile" portal.
-    *conditions:
-    * must be bind with another portal.
-    * must be chosen .
-    * //
-    *need a sprites for the side effect .
-     */
+    /*
+    Perform the teleport from this portal to the "toTile" portal.
+    Conditions:
+    must be bind with another portal
+    must be chosen
+    need a sprites for the side effect
+    */
     public executeTeleport ( scene: Scene ,board: Board,s: Sheep): void{
-        //TODO
         if(this.toTile != null && this.chosen == true){
 
            const coord = board.findTileCoord(this.toTile);
