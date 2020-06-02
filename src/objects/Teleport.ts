@@ -1,29 +1,39 @@
 import "phaser";
+import {Tile, Type} from "./tile";
+import {Sheep} from "./sheep";
 import {Board} from "./board";
-import {Tile,Type} from "./tile";
-import {Sheep, SheepHorizontal} from "./sheep";
-import List = Phaser.Structs.List;
 import Scene = Phaser.Scene;
 
+export enum portalType {
+    gtog ,
+    gtosa,
+    gtost,
+    satosa,
+    satog,
+    satost,
+    sttost,
+    sttog,
+    sttosa
+}
 
 
 export class Portal extends Phaser.Physics.Arcade.Sprite{
 
     private context: Phaser.Structs.List<[Tile,Tile]> ;
-    type: string;
+    ptype: portalType;
     sizeOfTile: number;
     fromTile: Tile;
     toTile: Tile;
     chosen: boolean;
 
 
-    constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , type: string) {
+    constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , ptyp: portalType) {
 
         super(scene, x, y,texture);
 
         this.scene.add.existing(this);
         this.setInteractive();
-        this.type = type;
+        this.ptype = ptyp;
         this.chosen= false;
     }
 
@@ -43,7 +53,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         })
         scene.anims.create({
             key: 'Portal2',
-            delay: 200,
             frames: scene.anims.generateFrameNumbers('portal', {start: 4, end: 0}),
             frameRate: 7,
             yoyo: true,
@@ -60,34 +69,53 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     }
 
     /*
-    *look at the context witch typ the tile has
+    *getting the goal-tile ID , based on a given funktion.
     *
     * and calculate where to go
     *
+    *
      */
-    public whereToGo(tileID: any, tileID1: any): any{
-        //TODO
+    public whereToGo(board: Board, id: number, tileTyp: Type): number{
+
+        if (tileTyp == Type.Grass ){
+            if(this.ptype == portalType.gtog) return (id+5) % board.getNumberOfTilesByType(Type.Grass);
+            if(this.ptype == portalType.gtosa) return (id+3) % board.getNumberOfTilesByType(Type.Sand);
+            if(this.ptype == portalType.gtost) return (id+2) % board.getNumberOfTilesByType(Type.Stone);
+        }
+        if (tileTyp == Type.Sand ){
+            if(this.ptype == portalType.satog) return (id+9)% board.getNumberOfTilesByType(Type.Grass);
+            if(this.ptype == portalType.satosa) return (id+3)% board.getNumberOfTilesByType(Type.Sand);
+            if(this.ptype == portalType.satost) return (id+2)% board.getNumberOfTilesByType(Type.Stone);
+        }
+        if (tileTyp == Type.Stone ){
+            if(this.ptype == portalType.sttog) return (id+5)% board.getNumberOfTilesByType(Type.Grass);
+            if(this.ptype == portalType.sttosa) return (id+3)% board.getNumberOfTilesByType(Type.Sand);
+            if(this.ptype == portalType.sttost) return (id+2)% board.getNumberOfTilesByType(Type.Stone);
+        }
+
+        return 0 ;
+
     }
 
     /*perform the teleport from this portal to the "toTile" portal.
     *conditions:
     * must be bind with another portal.
-    * must be Active (visible).
-    *must be chosen .
+    * must be chosen .
     * //
     *need a sprites for the side effect .
      */
-    public executeTeleport ( scene: Scene ,s: Sheep): void{
+    public executeTeleport ( scene: Scene ,board: Board,s: Sheep): void{
         //TODO
-        if(this.toTile != null && this.toTile.hasPortal == true && this.visible == true && this.chosen == true){
+        if(this.toTile != null && this.chosen == true){
 
+           const coord = board.findTileCoord(this.toTile);
+            this.toTile.portal = new Portal(scene , coord[0]* 128 + 64 , coord[1]* 128 + 64, "Portal",this.ptype);
             s.x= this.toTile.portal.x;
             s.y= this.toTile.portal.y;
-            this.toTile.portal.setVisible(true);
             this.toTile.portal.setDepth(1);
             this.toTile.portal.play("Portal3");
             this.toTile.portal.on("animationcomplete",()=> {
-                this.toTile.portal.setVisible(false);
+                this.toTile.portal.destroy();
             });
             this.chosen= false;
 

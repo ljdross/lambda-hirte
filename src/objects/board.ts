@@ -1,6 +1,7 @@
 import {Tile, Type} from "./tile";
-import {Portal} from "./Teleport";
+import {Portal, portalType} from "./Teleport";
 import 'phaser';
+
 export {Tile, Type}
 
 export class Board {
@@ -23,7 +24,7 @@ export class Board {
     for (let x = 0; x < widthInTiles; x++) {
       this.tiles[x] = [];
       for (let y = 0; y < heightInTiles; y++) {
-        this.tiles[x][y] = new Tile(Type.Grass);
+        this.tiles[x][y] = new Tile(Type.Grass,true);
       }
     }
   }
@@ -56,11 +57,14 @@ export class Board {
     currentTile.image = physics.add.image(x * 128 + 64, y * 128 + 64, Type[type]);
     currentTile.tileNumber = this.numberOfTilesByType[type];
     if (this.showTileNumbers) {
-      currentTile.text = scene.add.text(x * 128 + 64, y * 128 + 64, currentTile.tileNumber.toString(), {font: "25px Arial", fill: "black"});
+      currentTile.text = scene.add.text(x * 128 + 64, y * 128 + 64, currentTile.tileNumber.toString(), {
+        font: "25px Arial",
+        fill: "black"
+      });
       currentTile.text.setOrigin(0.5, 0.5);
     }
     this.numberOfTilesByType[type]++;
-    if (currentTile.hasPortal) currentTile.portal = new Portal(scene, x * 128 + 64, y * 128 + 64, "portal", "g->g").setVisible(false);
+    if (this.tiles[x][y].hasPortal) this.tiles[x][y].portal = new Portal(scene, x * 128 + 64, y * 128 + 64, "portal", portalType.gtog).setVisible(false);
   }
 
   getNumberOfTilesByType(type: Type): number {
@@ -81,4 +85,25 @@ export class Board {
       }
     }
   }
+
+  // give back the coordination of a passed tile.
+  public findTileCoord(tile: Tile): number[]{
+    const coord = [];
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        const currentTile = this.tiles[x][y];
+        if (currentTile == tile) {
+          // console.log('found tile at position: (' + x + ', ' + y + ')');
+
+          coord[0]= x;
+          coord[1]= y;
+
+          return coord;
+        }
+
+      }
+    }
+
+  }
+
 }
