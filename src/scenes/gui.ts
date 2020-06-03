@@ -50,6 +50,13 @@ export class GuiScene extends Phaser.Scene {
         const grid = settingsData.grid;
         const back = settingsData.backButton;
         const teleporters = this.add.image(width - 100, 125, 'teleporters');
+        const teleporterGrass = this.add.image(width - 100, 200, 'teleporterGrass');
+        const teleporterSand = this.add.image(width - 100, 275, 'teleporterSand');
+        const teleporterStone = this.add.image(width - 100, 350, 'teleporterStone');
+        const powerOn = this.add.image(width - 100, 425, 'powerOn');
+        let teleporterCounter = 5;
+        const teleporterCounterText = this.add.text(width - 350, 500,
+            "You can activate teleporter " + teleporterCounter + " more times.");
 
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
@@ -195,5 +202,43 @@ export class GuiScene extends Phaser.Scene {
 
         teleporters.setDisplaySize(0.04 * width, 0.08 * height);
         teleporters.setInteractive(({ useHandCursor: true }));
+        let teleportersVisible = false;
+        teleporterGrass.visible = false;
+        teleporterSand.visible = false;
+        teleporterStone.visible = false;
+        teleporterCounterText.visible = false;
+        powerOn.visible = false;
+        teleporters.on('pointerdown', () => {
+            if (teleportersVisible){
+                teleporterGrass.visible = false;
+                teleporterSand.visible = false;
+                teleporterStone.visible = false;
+                powerOn.visible = false;
+                teleporterCounterText.visible = false;
+            } else {
+                teleporterGrass.visible = true;
+                teleporterSand.visible = true;
+                teleporterStone.visible = true;
+                powerOn.visible = true;
+                teleporterCounterText.visible = true;
+            }
+            teleportersVisible = !teleportersVisible;
+        });
+        teleporterGrass.setDisplaySize(0.04 * width, 0.08 * height);
+        teleporterGrass.setInteractive(({ useHandCursor: true }));
+        teleporterSand.setDisplaySize(0.04 * width, 0.08 * height);
+        teleporterSand.setInteractive(({ useHandCursor: true }));
+        teleporterStone.setDisplaySize(0.04 * width, 0.08 * height);
+        teleporterStone.setInteractive(({ useHandCursor: true }));
+        powerOn.setDisplaySize(0.03 * width, 0.06 * height);
+        powerOn.setInteractive(({ useHandCursor: true }));
+        powerOn.on('pointerdown', () => {
+            teleporterCounter--;
+            teleporterCounterText.setText("You can activate teleporter " + teleporterCounter + " more times.");
+            if (teleporterCounter == 0) {
+               powerOn.disableInteractive();
+               teleporterCounterText.setText("You can't activate teleporter anymore.");
+            }
+        });
     }
 }
