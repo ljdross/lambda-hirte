@@ -131,6 +131,7 @@ export class Level1 extends Phaser.Scene {
       this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
         const coordinates = this.getTile(pointer.x, pointer.y);
         const tile = this.board.tiles[coordinates[0]][coordinates[1]];
+        alert(tile.type);
         tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
         this.portals.add(tile.portal);
         this.input.off('pointerdown');
