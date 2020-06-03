@@ -94,70 +94,42 @@ export class Level1 extends Phaser.Scene {
       sheep.collide(fences);
     })
 
-    this.scene.get('Gui').data.events.on('changedata-teleportersActivated', (scene, value) => {
-      const teleportersActivated = scene.data.get('teleportersActivated');
-      if (teleportersActivated) {
-        //make the portal visible ..
-        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-          //place the portal in the chosen tile.
-          const coor = this.getTile(pointer.x,pointer.y);
-          const tile = this.board.tiles[coor[0]][coor[1]];
-          tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
-          tile.portal.createAnim(this);
-          tile.portal.play("Portal2");
+    // this.scene.get('Gui').data.events.on('changedata-teleportersActivated', (scene, value) => {
+    //   const teleportersActivated = scene.data.get('teleportersActivated');
+    //   if (teleportersActivated) {
+    //     //make the portal visible ..
+    //     this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+    //       //place the portal in the chosen tile.
+    //       const coor = this.getTile(pointer.x,pointer.y);
+    //       const tile = this.board.tiles[coor[0]][coor[1]];
+    //       tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
+    //       tile.portal.createAnim(this);
+    //       tile.portal.play("Portal2");
+    //
+    //       //find and set the goal-tile (based on a function ).
+    //       const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+    //       tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
+    //       this.portals.add(tile.portal);
+    //       tile.portal.chosen = true;
+    //       tile.portal.on("animationcomplete",()=>{
+    //         tile.portal.destroy();
+    //       })
+    //     })
+    //   }
+    //   else {
+    //     this.input.off('pointerdown');
+    //   }
+    // });
 
-          //find and set the goal-tile (based on a function ).
-          const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
-          tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
-          this.portals.add(tile.portal);
-          tile.portal.chosen = true;
-          tile.portal.on("animationcomplete",()=>{
-            tile.portal.destroy();
-          })
-        })
-      }
-      else {
+    this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
+      const placingTeleporter = scene.data.get('placingTeleporter');
+      this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+        const coordinates = this.getTile(pointer.x,pointer.y);
+        const tile = this.board.tiles[coordinates[0]][coordinates[1]];
+        tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
+        this.portals.add(tile.portal);
         this.input.off('pointerdown');
-      }
-    });
-
-    this.scene.get('Gui').data.events.on('changedata-placingGrassTeleporter', (scene, value) => {
-      const placingGrassTeleporter = scene.data.get('placingGrassTeleporter');
-      if (placingGrassTeleporter){
-        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-          const coordinates = this.getTile(pointer.x,pointer.y);
-          const tile = this.board.tiles[coordinates[0]][coordinates[1]];
-          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64,"teleporterGrass", portalType.gtog);
-          this.portals.add(tile.portal);
-          this.input.off('pointerdown');
-        });
-      }
-    });
-
-    this.scene.get('Gui').data.events.on('changedata-placingSandTeleporter', (scene, value) => {
-      const placingSandTeleporter = scene.data.get('placingSandTeleporter');
-      if (placingSandTeleporter){
-        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-          const coordinates = this.getTile(pointer.x,pointer.y);
-          const tile = this.board.tiles[coordinates[0]][coordinates[1]];
-          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64,"teleporterSand", portalType.gtosa);
-          this.portals.add(tile.portal);
-          this.input.off('pointerdown');
-        });
-      }
-    });
-
-    this.scene.get('Gui').data.events.on('changedata-placingStoneTeleporter', (scene, value) => {
-      const placingStoneTeleporter = scene.data.get('placingStoneTeleporter');
-      if (placingStoneTeleporter){
-        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-          const coordinates = this.getTile(pointer.x,pointer.y);
-          const tile = this.board.tiles[coordinates[0]][coordinates[1]];
-          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64,"teleporterStone", portalType.gtost);
-          this.portals.add(tile.portal);
-          this.input.off('pointerdown');
-        });
-      }
+      });
     });
   }
 
@@ -166,6 +138,5 @@ export class Level1 extends Phaser.Scene {
     for(const sheep of this.sheep.getChildren()) {
       sheep.update();
     }
-    // TODO
   }
 }
