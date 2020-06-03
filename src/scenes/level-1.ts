@@ -71,7 +71,7 @@ export class Level1 extends Phaser.Scene {
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
     this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
-      portal.executeTeleport (this, this.board, sheep);
+      portal.executeTeleport(this, this.board, sheep);
     })
 
     let i: number;
@@ -98,28 +98,6 @@ export class Level1 extends Phaser.Scene {
       sheep.collide(fences);
     })
 
-    // this.scene.get('Gui').data.events.on('changedata-teleportersActivated', (scene, value) => {
-    //   const teleportersActivated = scene.data.get('teleportersActivated');
-    //   if (teleportersActivated) {
-    //     //make the portal visible ..
-    //     this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-    //       tile.portal.createAnim(this);
-    //       tile.portal.play("Portal2");
-    //
-    //       //find and set the goal-tile (based on a function ).
-    //       const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
-    //       tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
-    //       tile.portal.chosen = true;
-    //       tile.portal.on("animationcomplete",()=>{
-    //         tile.portal.destroy();
-    //       })
-    //     })
-    //   }
-    //   else {
-    //     this.input.off('pointerdown');
-    //   }
-    // });
-
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');
       this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
@@ -135,10 +113,28 @@ export class Level1 extends Phaser.Scene {
           }, 1500);
         } else {
           tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
+          tile.portal.createAnim(this);
+          const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+          tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
           this.portals.add(tile.portal);
           this.input.off('pointerdown');
         }
       });
+    });
+
+    this.scene.get('teleportGUI').data.events.on('changedata-teleportersActivated', (scene, value) => {
+      const teleportersActivated = scene.data.get('teleportersActivated');
+      if (teleportersActivated) {
+        this.portals.children.each((portal: Portal) =>{
+             portal.chosen = true;
+             portal.setTexture("portal");
+             portal.setSize(128, 128);
+             portal.play("Portal2");
+             portal.on("animationcomplete",()=>{
+               portal.destroy();
+             })
+        })
+      }
     });
   }
 
