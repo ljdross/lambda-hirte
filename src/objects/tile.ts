@@ -9,11 +9,11 @@ export enum Type {
 
 export class Tile {
   public type: Type;
-  public image: object; // should be type Phaser.Physics.Arcade.Image maybe?
-  public text: object; //maybe also not object but a different type
+  public image: Phaser.GameObjects.Image;
+  public text: Phaser.GameObjects.Text;
   public tileNumber: number;
   public isDestination: boolean;
-  public teleporterList: object; //should actually be private _teleporterList: Teleporter[];
+  public teleporterList: object; //should actually be teleporterList: Teleporter[];
   public hasPortal: boolean;
   public portal: Portal;
   

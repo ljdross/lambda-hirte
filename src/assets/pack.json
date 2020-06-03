@@ -120,6 +120,31 @@
         "type": "image",
         "key": "grid",
         "url": "assets/menu/grid.png"
+      },
+      {
+        "type": "image",
+        "key": "teleporters",
+        "url": "assets/menu/teleporters.png"
+      },
+      {
+        "type": "image",
+        "key": "teleporterGrass",
+        "url": "assets/menu/teleporterGrass.png"
+      },
+      {
+        "type": "image",
+        "key": "teleporterSand",
+        "url": "assets/menu/teleporterSand.png"
+      },
+      {
+        "type": "image",
+        "key": "teleporterStone",
+        "url": "assets/menu/teleporterStone.png"
+      },
+      {
+        "type": "image",
+        "key": "powerOn",
+        "url": "assets/menu/powerOn.png"
       }
     ]
   }

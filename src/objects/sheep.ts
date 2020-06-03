@@ -49,34 +49,35 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     public onGoal(): void {
         const tileX = Math.floor(this.x / 64);
-        if(this.getTile()) {
-            if(this.getTile().isDestination && tileX % 2 == 1) {
-                this.goal = true;
-                this.anims.pause();
-                this.visible = false;
-            }
+        if(this.getCenterTile() && this.getCenterTile().isDestination && tileX % 2 == 1) {
+            this.goal = true;
+            this.anims.pause();
+            this.visible = false;
+            this.destroy();
         }
     }
 
-
-    public getTile(): Tile {
+    public getTile(x: number, y: number): Tile {
         const board = this.config.scene.board;
-        const column = Math.floor((this.x) / 128);
+        const column = Math.floor(x / 128);
         if(board.tiles[column]) {
-            const row = Math.floor((this.y) / 128);
+            const row = Math.floor(y / 128);
             return board.tiles[column][row];
         }
         return null;
     }
 
     protected getFrontTile(): Tile {
-        const board = this.config.scene.board;
-        const column = Math.floor(this.getFrontX() / 128);
-        if(board.tiles[column]) {
-            const row = Math.floor(this.getFrontY() / 128);
-            return board.tiles[column][row];
-        }
-        return null;
+        return this.getTile(this.getFrontX(), this.getFrontY());
+    }
+
+    protected getHeadTile(): Tile {
+        if(this.front() == 2 || this.front() == 4) return this.getTile(this.getFrontX() - 10, this.getFrontY());
+        else return this.getFrontTile()
+    }
+
+    protected getCenterTile(): Tile {
+        return this.getTile(this.x, this.y);
     }
 
     protected getFrontX(): number {
@@ -91,13 +92,12 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         return this.y + 50;
     }
 
-
     protected onSand(): boolean {
         return this.getFrontTile() && this.getFrontTile().type == Type.Sand;
     }
 
     protected onGrass(): boolean {
-        return this.getFrontTile() && this.getFrontTile().type == Type.Grass;
+        return this.getHeadTile() && this.getFrontTile().type == Type.Grass;
     }
 
     protected eatGrass(): void {
@@ -108,6 +108,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected walk(): void {
+        if (this.eating && !this.onGrass()) this.eating = false;
         if (this.cooldown == 0) this.eatGrass();
         else this.cooldown -= 1;
         if (this.eating) this.eatAnim();
@@ -159,10 +160,9 @@ export class SheepVertical extends Sheep {
     }
 
     atBorder(): void {
-        if((this.speed < 0 && this.y <= 0) || (this.speed > 0 && this.y >= this.scene.sys.game.canvas.height)
+        if((this.speed < 0 && this.getFrontY() <= 0) || (this.speed > 0 && this.getFrontY() >= this.scene.sys.game.canvas.height)
             || !this.getFrontTile()) {
             this.obstacle();
-
         }
     }
 
@@ -201,7 +201,6 @@ export class SheepHorizontal extends Sheep {
             repeat: -1,
         });
 
-        //TODO change frames
         this.scene.anims.create({
             key: 'walk_left',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
@@ -214,6 +213,18 @@ export class SheepHorizontal extends Sheep {
             frameRate: 10,
             repeat: -1,
         });
+        this.scene.anims.create({
+            key: 'walk_left',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 18, end: 21}),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.scene.anims.create({
+            key: 'eat_left',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 22, end: 35}),
+            frameRate: 10,
+            repeat: -1,
+        });
     }
 
     move(speed: number): void {
@@ -223,7 +234,7 @@ export class SheepHorizontal extends Sheep {
     }
 
     atBorder(): void {
-        if((this.speed < 0 && this.x <= 0) || (this.speed > 0 && this.x >= this.scene.sys.game.canvas.width)
+        if((this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
             || !this.getFrontTile()){
             this.obstacle();
         }
