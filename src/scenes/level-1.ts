@@ -117,11 +117,6 @@ export class Level1 extends Phaser.Scene {
     this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
       sheep.collide(fences);
     })
-    // this.physics.world.addCollider(this.sheep, this.fences, (sheep: Sheep, fences: Fence) => {
-    //   sheep.collide(fences);
-    // })
-
-
   }
 
   update(): void {

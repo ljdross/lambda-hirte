@@ -1,6 +1,4 @@
 import 'phaser';
-import {Tile, Type, Board} from "../objects/board"
-
 
 export class Fence extends Phaser.Physics.Arcade.Sprite {
 
@@ -8,5 +6,10 @@ export class Fence extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, sprite);
         scene.add.existing(this);
         scene.physics.add.existing(this)
+        if (sprite === 'fence_h') {
+            this.setSize(128, 5);
+        } else {
+            this.setSize(5, 128);
+        }
     }
 }
