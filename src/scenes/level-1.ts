@@ -58,6 +58,7 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[3][3] = new Tile(Type.Stone);
     this.board.tiles[7][3] = new Tile(Type.Sand);
     this.board.tiles[8][3] = new Tile(Type.Sand);
+    this.board.tiles[4][3].isDestination = true;
     this.board.draw(this);
 
     this.portals = this.physics.add.group();

@@ -3,6 +3,11 @@
     "files": [
       {
         "type": "image",
+        "key": "Target",
+        "url": "assets/sprites/target.png"
+      },
+      {
+        "type": "image",
         "key": "Sand",
         "url": "assets/sprites/sand.png"
       },

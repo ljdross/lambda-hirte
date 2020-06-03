@@ -54,7 +54,11 @@ export class Board {
     const physics = (this.showGrid) ? (scene.physics) : (scene.matter);
 
     const currentTile = this.tiles[x][y];
-    currentTile.image = physics.add.image(x * 128 + 64, y * 128 + 64, Type[type]);
+    if (currentTile.isDestination) {
+      currentTile.image = physics.add.image(x * 128 + 64, y * 128 + 64, 'Target');
+    } else {
+      currentTile.image = physics.add.image(x * 128 + 64, y * 128 + 64, Type[type]);
+    }
     currentTile.tileNumber = this.numberOfTilesByType[type];
     if (this.showTileNumbers) {
       currentTile.text = scene.add.text(x * 128 + 64, y * 128 + 64, currentTile.tileNumber.toString(), {
