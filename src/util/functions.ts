@@ -1,3 +1,6 @@
+import {Type} from "../objects/tile";
+import {portalType} from "../objects/Teleport";
+
 export function initButton(name): void {
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerover', () => {
@@ -107,3 +110,17 @@ export const initOptionsButton = ((currentScene, width, height): any => {
     }
     return settingsData;
 });
+
+export function getTileTypeWithKey(key): Type {
+    if (key == 'grassToStone') return Type.Stone;
+    if (key == 'sandToGrass') return Type.Grass;
+    if (key == 'stoneToSand') return Type.Sand;
+    return null;
+}
+
+export function getPortalTypeWithKey(key): portalType {
+    if (key == 'grassToStone') return portalType.gtost;
+    if (key == 'sandToGrass') return portalType.satog;
+    if (key == 'stoneToSand') return portalType.sttosa;
+    return null;
+}
