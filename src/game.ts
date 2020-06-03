@@ -2,6 +2,7 @@ import 'phaser';
 import {MainMenu} from "./scenes/main-menu";
 import {Level1} from "./scenes/level-1";
 import {GuiScene} from "./scenes/gui";
+import {TeleportGUIScene} from "./scenes/teleportGUI";
 
 const config = {
     type: Phaser.AUTO,
@@ -11,7 +12,7 @@ const config = {
         mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [MainMenu, Level1, GuiScene],
+    scene: [MainMenu, Level1, GuiScene, TeleportGUIScene],
     physics: {
         default: 'arcade',
         arcade: {

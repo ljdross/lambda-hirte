@@ -133,23 +133,28 @@
       },
       {
         "type": "image",
-        "key": "teleporterGrass",
-        "url": "assets/menu/teleporterGrass.png"
+        "key": "grassToStone",
+        "url": "assets/menu/grassToStone.png"
       },
       {
         "type": "image",
-        "key": "teleporterSand",
-        "url": "assets/menu/teleporterSand.png"
+        "key": "stoneToSand",
+        "url": "assets/menu/stoneToSand.png"
       },
       {
         "type": "image",
-        "key": "teleporterStone",
-        "url": "assets/menu/teleporterStone.png"
+        "key": "sandToGrass",
+        "url": "assets/menu/sandToGrass.png"
       },
       {
         "type": "image",
         "key": "powerOn",
         "url": "assets/menu/powerOn.png"
+      },
+      {
+        "type": "image",
+        "key": "notAllowed",
+        "url": "assets/menu/notAllowed.png"
       }
     ]
   }
