@@ -150,6 +150,11 @@
         "type": "image",
         "key": "powerOn",
         "url": "assets/menu/powerOn.png"
+      },
+      {
+        "type": "image",
+        "key": "notAllowed",
+        "url": "assets/menu/notAllowed.png"
       }
     ]
   }

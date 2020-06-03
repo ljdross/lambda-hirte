@@ -1,10 +1,9 @@
-import {Tile, Type, Board} from "../objects/board"
+import {Board, Tile, Type} from "../objects/board"
 import {Portal, portalType} from "../objects/Teleport";
-import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
 import {initSettings} from "../util/functions";
 import {Fence} from "../objects/fence";
-
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -34,13 +33,13 @@ export class Level1 extends Phaser.Scene {
 
   // give back the tile with the coordinate(x,y)
   public getTile(x: number,y: number): number[] {
-    const coor = [];
+    const coordinates = [];
     const column = Math.floor(x / 128);
-    coor[0]=column;
+    coordinates[0]=column;
     if(this.board.tiles[column] != null) {
       const row = Math.floor(y / 128);
-      coor[1]=row
-      return coor;
+      coordinates[1]=row
+      return coordinates;
     }
     return null
   }
@@ -104,17 +103,12 @@ export class Level1 extends Phaser.Scene {
     //   if (teleportersActivated) {
     //     //make the portal visible ..
     //     this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-    //       //place the portal in the chosen tile.
-    //       const coor = this.getTile(pointer.x,pointer.y);
-    //       const tile = this.board.tiles[coor[0]][coor[1]];
-    //       tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
     //       tile.portal.createAnim(this);
     //       tile.portal.play("Portal2");
     //
     //       //find and set the goal-tile (based on a function ).
     //       const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
     //       tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
-    //       this.portals.add(tile.portal);
     //       tile.portal.chosen = true;
     //       tile.portal.on("animationcomplete",()=>{
     //         tile.portal.destroy();
@@ -131,10 +125,19 @@ export class Level1 extends Phaser.Scene {
       this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
         const coordinates = this.getTile(pointer.x, pointer.y);
         const tile = this.board.tiles[coordinates[0]][coordinates[1]];
-        alert(tile.type);
-        tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
-        this.portals.add(tile.portal);
-        this.input.off('pointerdown');
+        if ((placingTeleporter.startsWith('grass') && tile.type != Type.Grass) ||
+            (placingTeleporter.startsWith('stone') && tile.type != Type.Stone) ||
+            (placingTeleporter.startsWith('sand') && tile.type != Type.Sand)) {
+          const notAllowed = this.add.image(coordinates[0]* 128 + 64, coordinates[1]* 128 + 64,'notAllowed');
+          notAllowed.setDisplaySize(50, 50);
+          setTimeout(() => {
+            notAllowed.destroy();
+          }, 1500);
+        } else {
+          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
+          this.portals.add(tile.portal);
+          this.input.off('pointerdown');
+        }
       });
     });
   }
