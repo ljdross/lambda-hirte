@@ -16,9 +16,7 @@ export enum portalType {
     sttosa
 }
 
-
 export class Portal extends Phaser.Physics.Arcade.Sprite{
-
     private context: Phaser.Structs.List<[Tile,Tile]> ;
     ptype: portalType;
     sizeOfTile: number;
@@ -39,7 +37,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     }
 
     public createAnim(scene: Phaser.Scene) {
-
         scene.anims.create({
             key: 'Portal1',
             frames: [{key:'portal' , frame:4}],
@@ -66,7 +63,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     Calculate where to go
     */
     public whereToGo(board: Board, id: number, tileTyp: Type): number{
-
         if (tileTyp == Type.Grass ){
             if(this.ptype == portalType.gtog) return (id+5) % board.getNumberOfTilesByType(Type.Grass);
             if(this.ptype == portalType.gtosa) return (id+3) % board.getNumberOfTilesByType(Type.Sand);

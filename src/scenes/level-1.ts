@@ -112,6 +112,41 @@ export class Level1 extends Phaser.Scene {
 
     this.scene.get('Gui').data.events.on('changedata-placingGrassTeleporter', (scene, value) => {
       const placingGrassTeleporter = scene.data.get('placingGrassTeleporter');
+      if (placingGrassTeleporter){
+        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+          const coordinates = this.getTile(pointer.x,pointer.y);
+          const tile = this.board.tiles[coordinates[0]][coordinates[1]];
+          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64,"teleporterGrass", portalType.gtog);
+          this.portals.add(tile.portal);
+          this.input.off('pointerdown');
+        });
+      }
+    });
+
+    this.scene.get('Gui').data.events.on('changedata-placingSandTeleporter', (scene, value) => {
+      const placingSandTeleporter = scene.data.get('placingSandTeleporter');
+      if (placingSandTeleporter){
+        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+          const coordinates = this.getTile(pointer.x,pointer.y);
+          const tile = this.board.tiles[coordinates[0]][coordinates[1]];
+          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64,"teleporterSand", portalType.gtosa);
+          this.portals.add(tile.portal);
+          this.input.off('pointerdown');
+        });
+      }
+    });
+
+    this.scene.get('Gui').data.events.on('changedata-placingStoneTeleporter', (scene, value) => {
+      const placingStoneTeleporter = scene.data.get('placingStoneTeleporter');
+      if (placingStoneTeleporter){
+        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+          const coordinates = this.getTile(pointer.x,pointer.y);
+          const tile = this.board.tiles[coordinates[0]][coordinates[1]];
+          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64,"teleporterStone", portalType.gtost);
+          this.portals.add(tile.portal);
+          this.input.off('pointerdown');
+        });
+      }
     });
   }
 
