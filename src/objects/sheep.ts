@@ -23,6 +23,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.cooldown = 20;
         this.setSize(60, 10);
         this.setOffset(17, 85);
+        this.body.debugShowBody = false;
     }
 
     //needs to be updated in scene for each sheep

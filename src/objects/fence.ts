@@ -11,5 +11,6 @@ export class Fence extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.setSize(5, 128);
         }
+        this.body.debugShowBody = false;
     }
 }
