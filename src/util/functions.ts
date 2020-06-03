@@ -18,7 +18,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         currentScene.scene.stop('MainMenu');
         currentScene.scene.start('Gui', {
             currentLevel: 'Level1',
-            winningScore: 20,
+            winningScore: 7,
             showGrid: settingsData.showGrid,
             brightness: settingsData.brightness,
             musicVolume: settingsData.musicVolume
@@ -36,11 +36,13 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
 });
 
 export const updateLevelButton = ((currentScene, name, settingsData): void => {
+    name.disableInteractive();
+    name.setInteractive();
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
         currentScene.scene.start('Gui', {
             currentLevel: 'Level1',
-            winningScore: 20,
+            winningScore: 7,
             showGrid: settingsData.showGrid,
             brightness: settingsData.brightness,
             musicVolume: settingsData.musicVolume

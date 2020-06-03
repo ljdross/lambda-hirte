@@ -17,6 +17,7 @@ export enum portalType {
 }
 
 export class Portal extends Phaser.Physics.Arcade.Sprite{
+
     private context: Phaser.Structs.List<[Tile,Tile]> ;
     ptype: portalType;
     sizeOfTile: number;

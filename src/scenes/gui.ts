@@ -6,6 +6,7 @@ const COLOR_DARK = 0xFFFFFF;
 const COLOR_DARK_BLUE = 0x00008B;
 
 export class GuiScene extends Phaser.Scene {
+
     private rexUI: any;
     public currentLevel: string;
     public winningScore: number;
@@ -22,7 +23,7 @@ export class GuiScene extends Phaser.Scene {
 
     init(data): void {
         this.currentLevel = data.currentLevel;
-        this.winningScore = data.winningScore;
+        this.data.set('winningScore', data.winningScore);
         initSettings(this, data);
     }
 
@@ -42,7 +43,7 @@ export class GuiScene extends Phaser.Scene {
         const continueGame = this.add.image(width / 2, height / 2 - 75, `continue`);
         const exitGame = this.add.image(width / 2, height / 2 + 150, `exit`);
         const menu = this.add.image(width - 100, 50, 'menu');
-        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.winningScore + " more sheeps!");
+        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.data.get("winningScore") + " more sheeps!");
         const settingsData = initOptionsButton(this, width, height);
         const settings = settingsData.settings;
         const volume = settingsData.volume;
@@ -149,6 +150,8 @@ export class GuiScene extends Phaser.Scene {
         restart.on('pointerdown', () => {
             const currentScene = this.scene.get(this.currentLevel);
             currentScene.scene.restart();
+            const teleportGUI = this.scene.get('teleportGUI');
+            teleportGUI.scene.restart();
             this.scene.restart();
         });
 
@@ -189,6 +192,19 @@ export class GuiScene extends Phaser.Scene {
             exitGame.visible = true;
             settings.visible = true;
             sheepCounter.visible = false;
+        });
+        // TODO hook for saved Sheeps
+        // this.data.events.on('changedata-saved', (scene, value) => {
+        //     this.data.set('winningScore', this.data.get('winningScore') - 1);
+        // });
+
+        this.data.events.on('changedata-winningScore', (scene, value) => {
+            const winningScore = scene.data.get('winningScore');
+            if (winningScore <= 0) {
+                sheepCounter.setText("You've won!");
+            } else {
+                sheepCounter.setText("Save " + winningScore + " more sheeps!");
+            }
         });
     }
 }
