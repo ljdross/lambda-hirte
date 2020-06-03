@@ -2,7 +2,7 @@ import {Board, Tile, Type} from "../objects/board"
 import {Portal, portalType} from "../objects/Teleport";
 import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
-import {initSettings} from "../util/functions";
+import {getTileTypeWithKey, initSettings, getPortalTypeWithKey} from "../util/functions";
 import {Fence} from "../objects/fence";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -112,10 +112,12 @@ export class Level1 extends Phaser.Scene {
             notAllowed.destroy();
           }, 1500);
         } else {
-          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
+          const portalType = getPortalTypeWithKey(placingTeleporter);
+          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
           tile.portal.createAnim(this);
           const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
-          tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
+          const tileType = getTileTypeWithKey(placingTeleporter);
+          tile.portal.setGoal(this.board.findTile(tileType, goal));
           this.portals.add(tile.portal);
           this.input.off('pointerdown');
         }

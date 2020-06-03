@@ -33,7 +33,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     }
 
     public setGoal(tile: Tile): void{
-        this.toTile= tile;
+        this.toTile = tile;
     }
 
     public createAnim(scene: Phaser.Scene) {
