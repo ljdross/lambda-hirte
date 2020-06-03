@@ -1,6 +1,6 @@
-import {Tile, Type, Board} from "../objects/board"
-import{Portal} from "../objects/Teleport";
-import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {Board, Tile, Type} from "../objects/board"
+import {Portal, portalType} from "../objects/Teleport";
+import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
 import {initSettings} from "../util/functions";
 import { Fence } from "../objects/fence";
@@ -14,8 +14,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class Level1 extends Phaser.Scene {
-
-
   public sheep: Phaser.GameObjects.Group; //List of all Sheep
   public fences: Phaser.GameObjects.Group; // List of all fences
   public board: Board;
@@ -35,55 +33,54 @@ export class Level1 extends Phaser.Scene {
   }
 
   // give back the tile with the coordinate(x,y)
-  public getTile(x: number,y: number): Tile {
+  public getTile(x: number,y: number): number[] {
+    const coor = [];
     const column = Math.floor(x / 128);
+    coor[0]=column;
     if(this.board.tiles[column] != null) {
       const row = Math.floor(y / 128);
-      return this.board.tiles[column][row];
+      coor[1]=row
+      return coor;
     }
     return null
   }
 
   create(): void {
     this.board = new Board(16, 12, this.showGrid);
+    this.board.tiles[1][0] = new Tile(Type.Grass);
+    this.board.tiles[8][0] = new Tile(Type.Grass);
     this.board.tiles[2][2] = new Tile(Type.Sand);
     this.board.tiles[3][2] = new Tile(Type.Sand);
     this.board.tiles[4][2] = new Tile(Type.Sand);
     this.board.tiles[5][2] = new Tile(Type.Sand);
     //create a Portal object using the Attribut (hasPortal) ,see the classes Tile and board.
-    this.board.tiles[1][3] = new Tile(Type.Stone,true);
+    this.board.tiles[1][3] = new Tile(Type.Stone);
     this.board.tiles[2][3] = new Tile(Type.Stone);
-    this.board.tiles[3][3] = new Tile(Type.Stone,true);
+    this.board.tiles[3][3] = new Tile(Type.Stone);
     this.board.tiles[7][3] = new Tile(Type.Sand);
-    this.board.tiles[8][3] = new Tile(Type.Sand,true);
-    this.board.tiles[2][2].isDestination = true;
+    this.board.tiles[8][3] = new Tile(Type.Sand);
     this.board.draw(this);
 
-    //bind to portals.
-    this.board.tiles[3][3].portal.setGoal(this.board.tiles[8][3]);
-    this.board.tiles[8][3].portal.setGoal(this.board.tiles[1][3]);
-    this.board.tiles[1][3].portal.setGoal(this.board.tiles[3][3]);
-    //portals grouped
     this.portals = this.physics.add.group();
-    this.portals.addMultiple([this.board.tiles[1][3].portal, this.board.tiles[3][3].portal, this.board.tiles[8][3].portal]);
-    //
 
+    //make the portal visible ..
+    this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+      //place the portal in the chosen tile.
+      const coor =this.getTile(pointer.x,pointer.y);
+      const tile= this.board.tiles[coor[0]][coor[1]];
+        tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
+        tile.portal.createAnim(this);
+        tile.portal.play("Portal2");
 
-      //make the portal visible ..
-
-      this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-        const title =this.getTile(pointer.x,pointer.y);
-        if(title.hasPortal == true){
-          title.portal.setVisible(true);
-          title.portal.createAnim(this);
-          title.portal.play("Portal2");
-          title.portal.chosen = true;
-          title.portal.on("animationcomplete",()=>{
-            title.portal.setVisible(false);
-
-          })
-        }
-      })
+        //find and set the goal-tile (based on a funkion ).
+        const goal =tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+        tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
+        this.portals.add(tile.portal);
+        tile.portal.chosen = true;
+        tile.portal.on("animationcomplete",()=>{
+          tile.portal.destroy();
+        })
+    })
 
     //generate Sheep like this
     const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
@@ -100,10 +97,8 @@ export class Level1 extends Phaser.Scene {
     this.sheep.addMultiple([s1, s2, s3, s4, s5, s6, s7, s8]);
 
 
-    //.
     this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
-      portal.executeTeleport (this , sheep);
-
+      portal.executeTeleport (this, this.board, sheep);
     })
 
     this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
@@ -112,10 +107,10 @@ export class Level1 extends Phaser.Scene {
     })
 
     //fancy fences
-    const f1 = new Fence(this, 3 * 128 + 0, 128 * 3.5, 0).setOrigin(0, 1);
-    const f2 = new Fence(this, 3 * 128 + 32, 128 * 3.5, 1).setOrigin(0, 1);
-    const f3 = new Fence(this, 3 * 128 + 64, 128 * 3.5, 1).setOrigin(0, 1);
-    const f4 = new Fence(this, 3 * 128 + 96, 128 * 3.5, 2).setOrigin(0, 1);
+    const f1 = new Fence(this, 2 * 128, 128 * 0.5, 'fence_v').setOrigin(0.5, 0.5);
+    const f2 = new Fence(this, 2 * 128, 128 * 1.5, 'fence_v').setOrigin(0.5, 0.5);
+    const f3 = new Fence(this, 0.5 * 128, 128 * 2, 'fence_h').setOrigin(0.5, 0.5);
+    const f4 = new Fence(this, 1.5 * 128, 128 * 2, 'fence_h').setOrigin(0.5, 0.5);
 
     this.fences = this.add.group();
     this.fences.addMultiple([f1, f2, f3, f4]);
@@ -134,6 +129,5 @@ export class Level1 extends Phaser.Scene {
     for(const s of this.sheep.getChildren()) {
       s.update();
     }
-    // TODO
   }
 }
