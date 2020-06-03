@@ -8,6 +8,8 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected goal: boolean;
     protected eating: boolean;
     protected cooldown: number;
+    protected frontX;
+    protected frontY;
 
     protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
@@ -21,6 +23,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.cooldown = 20;
         this.setSize(60, 10);
         this.setOffset(17, 85);
+        this.body.debugShowBody = false;
     }
 
     //needs to be updated in scene for each sheep
@@ -127,6 +130,10 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 export class SheepVertical extends Sheep {
     constructor(config, speed?: number) {
         super(config, 'sheep_v', speed);
+        this.frontX = this.x;
+        if(speed < 0) this.frontY = this.y - (this.height / 2);
+        else this.frontY = this.y + (this.height / 2);
+
         this.scene.anims.create({
             key: 'walk_down',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 7}),
@@ -178,6 +185,10 @@ export class SheepVertical extends Sheep {
 export class SheepHorizontal extends Sheep {
     constructor(config, speed?: number) {
         super(config, 'sheep_h', speed);
+        this.frontY = this.y;
+        if(speed < 0) this.frontX = this.x - (this.height / 2);
+        else this.frontX = this.x + (this.height / 2);
+
         this.scene.anims.create({
             key: 'walk_right',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
@@ -186,6 +197,19 @@ export class SheepHorizontal extends Sheep {
         });
         this.scene.anims.create({
             key: 'eat_right',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 4, end: 17}),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.scene.anims.create({
+            key: 'walk_left',
+            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.scene.anims.create({
+            key: 'eat_left',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 4, end: 17}),
             frameRate: 10,
             repeat: -1,
