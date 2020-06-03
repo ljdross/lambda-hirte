@@ -61,7 +61,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     public getTile(x: number, y: number): Tile {
         const board = this.config.scene.board;
         const column = Math.floor(x / 128);
-        if(board.tiles[column]) {
+        if (board.tiles[column]) {
             const row = Math.floor(y / 128);
             return board.tiles[column][row];
         }

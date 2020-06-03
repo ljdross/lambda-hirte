@@ -14,8 +14,6 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export class Level1 extends Phaser.Scene {
-
-
   public sheep: Phaser.GameObjects.Group; //List of all Sheep
   public fences: Phaser.GameObjects.Group; // List of all fences
   public board: Board;
@@ -35,11 +33,14 @@ export class Level1 extends Phaser.Scene {
   }
 
   // give back the tile with the coordinate(x,y)
-  public getTile(x: number,y: number): Tile {
+  public getTile(x: number,y: number): number[] {
+    const coor = [];
     const column = Math.floor(x / 128);
+    coor[0]=column;
     if(this.board.tiles[column] != null) {
       const row = Math.floor(y / 128);
-      return this.board.tiles[column][row];
+      coor[1]=row
+      return coor;
     }
     return null
   }
@@ -69,6 +70,10 @@ export class Level1 extends Phaser.Scene {
     this.board.tiles[4][3].isDestination = true;
     this.board.draw(this);
     this.sheep = this.add.group();
+    this.portals = this.physics.add.group();
+    this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
+      portal.executeTeleport (this, this.board, sheep);
+    })
 
     let i: number;
     for(i = 0; i < 5; i++) {
@@ -124,7 +129,7 @@ export class Level1 extends Phaser.Scene {
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');
       this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-        const coordinates = this.getTile(pointer.x,pointer.y);
+        const coordinates = this.getTile(pointer.x, pointer.y);
         const tile = this.board.tiles[coordinates[0]][coordinates[1]];
         tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType.gtosa);
         this.portals.add(tile.portal);
