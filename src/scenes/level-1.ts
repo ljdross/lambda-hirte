@@ -61,25 +61,6 @@ export class Level1 extends Phaser.Scene {
 
     this.portals = this.physics.add.group();
 
-    //make the portal visible ..
-    this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
-      //place the portal in the chosen tile.
-      const coor =this.getTile(pointer.x,pointer.y);
-      const tile= this.board.tiles[coor[0]][coor[1]];
-        tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
-        tile.portal.createAnim(this);
-        tile.portal.play("Portal2");
-
-        //find and set the goal-tile (based on a funkion ).
-        const goal =tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
-        tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
-        this.portals.add(tile.portal);
-        tile.portal.chosen = true;
-        tile.portal.on("animationcomplete",()=>{
-          tile.portal.destroy();
-        })
-    })
-
     //generate Sheep like this
     const s1=new SheepVertical({scene:this,x:480,y:400}, 2);
     const s2=new SheepHorizontal({scene:this,x:300,y:400});
@@ -103,6 +84,33 @@ export class Level1 extends Phaser.Scene {
       sheep1.collide(sheep2);
       sheep2.collide(sheep1);
     })
+
+    this.scene.get('Gui').data.events.on('changedata-teleportersActivated', (scene, value) => {
+      const teleportersActivated = scene.data.get('teleportersActivated');
+      if (teleportersActivated) {
+        //make the portal visible ..
+        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+          //place the portal in the chosen tile.
+          const coor =this.getTile(pointer.x,pointer.y);
+          const tile = this.board.tiles[coor[0]][coor[1]];
+          tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
+          tile.portal.createAnim(this);
+          tile.portal.play("Portal2");
+
+          //find and set the goal-tile (based on a function ).
+          const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+          tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
+          this.portals.add(tile.portal);
+          tile.portal.chosen = true;
+          tile.portal.on("animationcomplete",()=>{
+            tile.portal.destroy();
+          })
+        })
+      }
+      else {
+        this.input.off('pointerdown');
+      }
+    });
   }
 
   update(): void {
