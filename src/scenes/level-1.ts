@@ -92,17 +92,17 @@ export class Level1 extends Phaser.Scene {
           const coor = this.getTile(pointer.x,pointer.y);
           const tile = this.board.tiles[coor[0]][coor[1]];
           tile.portal = new Portal( this,coor[0]* 128 + 64,coor[1]* 128 + 64,"portal", portalType.gtosa);
-          // tile.portal.createAnim(this);
-          // tile.portal.play("Portal2");
-          //
-          // //find and set the goal-tile (based on a function ).
-          // const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
-          // tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
-          // this.portals.add(tile.portal);
-          // tile.portal.chosen = true;
-          // tile.portal.on("animationcomplete",()=>{
-          //   tile.portal.destroy();
-          // })
+          tile.portal.createAnim(this);
+          tile.portal.play("Portal2");
+
+          //find and set the goal-tile (based on a function ).
+          const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+          tile.portal.setGoal(this.board.findTile(Type.Sand, goal));
+          this.portals.add(tile.portal);
+          tile.portal.chosen = true;
+          tile.portal.on("animationcomplete",()=>{
+            tile.portal.destroy();
+          })
         })
       }
       else {
