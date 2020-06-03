@@ -23,6 +23,10 @@ export class GuiScene extends Phaser.Scene {
     init(data): void {
         this.currentLevel = data.currentLevel;
         this.winningScore = data.winningScore;
+        this.data.set('teleportersActivated', false);
+        this.data.set('placingGrassTeleporter', false);
+        this.data.set('placingSandTeleporter', false);
+        this.data.set('placingStoneTeleporter', false);
         initSettings(this, data);
     }
 
@@ -157,10 +161,7 @@ export class GuiScene extends Phaser.Scene {
         restart.on('pointerdown', () => {
             const currentScene = this.scene.get(this.currentLevel);
             currentScene.scene.restart();
-            menu.visible = true;
-            continueGame.visible = false;
-            restart.visible = false;
-            exitGame.visible = false;
+            this.scene.restart();
         });
 
         continueGame.visible = false;
@@ -173,6 +174,8 @@ export class GuiScene extends Phaser.Scene {
             restart.visible = false;
             exitGame.visible = false;
             settings.visible = false;
+            sheepCounter.visible = true;
+            teleporters.visible = true;
         });
 
         exitGame.visible = false;
@@ -198,6 +201,8 @@ export class GuiScene extends Phaser.Scene {
             restart.visible = true;
             exitGame.visible = true;
             settings.visible = true;
+            sheepCounter.visible = false;
+            teleporters.visible = false;
         });
 
         teleporters.setDisplaySize(0.04 * width, 0.08 * height);
@@ -226,13 +231,26 @@ export class GuiScene extends Phaser.Scene {
         });
         teleporterGrass.setDisplaySize(0.04 * width, 0.08 * height);
         teleporterGrass.setInteractive(({ useHandCursor: true }));
+        teleporterGrass.on('pointerdown', () => {
+            this.data.set('placingGrassTeleporter', true);
+        });
         teleporterSand.setDisplaySize(0.04 * width, 0.08 * height);
         teleporterSand.setInteractive(({ useHandCursor: true }));
+        teleporterSand.on('pointerdown', () => {
+            this.data.set('placingSandTeleporter', true);
+        });
         teleporterStone.setDisplaySize(0.04 * width, 0.08 * height);
         teleporterStone.setInteractive(({ useHandCursor: true }));
+        teleporterStone.on('pointerdown', () => {
+            this.data.set('placingStoneTeleporter', true);
+        });
         powerOn.setDisplaySize(0.03 * width, 0.06 * height);
         powerOn.setInteractive(({ useHandCursor: true }));
         powerOn.on('pointerdown', () => {
+            this.data.set('teleportersActivated', true);
+            setTimeout(() => {
+                this.data.set('teleportersActivated', false);
+            }, 5000);
             teleporterCounter--;
             teleporterCounterText.setText("You can activate teleporter " + teleporterCounter + " more times.");
             if (teleporterCounter == 0) {
