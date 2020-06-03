@@ -112,10 +112,10 @@ export class Level1 extends Phaser.Scene {
     })
 
     //fancy fences
-    const f1 = new Fence(this, 128 + 0, 128 * 3, 0).setOrigin(0, 1);
-    const f2 = new Fence(this, 128 + 32, 128 * 3, 1).setOrigin(0, 1);
-    const f3 = new Fence(this, 128 + 64, 128 * 3, 1).setOrigin(0, 1);
-    const f4 = new Fence(this, 128 + 96, 128 * 3, 2).setOrigin(0, 1);
+    const f1 = new Fence(this, 3 * 128 + 0, 128 * 3.5, 0).setOrigin(0, 1);
+    const f2 = new Fence(this, 3 * 128 + 32, 128 * 3.5, 1).setOrigin(0, 1);
+    const f3 = new Fence(this, 3 * 128 + 64, 128 * 3.5, 1).setOrigin(0, 1);
+    const f4 = new Fence(this, 3 * 128 + 96, 128 * 3.5, 2).setOrigin(0, 1);
 
     this.fences = this.add.group();
     this.fences.addMultiple([f1, f2, f3, f4]);
