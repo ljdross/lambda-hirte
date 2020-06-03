@@ -84,7 +84,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         }
 
         return 0 ;
-
     }
 
     /*
@@ -110,5 +109,4 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
         }
     }
-
 }
