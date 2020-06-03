@@ -1,4 +1,5 @@
 export class TeleportGUIScene extends Phaser.Scene {
+
     public teleporters: string[];
     public grassToStone: any;
     public stoneToSand: any;
@@ -34,7 +35,7 @@ export class TeleportGUIScene extends Phaser.Scene {
            });
         }
         const powerOn = this.add.image(width - 100, yCoordinateTeleport, 'powerOn');
-        let teleporterCounter = 5;
+        let teleporterCounter = 10;
         const teleporterCounterText = this.add.text(width - 250, yCoordinateTeleport + 75,
             "You can activate teleporter \n" + teleporterCounter + " more times.");
         teleportersButton.setDisplaySize(0.04 * width, 0.08 * height);
@@ -63,16 +64,16 @@ export class TeleportGUIScene extends Phaser.Scene {
         powerOn.setDisplaySize(0.03 * width, 0.06 * height);
         powerOn.setInteractive(({ useHandCursor: true }));
         powerOn.on('pointerdown', () => {
-            this.data.set('teleportersActivated', true);
-            setTimeout(() => {
-                this.data.set('teleportersActivated', false);
-            }, 5000);
             teleporterCounter--;
             teleporterCounterText.setText("You can activate teleporter \n" + teleporterCounter + " more times.");
+            this.data.set('teleportersActivated', true);
             if (teleporterCounter == 0) {
                powerOn.disableInteractive();
                teleporterCounterText.setText("You can't activate teleporter \n anymore.");
             }
+            setTimeout(() => {
+                this.data.set('teleportersActivated', false);
+            }, 1000);
         });
     }
 }

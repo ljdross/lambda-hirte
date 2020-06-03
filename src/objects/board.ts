@@ -98,16 +98,11 @@ export class Board {
         const currentTile = this.tiles[x][y];
         if (currentTile == tile) {
           // console.log('found tile at position: (' + x + ', ' + y + ')');
-
           coord[0]= x;
           coord[1]= y;
-
           return coord;
         }
-
       }
     }
-
   }
-
 }

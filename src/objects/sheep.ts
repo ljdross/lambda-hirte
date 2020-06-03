@@ -1,8 +1,8 @@
 import 'phaser';
 import {Tile, Type} from "../objects/board";
-import GameObject = Phaser.GameObjects.GameObject;
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
+
     public speed: number;
     protected sandSpeed: number;
     protected goal: boolean;
@@ -26,6 +26,10 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.body.debugShowBody = false;
     }
 
+    init() {
+        this.data.set('saved', false);
+    }
+
     //needs to be updated in scene for each sheep
     update(...args): void {
         super.update(...args);
@@ -38,13 +42,9 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     abstract move(speed: number): void;
-
     abstract atBorder(): void;
-
     abstract obstacle(): void;
-
     abstract eatAnim(): void;
-
     //1 up, 2 left, 3 down, 4 right
     abstract front(): number;
 
@@ -55,6 +55,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
             this.anims.pause();
             this.visible = false;
             this.destroy();
+            this.data.set('saved', true);
         }
     }
 
