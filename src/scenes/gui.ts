@@ -23,7 +23,7 @@ export class GuiScene extends Phaser.Scene {
 
     init(data): void {
         this.currentLevel = data.currentLevel;
-        this.data.set('winningScore', data.winningScore);
+        this.winningScore = data.winningScore;
         initSettings(this, data);
     }
 
@@ -43,7 +43,7 @@ export class GuiScene extends Phaser.Scene {
         const continueGame = this.add.image(width / 2, height / 2 - 75, `continue`);
         const exitGame = this.add.image(width / 2, height / 2 + 150, `exit`);
         const menu = this.add.image(width - 100, 50, 'menu');
-        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.data.get("winningScore") + " more sheeps!");
+        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.winningScore + " more sheeps!");
         const settingsData = initOptionsButton(this, width, height);
         const settings = settingsData.settings;
         const volume = settingsData.volume;
@@ -195,11 +195,10 @@ export class GuiScene extends Phaser.Scene {
         });
 
         this.scene.get('Level1').data.events.on('changedata-playerScore', (scene, value) => {
-            const winningScore = scene.data.get('winningScore');
-            if (value >= winningScore) {
+            if (value >= this.winningScore) {
                 sheepCounter.setText("You've won!");
             } else {
-                sheepCounter.setText("Save " + (winningScore - value) + " more sheeps!");
+                sheepCounter.setText("Save " + (this.winningScore - value) + " more sheeps!");
             }
         });
     }
