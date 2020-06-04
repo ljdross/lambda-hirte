@@ -19,7 +19,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         if(level == "level2") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level2',
-                winningScore: 20,
+                winningScore: 10,
                 showGrid: settingsData.showGrid,
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
@@ -32,7 +32,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         } else {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level1',
-                winningScore: 20,
+                winningScore: 7,
                 showGrid: settingsData.showGrid,
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
