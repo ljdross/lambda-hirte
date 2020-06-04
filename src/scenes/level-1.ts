@@ -100,7 +100,8 @@ export class Level1 extends Phaser.Scene {
 
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');
-      this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+      if (placingTeleporter) {
+        this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
         const coordinates = this.getTile(pointer.x, pointer.y);
         const tile = this.board.tiles[coordinates[0]][coordinates[1]];
         if ((placingTeleporter.startsWith('grass') && tile.type != Type.Grass) ||
@@ -122,6 +123,7 @@ export class Level1 extends Phaser.Scene {
           this.input.off('pointerdown');
         }
       });
+      }
     });
 
     this.scene.get('teleportGUI').data.events.on('changedata-teleportersActivated', (scene, value) => {
