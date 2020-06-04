@@ -78,15 +78,15 @@ export class MainMenu extends Phaser.Scene {
         const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
         const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
         // TODO rework buttons Init to pass all levels at once
-        initLevelButton(this, level1, width, height, settingsData);
-        initLevelButton(this, level2, width, height, settingsData)
-        initLevelButton(this, level3, width, height, settingsData)
-        initLevelButton(this, level4, width, height, settingsData)
-        initLevelButton(this, level5, width, height, settingsData)
-        initLevelButton(this, level6, width, height, settingsData)
-        initLevelButton(this, level7, width, height, settingsData)
-        initLevelButton(this, level8, width, height, settingsData)
-        initLevelButton(this,level9, width, height, settingsData)
+        initLevelButton(this, level1, width, height, settingsData, "level1");
+        initLevelButton(this, level2, width, height, settingsData, "level2")
+        initLevelButton(this, level3, width, height, settingsData, "level3")
+        initLevelButton(this, level4, width, height, settingsData, "level4")
+        initLevelButton(this, level5, width, height, settingsData, "level5")
+        initLevelButton(this, level6, width, height, settingsData, "level6")
+        initLevelButton(this, level7, width, height, settingsData, "level7")
+        initLevelButton(this, level8, width, height, settingsData, "level8")
+        initLevelButton(this, level9, width, height, settingsData, "level9")
 
         const brightnessSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
