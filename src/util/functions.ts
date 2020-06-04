@@ -1,5 +1,7 @@
-export function
-initButton(name): void {
+import {Type} from "../objects/tile";
+import {portalType} from "../objects/Teleport";
+
+export function initButton(name): void {
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerover', () => {
         name.setTintFill(0xAEFFFD);
@@ -46,11 +48,13 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
 });
 
 export const updateLevelButton = ((currentScene, name, settingsData): void => {
+    name.disableInteractive();
+    name.setInteractive();
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
         currentScene.scene.start('Gui', {
             currentLevel: 'Level1',
-            winningScore: 20,
+            winningScore: 7,
             showGrid: settingsData.showGrid,
             brightness: settingsData.brightness,
             musicVolume: settingsData.musicVolume
@@ -120,3 +124,17 @@ export const initOptionsButton = ((currentScene, width, height): any => {
     }
     return settingsData;
 });
+
+export function getTileTypeWithKey(key): Type {
+    if (key == 'grassToStone') return Type.Stone;
+    if (key == 'sandToGrass') return Type.Grass;
+    if (key == 'stoneToSand') return Type.Sand;
+    return null;
+}
+
+export function getPortalTypeWithKey(key): portalType {
+    if (key == 'grassToStone') return portalType.gtost;
+    if (key == 'sandToGrass') return portalType.satog;
+    if (key == 'stoneToSand') return portalType.sttosa;
+    return null;
+}

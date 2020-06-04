@@ -15,6 +15,7 @@ const COLOR_DARK = 0xFFFFFF;
 const COLOR_DARK_BLUE = 0x00008B;
 
 export class MainMenu extends Phaser.Scene {
+
     private rexUI: any;
     private song: Phaser.Sound.BaseSound;
     public showGrid: boolean;
