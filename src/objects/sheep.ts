@@ -95,7 +95,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected onGrass(): boolean {
-        return this.getHeadTile() && this.getFrontTile().type == Type.Grass;
+        return this.getHeadTile() && this.getHeadTile().type == Type.Grass;
     }
 
     protected eatGrass(): void {
@@ -212,7 +212,7 @@ export class SheepHorizontal extends Sheep {
 
     atBorder(): void {
         if((this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
-            || !this.getFrontTile()){
+            || !this.getFrontTile() || !this.getCenterTile()){
             this.obstacle();
         }
     }

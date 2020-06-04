@@ -3,6 +3,7 @@ import{Portal} from "../objects/Teleport";
 import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
 import {initSettings} from "../util/functions";
+import {Fence} from "../objects/fence";
 
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -16,6 +17,7 @@ export class Level2 extends Phaser.Scene {
 
 
     public sheep: Phaser.GameObjects.Group; //List of all Sheep
+    public fences: Phaser.GameObjects.Group; // List of all fences
     public board: Board;
     public showGrid: boolean;
     public musicVolume: number;
@@ -74,23 +76,43 @@ export class Level2 extends Phaser.Scene {
         this.board.tiles[3][3].isDestination = true;
         this.board.draw(this);
         this.sheep = this.add.group();
+        this.fences = this.add.group();
 
         let i: number;
         for(i = 0; i < 5; i++) {
             //top left
-            const sheep1=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 78), y: Phaser.Math.Between(30, 78)});
+            const sheep1=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(50, 78)});
             //top right
-            const sheep2=new SheepVertical({scene: this, x: Phaser.Math.Between(718, 846), y: Phaser.Math.Between(30, 78)});
+            const sheep2=new SheepVertical({scene: this, x: Phaser.Math.Between(808, 846), y: Phaser.Math.Between(50, 78)});
             //bottom right
-            const sheep3=new SheepHorizontal({scene: this, x: Phaser.Math.Between(718, 846), y: Phaser.Math.Between(718, 846)});
+            const sheep3=new SheepHorizontal({scene: this, x: Phaser.Math.Between(808, 840), y: Phaser.Math.Between(818, 846)});
             //bottom left
-            const sheep4=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 78), y: Phaser.Math.Between(718, 846)});
+            const sheep4=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(818, 846)});
             this.sheep.addMultiple([sheep1, sheep2, sheep3, sheep4]);
+
+            const f1 = new Fence(this, (i + 1.5) * 128, 128 * 1, 'fence_h').setOrigin(0.5, 0.5);
+            const f2 = new Fence(this, (i + 1.5) * 128, 128 * 6, 'fence_h').setOrigin(0.5, 0.5);
+            const f3 = new Fence(this, 1 * 128, 128 * (i + 1.5), 'fence_v').setOrigin(0.5, 0.5);
+            const f4 = new Fence(this, 6 * 128, 128 * (i + 1.5), 'fence_v').setOrigin(0.5, 0.5);
+
+            if(i < 5 && i > 1) {
+                const f5 = new Fence(this, (i + 0.5) * 128, 128 * 2, 'fence_h').setOrigin(0.5, 0.5);
+                const f6 = new Fence(this, (i + 0.5) * 128, 128 * 5, 'fence_h').setOrigin(0.5, 0.5);
+                const f7 = new Fence(this, 2 * 128, 128 * (i + 0.5), 'fence_v').setOrigin(0.5, 0.5);
+                const f8 = new Fence(this, 5 * 128, 128 * (i + 0.5), 'fence_v').setOrigin(0.5, 0.5);
+                this.fences.addMultiple([f5, f6, f7, f8]);
+            }
+
+            this.fences.addMultiple([f1, f2, f3, f4]);
         }
 
         this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
             sheep1.collide(sheep2);
             sheep2.collide(sheep1);
+        })
+
+        this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
+            sheep.collide(fences);
         })
     }
 
