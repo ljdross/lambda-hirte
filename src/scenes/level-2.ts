@@ -85,10 +85,11 @@ export class Level2 extends Phaser.Scene {
             //top right
             const sheep2=new SheepVertical({scene: this, x: Phaser.Math.Between(808, 846), y: Phaser.Math.Between(50, 78)});
             //bottom right
-            const sheep3=new SheepHorizontal({scene: this, x: Phaser.Math.Between(808, 840), y: Phaser.Math.Between(818, 846)});
+            const sheep3=new SheepHorizontal({scene: this, x: Phaser.Math.Between(808, 830), y: Phaser.Math.Between(818, 846)});
             //bottom left
             const sheep4=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(818, 846)});
             this.sheep.addMultiple([sheep1, sheep2, sheep3, sheep4]);
+
 
             const f1 = new Fence(this, (i + 1.5) * 128, 128 * 1, 'fence_h').setOrigin(0.5, 0.5);
             const f2 = new Fence(this, (i + 1.5) * 128, 128 * 6, 'fence_h').setOrigin(0.5, 0.5);
