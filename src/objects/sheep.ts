@@ -10,6 +10,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected cooldown: number;
     protected frontX;
     protected frontY;
+    protected eatTimer: number;
 
     protected constructor(protected config, sprite, speed?: number) {
         super(config.scene, config.x, config.y, sprite, 0);
@@ -20,6 +21,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.sandSpeed = this.speed - (this.speed / 3);
         this.goal = false;
         this.eating = false;
+        this.eatTimer = 0;
         this.cooldown = 20;
         this.setSize(60, 10);
         this.setOffset(17, 85);
@@ -107,6 +109,14 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected walk(): void {
+        if (this.eating) {
+            this.eatTimer++
+        } else {
+            this.eatTimer = 0;
+        }
+        if (this.eatTimer > 400) {
+            this.eating = false;
+        }
         if (this.eating && !this.onGrass()) this.eating = false;
         if (this.cooldown == 0) this.eatGrass();
         else this.cooldown -= 1;
@@ -117,9 +127,9 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    public collide(obj: Phaser.GameObjects.Sprite): void {
-        if((this.front() == 1 && this.y > obj.y) || (this.front() == 2 && this.x < obj.x)
-            || (this.front() == 3 && this.y < obj.y) || (this.front() == 4 && this.x > obj.x)) {
+    public collide(obj: Phaser.Physics.Arcade.Sprite): void {
+        if((this.front() == 1 && this.body.y > obj.body.y) || (this.front() == 2 && this.x < obj.x)
+            || (this.front() == 3 && this.body.y < obj.body.y) || (this.front() == 4 && this.x > obj.x)) {
             this.obstacle();
         }
     }
