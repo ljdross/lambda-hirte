@@ -199,19 +199,6 @@ export class SheepHorizontal extends Sheep {
             frameRate: 10,
             repeat: -1,
         });
-
-        this.scene.anims.create({
-            key: 'walk_left',
-            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
-            frameRate: 10,
-            repeat: -1,
-        });
-        this.scene.anims.create({
-            key: 'eat_left',
-            frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 4, end: 17}),
-            frameRate: 10,
-            repeat: -1,
-        });
         this.scene.anims.create({
             key: 'walk_left',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 18, end: 21}),

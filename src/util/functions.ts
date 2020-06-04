@@ -43,6 +43,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
         }
+        currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });
     name.visible = false;
 });
