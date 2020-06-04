@@ -193,17 +193,13 @@ export class GuiScene extends Phaser.Scene {
             settings.visible = true;
             sheepCounter.visible = false;
         });
-        // TODO hook for saved Sheeps
-        // this.data.events.on('changedata-saved', (scene, value) => {
-        //     this.data.set('winningScore', this.data.get('winningScore') - 1);
-        // });
 
-        this.data.events.on('changedata-winningScore', (scene, value) => {
+        this.scene.get('Level1').data.events.on('changedata-playerScore', (scene, value) => {
             const winningScore = scene.data.get('winningScore');
-            if (winningScore <= 0) {
+            if (value >= winningScore) {
                 sheepCounter.setText("You've won!");
             } else {
-                sheepCounter.setText("Save " + winningScore + " more sheeps!");
+                sheepCounter.setText("Save " + (winningScore - value) + " more sheeps!");
             }
         });
     }

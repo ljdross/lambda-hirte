@@ -28,7 +28,6 @@ export class Level1 extends Phaser.Scene {
 
   init(data): void {
       this.data.set('playerScore', 0);
-      this.data.set('playerWinningScore', 10);
       initSettings(this, data);
   }
 
@@ -139,6 +138,12 @@ export class Level1 extends Phaser.Scene {
         })
       }
     });
+
+    for(const sheep of this.sheep.getChildren()) {
+      sheep.data.events.on('changedata-saved', (scene, value) => {
+        this.data.set('playerScore', this.data.get('playerScore') + 1);
+      });
+    }
   }
 
   update(): void {

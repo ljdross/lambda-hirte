@@ -24,10 +24,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.setSize(60, 10);
         this.setOffset(17, 85);
         this.body.debugShowBody = false;
-    }
-
-    init() {
-        this.data.set('saved', false);
+        this.setData('saved', false);
     }
 
     //needs to be updated in scene for each sheep
@@ -54,8 +51,8 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
             this.goal = true;
             this.anims.pause();
             this.visible = false;
+            this.setData('saved', true);
             this.destroy();
-            this.data.set('saved', true);
         }
     }
 
