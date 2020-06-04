@@ -8,8 +8,6 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected goal: boolean;
     protected eating: boolean;
     protected cooldown: number;
-    protected frontX;
-    protected frontY;
     protected eatTimer: number;
 
     protected constructor(protected config, sprite, speed?: number) {
@@ -34,14 +32,14 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         super.update(...args);
         if(this.y >= 0) this.depth = this.y;
         else this.depth = 0;
-        this.walk();
         this.atBorder();
         this.onGoal();
         this.onSand();
+        this.walk();
     }
 
     abstract move(speed: number): void;
-    abstract atBorder(): void;
+    abstract isAtBorder(): boolean;
     abstract obstacle(): void;
     abstract eatAnim(): void;
     //1 up, 2 left, 3 down, 4 right
@@ -133,15 +131,17 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
             this.obstacle();
         }
     }
+
+    protected atBorder(): void {
+        if(this.isAtBorder()) {
+            this.obstacle();
+        }
+    }
 }
 
 export class SheepVertical extends Sheep {
     constructor(config, speed?: number) {
         super(config, 'sheep_v', speed);
-        this.frontX = this.x;
-        if(speed < 0) this.frontY = this.y - (this.height / 2);
-        else this.frontY = this.y + (this.height / 2);
-
         this.scene.anims.create({
             key: 'walk_down',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 7}),
@@ -168,11 +168,12 @@ export class SheepVertical extends Sheep {
         this.y += speed;
     }
 
-    atBorder(): void {
+    isAtBorder(): boolean {
         if((this.speed < 0 && this.getFrontY() <= 0) || (this.speed > 0 && this.getFrontY() >= this.scene.sys.game.canvas.height)
             || !this.getFrontTile()) {
-            this.obstacle();
+            return true;
         }
+        return false;
     }
 
     obstacle(): void {
@@ -193,10 +194,6 @@ export class SheepVertical extends Sheep {
 export class SheepHorizontal extends Sheep {
     constructor(config, speed?: number) {
         super(config, 'sheep_h', speed);
-        this.frontY = this.y;
-        if(speed < 0) this.frontX = this.x - (this.height / 2);
-        else this.frontX = this.x + (this.height / 2);
-
         this.scene.anims.create({
             key: 'walk_right',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
@@ -229,11 +226,12 @@ export class SheepHorizontal extends Sheep {
         this.x += speed;
     }
 
-    atBorder(): void {
+    isAtBorder(): boolean {
         if((this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
             || !this.getFrontTile() || !this.getCenterTile()){
-            this.obstacle();
+            return true;
         }
+        return false;
     }
 
     obstacle(): void {
