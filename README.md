@@ -8,8 +8,9 @@
 * Merge-Request-Manager/DevOps: @arsvivendi
 * Team: @manneken, @charzwin, @ali, @arsvivendi, @kim_jana, @lennart
 
-Lambda Hirte ist ein Puzzle-Spiel, wo der Spieler (Hirte) Schafe ins Ziel bringen muss. Der Spieler soll so selten wie möglich den Teleport-Knopf drücken. 
-Der Spieler nutzt Teleporter, um die Schafe zu transportieren. Die Teleporter sind fertige Lambda-Terme, die eine Abbildung von Tiles zu Tiles darstellen. (Bsp.: Grass->Grass)
+Lambda Hirte ist ein Puzzle-Spiel, wo der Spieler (Hirte) Schafe ins Ziel bringen muss. 
+Der Spieler nutzt Teleporter, um die Schafe zu transportieren. Die Teleporter sind fertige Lambda-Terme, die eine Abbildung von Tiles zu Tiles darstellen. (Bsp.: Grass->Grass)  
+Der Spieler soll so selten wie möglich den Teleport-Knopf drücken.
 Es können Teleporter gestapelt werden (Also ein Lambda-Term als Eingabe von einem anderen Lambda-Term). Jedes Level kann mit einem Teleporter-Knop-druck gelöst werden.
 
 
