@@ -145,20 +145,24 @@ export function getPortalTypeWithKey(key): portalType {
 
 export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Group,
     fences: Phaser.GameObjects.Group, portals: Phaser.GameObjects.Group,): void {
-    if(scene.physics && sheep && fences && portals && sheep.children && fences.children && portals.children) {
+    if(scene && sheep) {
         scene.physics.world.addCollider(sheep, sheep,
             (sheep1: Sheep, sheep2: Sheep) => {
                 sheep1.collide(sheep2);
                 sheep2.collide(sheep1);
             })
-        scene.physics.world.addCollider(fences, sheep,
-            (fences: Fence, sheep: Sheep) => {
-                sheep.collide(fences);
-            })
-        scene.physics.world.addCollider(portals, sheep,
-            (sheep: Sheep, portal: Portal) => {
-                portal.executeTeleport(this, this.board, sheep);
-            })
+        if(fences) {
+            scene.physics.world.addCollider(fences, sheep,
+                (fences: Fence, sheep: Sheep) => {
+                    sheep.collide(fences);
+                })
+        }
+        if(portals) {
+            scene.physics.world.addCollider(portals, sheep,
+                (sheep: Sheep, portal: Portal) => {
+                    portal.executeTeleport(this, this.board, sheep);
+                })
+        }
     }
 }
 

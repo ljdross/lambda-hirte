@@ -18,7 +18,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         config.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if(collision) this.collision = collision;
-        else this.collision = false;
+        else this.collision = true;
         if (speed) this.speed = speed;
         else this.speed = Phaser.Math.Between(40, 100) / 100;
         this.sandSpeed = this.speed - (this.speed / 3);
@@ -130,7 +130,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     public collide(obj: Phaser.Physics.Arcade.Sprite): void {
-        if(this.collision|| !(obj instanceof Sheep)) {
+        if(!(obj instanceof Sheep) || (this.collision && !(obj.x == this.x && obj.y == this.y))) {
             if ((this.front() == 1 && this.body.y > obj.body.y) || (this.front() == 2 && this.x < obj.x)
                 || (this.front() == 3 && this.body.y < obj.body.y) || (this.front() == 4 && this.x > obj.x)) {
                 this.obstacle();

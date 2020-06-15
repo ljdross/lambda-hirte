@@ -18,11 +18,11 @@ export class Level2 extends Phaser.Scene {
 
     public sheep: Phaser.GameObjects.Group; //List of all Sheep
     public fences: Phaser.GameObjects.Group; // List of all fences
+    public portals: Phaser.GameObjects.Group; // List of all portals
     public board: Board;
     public showGrid: boolean;
     public musicVolume: number;
     public brightness: number;
-    public portals: Phaser.GameObjects.Group;
 
     constructor() {
         super(sceneConfig);
