@@ -146,12 +146,23 @@ export class Level1 extends Phaser.Scene {
         this.data.set('playerScore', this.data.get('playerScore') + 1);
       });
     }
+
+    this.sys.events.once('shutdown', this.shutdown, this);
   }
 
   update(): void {
     //update all sheep
     for(const sheep of this.sheep.getChildren()) {
       sheep.update();
+    }
+  }
+
+  shutdown(): void {
+    alert("TEST");
+    if (this.sheep.children){
+      this.sheep.children.each((sheep: Sheep) =>{
+        sheep.data.events.off('changedata-saved');
+      })
     }
   }
 }
