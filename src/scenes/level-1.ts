@@ -158,7 +158,6 @@ export class Level1 extends Phaser.Scene {
   }
 
   shutdown(): void {
-    alert("TEST");
     if (this.sheep.children){
       this.sheep.children.each((sheep: Sheep) =>{
         sheep.data.events.off('changedata-saved');
