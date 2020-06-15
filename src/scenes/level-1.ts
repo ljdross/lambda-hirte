@@ -159,7 +159,7 @@ export class Level1 extends Phaser.Scene {
       });
     }
 
-    makeCollider(this, this.sheep, this.fences, this.portals);
+    this.sys.events.once('shutdown', this.shutdown, this);
   }
 
   update(): void {
@@ -169,4 +169,11 @@ export class Level1 extends Phaser.Scene {
     }
   }
 
+  shutdown(): void {
+    if (this.sheep.children){
+      this.sheep.children.each((sheep: Sheep) =>{
+        sheep.data.events.off('changedata-saved');
+      })
+    }
+  }
 }

@@ -149,6 +149,7 @@ export class GuiScene extends Phaser.Scene {
         restart.setInteractive(({ useHandCursor: true }));
         restart.on('pointerdown', () => {
             const currentScene = this.scene.get(this.currentLevel);
+            currentScene.events.off('changedata-playerScore');
             currentScene.scene.restart();
             const teleportGUI = this.scene.get('teleportGUI');
             teleportGUI.scene.restart();
