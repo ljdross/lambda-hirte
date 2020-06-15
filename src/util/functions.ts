@@ -1,5 +1,8 @@
 import {Type} from "../objects/tile";
-import {portalType} from "../objects/Teleport";
+import {Portal, portalType} from "../objects/Teleport";
+import {Fence} from "../objects/fence";
+import Scene = Phaser.Scene;
+import {Sheep} from "../objects/sheep";
 
 export function initButton(name): void {
     name.setInteractive(({ useHandCursor: true }));
@@ -139,3 +142,23 @@ export function getPortalTypeWithKey(key): portalType {
     if (key == 'stoneToSand') return portalType.sttosa;
     return null;
 }
+
+export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Group,
+    fences: Phaser.GameObjects.Group, portals: Phaser.GameObjects.Group,): void {
+    if(scene.physics && sheep && fences && portals && sheep.children && fences.children && portals.children) {
+        scene.physics.world.addCollider(sheep, sheep,
+            (sheep1: Sheep, sheep2: Sheep) => {
+                sheep1.collide(sheep2);
+                sheep2.collide(sheep1);
+            })
+        scene.physics.world.addCollider(fences, sheep,
+            (fences: Fence, sheep: Sheep) => {
+                sheep.collide(fences);
+            })
+        scene.physics.world.addCollider(portals, sheep,
+            (sheep: Sheep, portal: Portal) => {
+                portal.executeTeleport(this, this.board, sheep);
+            })
+    }
+}
+

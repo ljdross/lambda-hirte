@@ -2,7 +2,7 @@ import {Tile, Type, Board} from "../objects/board"
 import{Portal} from "../objects/Teleport";
 import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
-import {initSettings} from "../util/functions";
+import {initSettings, makeCollider} from "../util/functions";
 import {Fence} from "../objects/fence";
 
 
@@ -107,14 +107,7 @@ export class Level2 extends Phaser.Scene {
             this.fences.addMultiple([f1, f2, f3, f4]);
         }
 
-        this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
-            sheep1.collide(sheep2);
-            sheep2.collide(sheep1);
-        })
-
-        this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
-            sheep.collide(fences);
-        })
+        makeCollider(this, this.sheep, this.fences, this.portals);
     }
 
     update(): void {
