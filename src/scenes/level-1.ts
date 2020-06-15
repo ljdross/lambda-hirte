@@ -70,12 +70,6 @@ export class Level1 extends Phaser.Scene {
     this.board.draw(this);
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
-    /*
-    this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
-      portal.executeTeleport(this, this.board, sheep);
-    })
-
-     */
 
     let i: number;
     for (i = 0; i < 5; i++) {
@@ -87,13 +81,6 @@ export class Level1 extends Phaser.Scene {
       const sheep2 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
       this.sheep.addMultiple([sheep1, sheep2]);
     }
-    /*
-        this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
-          sheep1.collide(sheep2);
-          sheep2.collide(sheep1);
-        })
-
-     */
 
     //fancy fences
     const f1 = new Fence(this, 2 * 128, 128 * 0.5, 'fence_v').setOrigin(0.5, 0.5);
@@ -103,12 +90,6 @@ export class Level1 extends Phaser.Scene {
 
     this.fences = this.add.group();
     this.fences.addMultiple([f1, f2, f3, f4]);
-    /*
-    this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
-      sheep.collide(fences);
-    })
-
-     */
 
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');
@@ -160,6 +141,7 @@ export class Level1 extends Phaser.Scene {
     }
 
     this.sys.events.once('shutdown', this.shutdown, this);
+    makeCollider(this, this.sheep, this.fences, this.portals);
   }
 
   update(): void {
