@@ -134,9 +134,12 @@ export class Level1 extends Phaser.Scene {
              portal.setTexture("portal");
              portal.setSize(128, 128);
              portal.play("Portal2");
-             portal.on("animationcomplete",()=>{
+
+             portal.on("animationcomplete", ()=>{
+               portal.chosen = false ;
                portal.destroy();
              })
+
         })
       }
     });

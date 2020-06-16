@@ -91,17 +91,16 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     need a sprites for the side effect
     */
     public executeTeleport ( scene: Scene ,board: Board, sheep: Sheep): void{
-        if(this.toTile != null && this.chosen == true){
-            const coord = board.findTileCoord(this.toTile);
-            this.toTile.portal = new Portal(scene , coord[0]* 128 + 64 , coord[1]* 128 + 64, "Portal" ,this.ptype);
-            sheep.x= this.toTile.portal.x;
-            sheep.y= this.toTile.portal.y;
-            this.toTile.portal.setDepth(1);
-            this.toTile.portal.play("Portal3");
-            this.toTile.portal.on("animationcomplete",()=> {
+        if(this.toTile != null  && this.chosen == true){
+
+                const coord = board.findTileCoord(this.toTile);
+                this.toTile.portal = new Portal(scene , coord[0]* 128 + 64 , coord[1]* 128 + 64, "Portal" ,this.ptype);
+                sheep.x= this.toTile.portal.x;
+                sheep.y= this.toTile.portal.y;
+                this.toTile.portal.setDepth(1);
+                this.toTile.portal.play("Portal3");
                 this.toTile.portal.destroy();
-            });
-            this.chosen= false;
+
         }
     }
 }
