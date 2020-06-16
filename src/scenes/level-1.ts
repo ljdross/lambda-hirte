@@ -71,7 +71,7 @@ export class Level1 extends Phaser.Scene {
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
     this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
-      portal.executeTeleport(this, this.board, sheep);
+      portal.executeTeleport(this, this.board,this.portals, sheep);
     })
 
     let i: number;
@@ -133,8 +133,7 @@ export class Level1 extends Phaser.Scene {
              portal.chosen = true;
              portal.setTexture("portal");
              portal.setSize(128, 128);
-             portal.play("Portal2");
-
+             portal.play("Portal2",true);
              portal.on("animationcomplete", ()=>{
                portal.chosen = false ;
                portal.destroy();
