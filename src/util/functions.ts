@@ -16,7 +16,21 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
-        if(level == "level2") {
+        if(level == "level4") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level1Tut',
+                winningScore: 10,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level1Tut', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level2") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level2',
                 winningScore: 10,
