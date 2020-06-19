@@ -12,7 +12,6 @@ export class GuiScene extends Phaser.Scene {
     public winningScore: number;
     public showGrid: boolean;
     public musicVolume: number;
-    public brightness: number;
 
     constructor() {
         super({
@@ -47,31 +46,8 @@ export class GuiScene extends Phaser.Scene {
         const settingsData = initOptionsButton(this, width, height);
         const settings = settingsData.settings;
         const volume = settingsData.volume;
-        const brightness = settingsData.brightness;
         const grid = settingsData.grid;
         const back = settingsData.backButton;
-
-        const brightnessSlider = this.rexUI.add.slider({
-            x: width / 2 + 50,
-            y: height / 2,
-            value: this.brightness,
-            width: 200,
-            height: 20,
-            orientation: 'x',
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
-            valuechangeCallback: value => {
-                this.cameras.main.setAlpha(value * 2);
-                this.brightness = value;
-            },
-            input: 'drag', // 'drag'|'click'
-            space: {
-                top: 4,
-                bottom: 4
-            },
-        }).layout();
-        brightnessSlider.visible = false;
 
         const volumeSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
@@ -121,9 +97,7 @@ export class GuiScene extends Phaser.Scene {
             exitGame.visible = false;
             settings.visible = false;
             back.visible = true;
-            brightness.visible = true;
             volume.visible = true;
-            brightnessSlider.visible = true;
             volumeSlider.visible = true;
             grid.visible = true;
             gridCheckbox.visible = true;
@@ -136,9 +110,7 @@ export class GuiScene extends Phaser.Scene {
             exitGame.visible = true;
             settings.visible = true;
             back.visible = false;
-            brightness.visible = false;
             volume.visible = false;
-            brightnessSlider.visible = false;
             volumeSlider.visible = false;
             grid.visible = false;
             gridCheckbox.visible = false;
@@ -176,9 +148,9 @@ export class GuiScene extends Phaser.Scene {
             this.sound.stopAll();
             this.scene.stop(this.currentLevel);
             this.scene.stop('GuiScene');
+            this.scene.stop('teleportGUI');
             this.scene.start('MainMenu', {
                 showGrid: this.showGrid,
-                brightness: this.brightness,
                 musicVolume: this.musicVolume
             });
         });
