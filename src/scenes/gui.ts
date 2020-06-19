@@ -75,7 +75,6 @@ export class GuiScene extends Phaser.Scene {
         const gridCheckbox = this.rexUI.add.buttons({
             x: width / 2 + 50,
             y: height / 2 + 100,
-            value: this.showGrid,
             orientation: 'y',
             background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_DARK_BLUE),
             buttons: [
@@ -85,9 +84,13 @@ export class GuiScene extends Phaser.Scene {
             setValueCallback: (button, value) => {
                 button.getElement('icon')
                     .setFillStyle((value)? COLOR_LIGHT : undefined);
-                this.showGrid = value;
             }
         }).layout();
+
+        if (this.showGrid) gridCheckbox.buttons[0].getElement('icon').setFillStyle(COLOR_LIGHT);
+        gridCheckbox.on('button.click', () => {
+            this.showGrid = !this.showGrid;
+        });
         gridCheckbox.visible = false;
 
         settings.on('pointerdown', () => {
