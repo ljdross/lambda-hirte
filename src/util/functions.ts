@@ -21,12 +21,10 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 currentLevel: 'Level2',
                 winningScore: 10,
                 showGrid: settingsData.showGrid,
-                brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
             currentScene.scene.start('Level2', {
                 showGrid: settingsData.showGrid,
-                brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
         } else {
@@ -34,12 +32,10 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 currentLevel: 'Level1',
                 winningScore: 7,
                 showGrid: settingsData.showGrid,
-                brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
             currentScene.scene.start('Level1', {
                 showGrid: settingsData.showGrid,
-                brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
         }
@@ -57,12 +53,10 @@ export const updateLevelButton = ((currentScene, name, settingsData): void => {
             currentLevel: 'Level1',
             winningScore: 7,
             showGrid: settingsData.showGrid,
-            brightness: settingsData.brightness,
             musicVolume: settingsData.musicVolume
         });
         currentScene.scene.start('Level1', {
             showGrid: settingsData.showGrid,
-            brightness: settingsData.brightness,
             musicVolume: settingsData.musicVolume
         });
     });
@@ -86,27 +80,21 @@ export function randomInt(min, max): number{
 export const initSettings = (currentScene, data): void => {
     if (data.musicVolume === undefined) {
         currentScene.musicVolume = 0.5;
-        currentScene.brightness = 0.5;
         currentScene.showGrid = false;
     } else {
         currentScene.musicVolume = data.musicVolume;
-        currentScene.brightness = data.brightness;
         currentScene.showGrid = data.showGrid;
     }
-    currentScene.cameras.main.setAlpha(currentScene.brightness * 2);
 };
 
 export const initOptionsButton = ((currentScene, width, height): any => {
     const settings = currentScene.add.image(width / 2, height / 2 + 75, 'settings');
     const volume = currentScene.add.image(width / 2 - 100, height / 2 - 100, 'volume');
-    const brightness = currentScene.add.image(width / 2 - 100, height / 2, 'brightness');
     const grid = currentScene.add.image(width / 2 - 100, height / 2 + 100, 'grid');
     const back = currentScene.add.image(width / 2 + 200, height / 2 - 100, 'back');
 
     volume.setDisplaySize(0.05   * width, 0.1 * height);
     volume.visible = false;
-    brightness.setDisplaySize(0.05   * width, 0.1 * height);
-    brightness.visible = false;
     grid.setDisplaySize(0.05   * width, 0.1 * height);
     grid.visible = false;
     back.setDisplaySize(0.05   * width, 0.1 * height);
@@ -119,7 +107,6 @@ export const initOptionsButton = ((currentScene, width, height): any => {
     const settingsData = {
         settings: settings,
         volume: volume,
-        brightness: brightness,
         grid: grid,
         backButton: back
     }

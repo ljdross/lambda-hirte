@@ -118,11 +118,6 @@
       },
       {
         "type": "image",
-        "key": "brightness",
-        "url": "assets/menu/brightness.png"
-      },
-      {
-        "type": "image",
         "key": "grid",
         "url": "assets/menu/grid.png"
       },

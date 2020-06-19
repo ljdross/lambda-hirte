@@ -19,7 +19,6 @@ export class Level1 extends Phaser.Scene {
   public board: Board;
   public showGrid: boolean;
   public musicVolume: number;
-  public brightness: number;
   public portals: Phaser.GameObjects.Group;
 
   constructor() {
