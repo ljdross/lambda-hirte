@@ -80,7 +80,7 @@ export function randomInt(min, max): number{
 export const initSettings = (currentScene, data): void => {
     if (data.musicVolume === undefined) {
         currentScene.musicVolume = 0.2;
-        currentScene.showGrid = false;
+        currentScene.showGrid = true;
     } else {
         currentScene.musicVolume = data.musicVolume;
         currentScene.showGrid = data.showGrid;
