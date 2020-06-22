@@ -24,6 +24,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     fromTile: Tile;
     toTile: Tile;
     chosen: boolean;
+    pFunction = {add: null, multi: null} ;
 
     constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , ptyp: portalType) {
         super(scene, x, y,texture);
@@ -31,11 +32,20 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         this.setInteractive();
         this.ptype = ptyp;
         this.chosen= false;
+
     }
 
     public setGoal(tile: Tile): void{
         this.toTile = tile;
     }
+
+    public  setFunction(x: number,y: number): void {
+        this.pFunction.add = x;
+        this.pFunction.multi = y;
+    }
+
+
+
 
     public createAnim(scene: Phaser.Scene) {
         scene.anims.create({
@@ -65,23 +75,14 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     Calculate where to go
     */
     public whereToGo(board: Board, id: number, tileTyp: Type): number{
-        if (tileTyp == Type.Grass ){
-            if(this.ptype == portalType.gtog) return (id+5) % board.getNumberOfTilesByType(Type.Grass);
-            if(this.ptype == portalType.gtosa) return (id+3) % board.getNumberOfTilesByType(Type.Sand);
-            if(this.ptype == portalType.gtost) return (id+2) % board.getNumberOfTilesByType(Type.Stone);
-        }
-        if (tileTyp == Type.Sand ){
-            if(this.ptype == portalType.satog) return (id+9)% board.getNumberOfTilesByType(Type.Grass);
-            if(this.ptype == portalType.satosa) return (id+3)% board.getNumberOfTilesByType(Type.Sand);
-            if(this.ptype == portalType.satost) return (id+2)% board.getNumberOfTilesByType(Type.Stone);
-        }
-        if (tileTyp == Type.Stone ){
-            if(this.ptype == portalType.sttog) return (id+5)% board.getNumberOfTilesByType(Type.Grass);
-            if(this.ptype == portalType.sttosa) return (id+3)% board.getNumberOfTilesByType(Type.Sand);
-            if(this.ptype == portalType.sttost) return (id+2)% board.getNumberOfTilesByType(Type.Stone);
-        }
 
-        return 0 ;
+
+        if (this.pFunction.multi == null || this.pFunction.add == null) return 0;
+
+        else
+
+        return (this.pFunction.multi * id +this.pFunction.add) ;
+
     }
 
     /*
@@ -102,7 +103,6 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
                 this.createAnim(scene);
                 this.toTile.portal.play("Portal3",true);
                 this.toTile.portal.on("animationcomplete",()=>{
-                    console.log("i am here");
                     this.toTile.portal.destroy();
                 })
         }

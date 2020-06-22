@@ -1,5 +1,5 @@
 import {Type} from "../objects/tile";
-import {portalType} from "../objects/Teleport";
+import {Portal, portalType} from "../objects/Teleport";
 
 export function initButton(name): void {
     name.setInteractive(({ useHandCursor: true }));
