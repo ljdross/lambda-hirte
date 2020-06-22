@@ -16,7 +16,77 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
-        if(level == "level2") {
+        if(level == "level4") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut1',
+                winningScore: 1,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut1', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level5") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut2',
+                winningScore: 1,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut2', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level6") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut3',
+                winningScore: 2,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut3', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level7") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut4',
+                winningScore: 2,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut4', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level8") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut5',
+                winningScore: 1,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut5', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level2") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level2',
                 winningScore: 10,
