@@ -2,7 +2,7 @@ import {Board, Tile, Type} from "../objects/board"
 import {Portal, portalType} from "../objects/Teleport";
 import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
-import {getTileTypeWithKey, initSettings, getPortalTypeWithKey} from "../util/functions";
+import {getPortalTypeWithKey, getTileTypeWithKey, initSettings} from "../util/functions";
 import {Fence} from "../objects/fence";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -20,7 +20,9 @@ export class Level1 extends Phaser.Scene {
   public showGrid: boolean;
   public musicVolume: number;
   public portals: Phaser.GameObjects.Group;
-
+  public pFunction1 = {add: 3 , multi: 1};
+  public pFunction2 = {add: 4 , multi: 2};
+  public pFunction3 = {add: 8 , multi: 4};
   constructor() {
     super(sceneConfig);
   }
@@ -29,6 +31,19 @@ export class Level1 extends Phaser.Scene {
       this.data.set('playerScore', 0);
       initSettings(this, data);
   }
+
+  /*
+  *passed the given functions to a different types of portals .
+  *this methode depends on hwo many portal types in the level.
+   */
+  public assignFunctionToPortalType(portal: Portal): void{
+
+    if(portal.ptype == portalType.gtost)  portal.setFunction(this.pFunction1.add, this.pFunction1.multi);
+    if(portal.ptype == portalType.sttosa) portal.setFunction(this.pFunction2.add, this.pFunction2.multi);
+    if(portal.ptype == portalType.satog) portal.setFunction(this.pFunction3.add, this.pFunction3.multi);
+
+  }
+
 
   // give back the tile with the coordinate(x,y)
   public getTile(x: number,y: number): number[] {
@@ -112,10 +127,13 @@ export class Level1 extends Phaser.Scene {
             notAllowed.destroy();
           }, 1500);
         } else {
+
           const portalType = getPortalTypeWithKey(placingTeleporter);
           tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
           tile.portal.createAnim(this);
-          const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+
+          this.assignFunctionToPortalType(tile.portal);
+          const goal = tile.portal.whereToGo(this.board, tile.tileNumber,tile.type);
           const tileType = getTileTypeWithKey(placingTeleporter);
           tile.portal.setGoal(this.board.findTile(tileType, goal));
           this.portals.add(tile.portal);
