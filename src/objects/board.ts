@@ -35,8 +35,8 @@ export class Board {
     this.numberOfTilesByType[Type.Sand] = 0;
     this.numberOfTilesByType[Type.Stone] = 0;
 
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
         const currentTile = this.tiles[x][y];
         if (currentTile.type == Type.Grass) {
           this.drawHelper(scene, x, y, Type.Grass);

@@ -2,6 +2,7 @@ import {initLevelButton, initSettings, updateLevelButton} from "../util/function
 import {createButton} from "../util/plugins";
 import {Board} from "../objects/board";
 import {physicsSettings} from "../util/data";
+import {SheepHorizontal} from "../objects/sheep";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: true,
@@ -20,28 +21,29 @@ export class MainMenu extends Phaser.Scene {
     private song: Phaser.Sound.BaseSound;
     public showGrid: boolean;
     public musicVolume: number;
-    public brightness: number;
+    public board: Board;
+    public sheep: SheepHorizontal;
 
     constructor() {
         super(sceneConfig);
     }
 
-      init(data): void {
+    init(data): void {
         initSettings(this, data);
-      }
+    }
 
     preload(): void {
-        this.load.spritesheet('fence_h','assets/sprites/fence_horizontal.png',{frameHeight:32 ,frameWidth: 160});
-        this.load.spritesheet('fence_v','assets/sprites/fence_vertical.png',{frameHeight:160 ,frameWidth: 32});
-        this.load.spritesheet('portal','assets/sprites/teleporter_portal.png',{frameHeight:128 ,frameWidth: 128});
-        this.load.spritesheet('sheep_h','assets/sprites/sheep_horizontal.png',{frameHeight:100 ,frameWidth: 100});
-        this.load.spritesheet('sheep_v','assets/sprites/sheep_vertical.png',{frameHeight:100 ,frameWidth: 100});
+        this.load.spritesheet('fence_h', 'assets/sprites/fence_horizontal.png', {frameHeight: 32, frameWidth: 160});
+        this.load.spritesheet('fence_v', 'assets/sprites/fence_vertical.png', {frameHeight: 160, frameWidth: 32});
+        this.load.spritesheet('portal', 'assets/sprites/teleporter_portal.png', {frameHeight: 128, frameWidth: 128});
+        this.load.spritesheet('sheep_h', 'assets/sprites/sheep_horizontal.png', {frameHeight: 100, frameWidth: 100});
+        this.load.spritesheet('sheep_v', 'assets/sprites/sheep_vertical.png', {frameHeight: 100, frameWidth: 100});
         this.load.pack(
             "preload",
             "assets/pack.json",
             "preload"
         );
-        this.load.audio('mainsong', 'assets/sounds/mainsong.mp3', {instances: 1 });
+        this.load.audio('mainsong', 'assets/sounds/mainsong.mp3', {instances: 1});
         this.load.scenePlugin({
             key: 'rexuiplugin',
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -52,8 +54,12 @@ export class MainMenu extends Phaser.Scene {
     create(): void {
         const width = this.sys.game.canvas.width;
         const height = this.sys.game.canvas.height;
-        const board = new Board(16, 12, this.showGrid);
-        board.draw(this);
+        this.board = new Board(16, 12, this.showGrid);
+        this.board.showTileNumbers = false;
+        this.board.showGrid = false;
+        this.board.draw(this);
+
+        this.sheep = new SheepHorizontal({ scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(50, 78 + 128) });
 
         this.song = this.sound.add('mainsong');
         const musicConfig = {
@@ -65,13 +71,12 @@ export class MainMenu extends Phaser.Scene {
         const settingsData = {
             showGrid: this.showGrid,
             musicVolume: this.musicVolume,
-            brightness: this.brightness,
         }
 
         const level1 = this.add.image(width / 2 - 100, height / 2 - 100, 'one');
-        const level2 = this.add.image(width / 2 , height / 2 - 100, 'two');
+        const level2 = this.add.image(width / 2, height / 2 - 100, 'two');
         const level3 = this.add.image(width / 2 + 100, height / 2 - 100, 'three');
-        const level4 = this.add.image(width / 2 - 100 , height / 2, 'four');
+        const level4 = this.add.image(width / 2 - 100, height / 2, 'four');
         const level5 = this.add.image(width / 2, height / 2, 'five');
         const level6 = this.add.image(width / 2 + 100, height / 2, 'six');
         const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
@@ -87,34 +92,6 @@ export class MainMenu extends Phaser.Scene {
         initLevelButton(this, level7, width, height, settingsData, "level7")
         initLevelButton(this, level8, width, height, settingsData, "level8")
         initLevelButton(this, level9, width, height, settingsData, "level9")
-
-        const brightnessSlider = this.rexUI.add.slider({
-            x: width / 2 + 50,
-            y: height / 2,
-            value: this.brightness,
-            width: 200,
-            height: 20,
-            orientation: 'x',
-            track: this.rexUI.add.roundRectangle(0, 0, 0, 0, 6, COLOR_DARK),
-            indicator: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
-            thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, COLOR_LIGHT),
-            valuechangeCallback: value => {
-                this.cameras.main.setAlpha(value * 2);
-                this.brightness = value;
-                const settingsDataNew = {
-                    showGrid: this.showGrid,
-                    musicVolume: this.musicVolume,
-                    brightness: this.brightness,
-                };
-                updateLevelButton(this, level1, settingsDataNew);
-            },
-            input: 'drag', // 'drag'|'click'
-            space: {
-                top: 4,
-                bottom: 4
-            },
-        }).layout();
-        brightnessSlider.visible = false;
 
         const volumeSlider = this.rexUI.add.slider({
             x: width / 2 + 50,
@@ -133,7 +110,6 @@ export class MainMenu extends Phaser.Scene {
                 const settingsDataNew = {
                     showGrid: this.showGrid,
                     musicVolume: this.musicVolume,
-                    brightness: this.brightness,
                 };
                 updateLevelButton(this, level1, settingsDataNew);
             },
@@ -148,7 +124,6 @@ export class MainMenu extends Phaser.Scene {
         const gridCheckbox = this.rexUI.add.buttons({
             x: width / 2 + 50,
             y: height / 2 + 100,
-            value: this.showGrid,
             orientation: 'y',
             background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_DARK_BLUE),
             buttons: [
@@ -157,32 +132,32 @@ export class MainMenu extends Phaser.Scene {
             type: ((CheckboxesMode) ? 'checkboxes' : 'radio'),
             setValueCallback: (button, value) => {
                 button.getElement('icon')
-                    .setFillStyle((value)? COLOR_LIGHT : undefined);
-                this.showGrid = value;
+                    .setFillStyle((value) ? COLOR_LIGHT : undefined);
                 const settingsDataNew = {
                     showGrid: this.showGrid,
                     musicVolume: this.musicVolume,
-                    brightness: this.brightness,
                 };
                 updateLevelButton(this, level1, settingsDataNew);
             }
         }).layout();
+
+        if (this.showGrid) gridCheckbox.buttons[0].getElement('icon').setFillStyle(COLOR_LIGHT);
+        gridCheckbox.on('button.click', () => {
+            this.showGrid = !this.showGrid;
+        });
         gridCheckbox.visible = false;
 
         const play = this.add.image(width / 2, height / 2 - 75, 'levels');
         const settings = this.add.image(width / 2, height / 2, 'settings');
         const volume = this.add.image(width / 2 - 100, height / 2 - 100, 'volume');
-        const brightness = this.add.image(width / 2 - 100, height / 2, 'brightness');
         const grid = this.add.image(width / 2 - 100, height / 2 + 100, 'grid');
         const back = this.add.image(width / 2 + 200, height / 2 - 100, 'back');
 
-        volume.setDisplaySize(0.05   * width, 0.1 * height);
+        volume.setDisplaySize(0.05 * width, 0.1 * height);
         volume.visible = false;
-        brightness.setDisplaySize(0.05   * width, 0.1 * height);
-        brightness.visible = false;
-        grid.setDisplaySize(0.05   * width, 0.1 * height);
+        grid.setDisplaySize(0.05 * width, 0.1 * height);
         grid.visible = false;
-        back.setDisplaySize(0.05   * width, 0.1 * height);
+        back.setDisplaySize(0.05 * width, 0.1 * height);
         back.setInteractive(({ useHandCursor: true }));
         back.visible = false;
         back.on('pointerdown', () => {
@@ -198,9 +173,7 @@ export class MainMenu extends Phaser.Scene {
             level7.visible = false;
             level8.visible = false;
             level9.visible = false;
-            brightness.visible = false;
             volume.visible = false;
-            brightnessSlider.visible = false;
             volumeSlider.visible = false;
             grid.visible = false;
             gridCheckbox.visible = false;
@@ -212,9 +185,7 @@ export class MainMenu extends Phaser.Scene {
             play.visible = false;
             settings.visible = false;
             back.visible = true;
-            brightness.visible = true;
             volume.visible = true;
-            brightnessSlider.visible = true;
             volumeSlider.visible = true;
             grid.visible = true;
             gridCheckbox.visible = true;
@@ -236,5 +207,9 @@ export class MainMenu extends Phaser.Scene {
             level8.visible = true;
             level9.visible = true;
         });
+    }
+
+    update(): void {
+        // this.sheep.update(); // doesn't work after quit. "TypeError: this.scene is undefined"
     }
 }
