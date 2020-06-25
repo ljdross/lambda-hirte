@@ -99,6 +99,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
                 this.toTile.portal = new Portal(scene , coord[0]* 128 +64 , coord[1]* 128 +64, "portal" ,this.ptype);
                 sheep.x= this.toTile.portal.x;
                 sheep.y= this.toTile.portal.y;
+                sheep.stop = false;
                 this.toTile.portal.setDepth(1);
                 this.createAnim(scene);
                 this.toTile.portal.play("Portal3",true);

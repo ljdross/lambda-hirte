@@ -11,7 +11,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected eating: boolean;
     protected cooldown: number;
     protected eatTimer: number;
-    protected stop: boolean;
+    public stop: boolean;
 
     protected constructor(protected config, sprite, speed?: number, collision?: boolean) {
         super(config.scene, config.x, config.y, sprite, 0);
@@ -132,6 +132,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     public collide(obj: Phaser.Physics.Arcade.Sprite): void {
         if(obj instanceof Portal) {
+            console.log("this.stop",this.stop);
             this.stop = true;
             this.anims.stop();
         } else if(!(obj instanceof Sheep) || (this.collision && !(obj.x == this.x && obj.y == this.y))) {
@@ -142,6 +143,11 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    protected activatedPortal(): void {
+        this.config.scene.get('teleportGUI').data.events.on('changedata-teleportersActivated', () => {
+            this.stop = false;
+        })
+    }
 
     protected atBorder(): void {
         if(this.isAtBorder()) {
