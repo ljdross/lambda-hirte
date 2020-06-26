@@ -1,19 +1,25 @@
 import 'phaser';
-import {Tile, Type} from "../objects/board";
+import {Tile, Type} from "./tile";
+import {Portal} from "./Teleport";
+
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     public speed: number;
+    public collision: boolean;
     protected sandSpeed: number;
     protected goal: boolean;
     protected eating: boolean;
     protected cooldown: number;
     protected eatTimer: number;
+    public stop: boolean;
 
-    protected constructor(protected config, sprite, speed?: number) {
+    protected constructor(protected config, sprite, speed?: number, collision?: boolean) {
         super(config.scene, config.x, config.y, sprite, 0);
         config.scene.add.existing(this);
         this.scene.physics.add.existing(this);
+        if(collision) this.collision = collision;
+        else this.collision = false;
         if (speed) this.speed = speed;
         else this.speed = Phaser.Math.Between(40, 100) / 100;
         this.sandSpeed = this.speed - (this.speed / 3);
@@ -25,6 +31,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.setOffset(17, 85);
         this.body.debugShowBody = false;
         this.setData('saved', false);
+        this.stop = false;
     }
 
     //needs to be updated in scene for each sheep
@@ -38,12 +45,12 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.walk();
     }
 
+    //1 up, 2 left, 3 down, 4 right
+    abstract front(): number;
     abstract move(speed: number): void;
     abstract isAtBorder(): boolean;
     abstract obstacle(): void;
     abstract eatAnim(): void;
-    //1 up, 2 left, 3 down, 4 right
-    abstract front(): number;
 
     public onGoal(): void {
         const tileX = Math.floor(this.x / 64);
@@ -107,28 +114,31 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected walk(): void {
-        if (this.eating) {
-            this.eatTimer++
-        } else {
-            this.eatTimer = 0;
-        }
-        if (this.eatTimer > 400) {
-            this.eating = false;
-        }
-        if (this.eating && !this.onGrass()) this.eating = false;
-        if (this.cooldown == 0) this.eatGrass();
+        if(this.eating) this.eatTimer++;
+        else this.eatTimer = 0;
+
+        if(this.eatTimer > 400) this.eating = false;
+        if(this.eating && !this.onGrass()) this.eating = false;
+
+        if(this.cooldown == 0) this.eatGrass();
         else this.cooldown -= 1;
-        if (this.eating) this.eatAnim();
-        else if(!this.goal) {
-            if(this.onSand()) this.move(this.sandSpeed);
+
+        if(this.eating) this.eatAnim();
+        else if(!this.goal && !this.stop) {
+            if (this.onSand()) this.move(this.sandSpeed);
             else this.move(this.speed);
         }
     }
 
     public collide(obj: Phaser.Physics.Arcade.Sprite): void {
-        if((this.front() == 1 && this.body.y > obj.body.y) || (this.front() == 2 && this.x < obj.x)
-            || (this.front() == 3 && this.body.y < obj.body.y) || (this.front() == 4 && this.x > obj.x)) {
-            this.obstacle();
+        if(obj instanceof Portal) {
+            this.stop = true;
+            this.anims.pause();
+        } else if(!(obj instanceof Sheep) || (this.collision && !(obj.x == this.x && obj.y == this.y))) {
+            if ((this.front() == 1 && this.body.y > obj.body.y) || (this.front() == 2 && this.x < obj.x)
+                || (this.front() == 3 && this.body.y < obj.body.y) || (this.front() == 4 && this.x > obj.x)) {
+                this.obstacle();
+            }
         }
     }
 
@@ -140,8 +150,8 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 }
 
 export class SheepVertical extends Sheep {
-    constructor(config, speed?: number) {
-        super(config, 'sheep_v', speed);
+    constructor(config, speed?: number, collision?: boolean) {
+        super(config, 'sheep_v', speed, collision);
         this.scene.anims.create({
             key: 'walk_down',
             frames: this.scene.anims.generateFrameNumbers('sheep_v', {start: 0, end: 7}),
@@ -169,11 +179,9 @@ export class SheepVertical extends Sheep {
     }
 
     isAtBorder(): boolean {
-        if((this.speed < 0 && this.getFrontY() <= 0) || (this.speed > 0 && this.getFrontY() >= this.scene.sys.game.canvas.height)
-            || !this.getFrontTile()) {
-            return true;
-        }
-        return false;
+        return (this.speed < 0 && this.getFrontY() <= 0) || (this.speed > 0 && this.getFrontY() >= this.scene.sys.game.canvas.height)
+            || !this.getFrontTile();
+
     }
 
     obstacle(): void {
@@ -192,8 +200,8 @@ export class SheepVertical extends Sheep {
 }
 
 export class SheepHorizontal extends Sheep {
-    constructor(config, speed?: number) {
-        super(config, 'sheep_h', speed);
+    constructor(config, speed?: number, collision?: boolean) {
+        super(config, 'sheep_h', speed, collision);
         this.scene.anims.create({
             key: 'walk_right',
             frames: this.scene.anims.generateFrameNumbers('sheep_h', {start: 0, end: 3}),
@@ -227,11 +235,9 @@ export class SheepHorizontal extends Sheep {
     }
 
     isAtBorder(): boolean {
-        if((this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
-            || !this.getFrontTile() || !this.getCenterTile()){
-            return true;
-        }
-        return false;
+        return (this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
+            || !this.getFrontTile() || !this.getCenterTile();
+
     }
 
     obstacle(): void {

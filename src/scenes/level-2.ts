@@ -1,8 +1,8 @@
 import {Tile, Type, Board} from "../objects/board"
 import {Portal, portalType} from "../objects/Teleport";
-import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
-import {getPortalTypeWithKey, getTileTypeWithKey, initSettings} from "../util/functions";
+import {getPortalTypeWithKey, getTileTypeWithKey, initSettings, makeCollider} from "../util/functions";
 import {Fence} from "../objects/fence";
 
 
@@ -18,14 +18,16 @@ export class Level2 extends Phaser.Scene {
 
     public sheep: Phaser.GameObjects.Group; //List of all Sheep
     public fences: Phaser.GameObjects.Group; // List of all fences
+    public portals: Phaser.GameObjects.Group; // List of all portals
     public board: Board;
     public showGrid: boolean;
     public musicVolume: number;
-    public portals: Phaser.GameObjects.Group;
+    public brightness: number;
     public pFunction1 = {add: 3 , multi: 2};
     public pFunction2 = {add: 5 , multi: 1};
     public pFunction3 = {add: 2 , multi: 1};
     public pFunction4 = {add: 1 , multi: 1};
+
 
     constructor() {
         super(sceneConfig);
@@ -128,19 +130,6 @@ export class Level2 extends Phaser.Scene {
             this.fences.addMultiple([f1, f2, f3, f4]);
         }
 
-        this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
-            sheep1.collide(sheep2);
-            sheep2.collide(sheep1);
-        })
-
-        this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
-            sheep.collide(fences);
-        })
-
-        this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
-            portal.executeTeleport(this, this.board,this.portals, sheep);
-        })
-
 
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');
@@ -190,6 +179,8 @@ export class Level2 extends Phaser.Scene {
             }
         });
 
+
+        makeCollider(this, this.sheep, this.fences, this.portals, this.board);
 
     }
 
