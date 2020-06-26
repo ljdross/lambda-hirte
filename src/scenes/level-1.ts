@@ -20,7 +20,6 @@ export class Level1 extends Phaser.Scene {
   public board: Board;
   public showGrid: boolean;
   public musicVolume: number;
-  public portals: Phaser.GameObjects.Group;
   public pFunction1 = {add: 3 , multi: 1};
   public pFunction2 = {add: 4 , multi: 2};
   public pFunction3 = {add: 8 , multi: 4};
@@ -33,10 +32,6 @@ export class Level1 extends Phaser.Scene {
     initSettings(this, data);
   }
 
-  /*
-  *passed the given functions to a different types of portals .
-  *this methode depends on hwo many portal types in the level.
-   */
   public assignFunctionToPortalType(portal: Portal): void{
 
     if(portal.ptype == portalType.gtost)  portal.setFunction(this.pFunction1.add, this.pFunction1.multi);
@@ -85,9 +80,12 @@ export class Level1 extends Phaser.Scene {
     this.board.draw(this);
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
+    /*
     this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
       portal.executeTeleport(this, this.board,this.portals, sheep);
     })
+
+     */
 
     let i: number;
     for (i = 0; i < 5; i++) {
@@ -164,7 +162,7 @@ export class Level1 extends Phaser.Scene {
     }
 
     this.sys.events.once('shutdown', this.shutdown, this);
-    makeCollider(this, this.sheep, this.fences, this.portals);
+    makeCollider(this, this.sheep, this.fences, this.portals, this.board);
   }
 
   update(): void {

@@ -3,6 +3,7 @@ import {Portal, portalType} from "../objects/Teleport";
 import {Fence} from "../objects/fence";
 import Scene = Phaser.Scene;
 import {Sheep} from "../objects/sheep";
+import {Board} from "../objects/board";
 
 export function initButton(name): void {
     name.setInteractive(({ useHandCursor: true }));
@@ -201,7 +202,7 @@ export function getPortalTypeWithKey(key): portalType {
 }
 
 export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Group,
-    fences: Phaser.GameObjects.Group, portals: Phaser.GameObjects.Group,): void {
+    fences: Phaser.GameObjects.Group, portals: Phaser.GameObjects.Group, board: Board): void {
     if(scene && sheep) {
         scene.physics.world.addCollider(sheep, sheep,
             (sheep1: Sheep, sheep2: Sheep) => {
@@ -217,7 +218,7 @@ export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Grou
         if(portals) {
             scene.physics.world.addCollider(portals, sheep,
                 (sheep: Sheep, portal: Portal) => {
-                    portal.executeTeleport(this, this.board, sheep);
+                    portal.executeTeleport(scene, board, portals, sheep);
                 })
         }
     }

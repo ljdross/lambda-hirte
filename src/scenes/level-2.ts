@@ -107,7 +107,7 @@ export class Level2 extends Phaser.Scene {
             this.fences.addMultiple([f1, f2, f3, f4]);
         }
 
-        makeCollider(this, this.sheep, this.fences, this.portals);
+        makeCollider(this, this.sheep, this.fences, this.portals, this.board);
     }
 
     update(): void {

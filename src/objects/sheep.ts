@@ -1,7 +1,5 @@
 import 'phaser';
-import {Tile, Type} from "../objects/board";
-import Collider = Phaser.Physics.Arcade.Collider;
-import {Fence} from "./fence";
+import {Tile, Type} from "./tile";
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
@@ -18,7 +16,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         config.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if(collision) this.collision = collision;
-        else this.collision = true;
+        else this.collision = false;
         if (speed) this.speed = speed;
         else this.speed = Phaser.Math.Between(40, 100) / 100;
         this.sandSpeed = this.speed - (this.speed / 3);
@@ -43,7 +41,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.walk();
     }
 
-    public setSheepCollision(collision: boolean) {
+    public setSheepCollision(collision: boolean): void {
         this.collision = collision;
     }
 
@@ -176,11 +174,9 @@ export class SheepVertical extends Sheep {
     }
 
     isAtBorder(): boolean {
-        if((this.speed < 0 && this.getFrontY() <= 0) || (this.speed > 0 && this.getFrontY() >= this.scene.sys.game.canvas.height)
-            || !this.getFrontTile()) {
-            return true;
-        }
-        return false;
+        return (this.speed < 0 && this.getFrontY() <= 0) || (this.speed > 0 && this.getFrontY() >= this.scene.sys.game.canvas.height)
+            || !this.getFrontTile();
+
     }
 
     obstacle(): void {
@@ -234,11 +230,9 @@ export class SheepHorizontal extends Sheep {
     }
 
     isAtBorder(): boolean {
-        if((this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
-            || !this.getFrontTile() || !this.getCenterTile()){
-            return true;
-        }
-        return false;
+        return (this.speed < 0 && this.getFrontX() <= 0) || (this.speed > 0 && this.getFrontX() >= this.scene.sys.game.canvas.width)
+            || !this.getFrontTile() || !this.getCenterTile();
+
     }
 
     obstacle(): void {
