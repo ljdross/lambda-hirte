@@ -2,7 +2,7 @@ import {Board, Tile, Type} from "../objects/board"
 import {Portal, portalType} from "../objects/Teleport";
 import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
-import {getPortalTypeWithKey, getTileTypeWithKey, initSettings} from "../util/functions";
+import {getTileTypeWithKey, initSettings, getPortalTypeWithKey, makeCollider} from "../util/functions";
 import {Fence} from "../objects/fence";
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -16,10 +16,10 @@ export class Level1 extends Phaser.Scene {
 
   public sheep: Phaser.GameObjects.Group; //List of all Sheep
   public fences: Phaser.GameObjects.Group; // List of all fences
+  public portals: Phaser.GameObjects.Group; // List of all portals
   public board: Board;
   public showGrid: boolean;
   public musicVolume: number;
-  public portals: Phaser.GameObjects.Group;
   public pFunction1 = {add: 3 , multi: 1};
   public pFunction2 = {add: 4 , multi: 2};
   public pFunction3 = {add: 8 , multi: 4};
@@ -28,14 +28,10 @@ export class Level1 extends Phaser.Scene {
   }
 
   init(data): void {
-      this.data.set('playerScore', 0);
-      initSettings(this, data);
+    this.data.set('playerScore', 0);
+    initSettings(this, data);
   }
 
-  /*
-  *passed the given functions to a different types of portals .
-  *this methode depends on hwo many portal types in the level.
-   */
   public assignFunctionToPortalType(portal: Portal): void{
 
     if(portal.ptype == portalType.gtost)  portal.setFunction(this.pFunction1.add, this.pFunction1.multi);
@@ -46,13 +42,13 @@ export class Level1 extends Phaser.Scene {
 
 
   // give back the tile with the coordinate(x,y)
-  public getTile(x: number,y: number): number[] {
+  public getTile(x: number, y: number): number[] {
     const coordinates = [];
     const column = Math.floor(x / 128);
-    coordinates[0]=column;
-    if(this.board.tiles[column] != null) {
+    coordinates[0] = column;
+    if (this.board.tiles[column] != null) {
       const row = Math.floor(y / 128);
-      coordinates[1]=row
+      coordinates[1] = row
       return coordinates;
     }
     return null
@@ -84,22 +80,24 @@ export class Level1 extends Phaser.Scene {
     this.board.draw(this);
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
+    /*
     this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
       portal.executeTeleport(this, this.board,this.portals, sheep);
       sheep.collide(portal);
     })
 
+     */
+
     let i: number;
-    for(i = 0; i < 5; i++) {
-      const sheep1=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
-      const sheep2=new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
+    for (i = 0; i < 5; i++) {
+      const sheep1 = new SheepHorizontal({
+        scene: this,
+        x: Phaser.Math.Between(50, 206),
+        y: Phaser.Math.Between(30, 206)
+      });
+      const sheep2 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
       this.sheep.addMultiple([sheep1, sheep2]);
     }
-
-    this.physics.world.addCollider(this.sheep, this.sheep, (sheep1: Sheep, sheep2: Sheep) => {
-      sheep1.collide(sheep2);
-      sheep2.collide(sheep1);
-    })
 
     //fancy fences
     const f1 = new Fence(this, 2 * 128, 128 * 0.5, 'fence_v').setOrigin(0.5, 0.5);
@@ -109,9 +107,6 @@ export class Level1 extends Phaser.Scene {
 
     this.fences = this.add.group();
     this.fences.addMultiple([f1, f2, f3, f4]);
-    this.physics.world.addCollider(this.fences, this.sheep, (fences: Fence, sheep: Sheep) => {
-      sheep.collide(fences);
-    })
 
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');
@@ -161,18 +156,19 @@ export class Level1 extends Phaser.Scene {
       }
     });
 
-    for(const sheep of this.sheep.getChildren()) {
+    for (const sheep of this.sheep.getChildren()) {
       sheep.data.events.on('changedata-saved', (scene, value) => {
         this.data.set('playerScore', this.data.get('playerScore') + 1);
       });
     }
 
     this.sys.events.once('shutdown', this.shutdown, this);
+    makeCollider(this, this.sheep, this.fences, this.portals, this.board);
   }
 
   update(): void {
     //update all sheep
-    for(const sheep of this.sheep.getChildren()) {
+    for (const sheep of this.sheep.getChildren()) {
       sheep.update();
     }
   }

@@ -2,6 +2,7 @@ import 'phaser';
 import {Tile, Type} from "./tile";
 import {Portal} from "./Teleport";
 
+
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     public speed: number;
@@ -18,7 +19,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         config.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         if(collision) this.collision = collision;
-        else this.collision = true;
+        else this.collision = false;
         if (speed) this.speed = speed;
         else this.speed = Phaser.Math.Between(40, 100) / 100;
         this.sandSpeed = this.speed - (this.speed / 3);
@@ -141,12 +142,6 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
                 this.obstacle();
             }
         }
-    }
-
-    protected activatedPortal(): void {
-        this.config.scene.get('teleportGUI').data.events.on('changedata-teleportersActivated', () => {
-            this.stop = false;
-        })
     }
 
     protected atBorder(): void {
