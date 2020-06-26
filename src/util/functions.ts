@@ -211,14 +211,15 @@ export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Grou
             })
         if(fences) {
             scene.physics.world.addCollider(fences, sheep,
-                (fences: Fence, sheep: Sheep) => {
-                    sheep.collide(fences);
+                (fence: Fence, sheep: Sheep) => {
+                    sheep.collide(fence);
                 })
         }
         if(portals) {
             scene.physics.world.addCollider(portals, sheep,
                 (sheep: Sheep, portal: Portal) => {
                     portal.executeTeleport(scene, board, portals, sheep);
+                    sheep.collide(portal);
                 })
         }
     }

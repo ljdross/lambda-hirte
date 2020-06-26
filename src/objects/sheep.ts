@@ -6,7 +6,7 @@ import {Portal} from "./Teleport";
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     public speed: number;
-    protected collision: boolean;
+    public collision: boolean;
     protected sandSpeed: number;
     protected goal: boolean;
     protected eating: boolean;
@@ -43,10 +43,6 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.onGoal();
         this.onSand();
         this.walk();
-    }
-
-    public setSheepCollision(collision: boolean): void {
-        this.collision = collision;
     }
 
     //1 up, 2 left, 3 down, 4 right
@@ -118,24 +114,26 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     }
 
     protected walk(): void {
-        if (this.eating) this.eatTimer++;
+        if(this.eating) this.eatTimer++;
         else this.eatTimer = 0;
-        if (this.eatTimer > 400) this.eating = false;
-        if (this.eating && !this.onGrass()) this.eating = false;
-        if (this.cooldown == 0) this.eatGrass();
+
+        if(this.eatTimer > 400) this.eating = false;
+        if(this.eating && !this.onGrass()) this.eating = false;
+
+        if(this.cooldown == 0) this.eatGrass();
         else this.cooldown -= 1;
-        if (this.eating) this.eatAnim();
+
+        if(this.eating) this.eatAnim();
         else if(!this.goal && !this.stop) {
-            if(this.onSand()) this.move(this.sandSpeed);
+            if (this.onSand()) this.move(this.sandSpeed);
             else this.move(this.speed);
         }
     }
 
     public collide(obj: Phaser.Physics.Arcade.Sprite): void {
         if(obj instanceof Portal) {
-            console.log("this.stop",this.stop);
             this.stop = true;
-            this.anims.stop();
+            this.anims.pause();
         } else if(!(obj instanceof Sheep) || (this.collision && !(obj.x == this.x && obj.y == this.y))) {
             if ((this.front() == 1 && this.body.y > obj.body.y) || (this.front() == 2 && this.x < obj.x)
                 || (this.front() == 3 && this.body.y < obj.body.y) || (this.front() == 4 && this.x > obj.x)) {

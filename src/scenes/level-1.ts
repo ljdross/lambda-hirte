@@ -80,13 +80,6 @@ export class Level1 extends Phaser.Scene {
     this.board.draw(this);
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
-    /*
-    this.physics.world.addCollider(this.portals, this.sheep, (sheep: Sheep, portal: Portal) => {
-      portal.executeTeleport(this, this.board,this.portals, sheep);
-      sheep.collide(portal);
-    })
-
-     */
 
     let i: number;
     for (i = 0; i < 5; i++) {
