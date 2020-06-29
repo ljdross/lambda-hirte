@@ -20,7 +20,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
     name.setInteractive(({ useHandCursor: true }));
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
-        if(level == "level4") {
+        if(level == "level1") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'LevelTut1',
                 winningScore: 1,
@@ -34,7 +34,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
         }
-        else if(level == "level5") {
+        else if(level == "level2") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'LevelTut2',
                 winningScore: 1,
@@ -48,7 +48,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
         }
-        else if(level == "level6") {
+        else if(level == "level3") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'LevelTut3',
                 winningScore: 2,
@@ -62,7 +62,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
         }
-        else if(level == "level7") {
+        else if(level == "level4") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'LevelTut4',
                 winningScore: 2,
@@ -76,7 +76,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
         }
-        else if(level == "level8") {
+        else if(level == "level5") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'LevelTut5',
                 winningScore: 1,
@@ -90,7 +90,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
         }
-        else if(level == "level2") {
+        else if(level == "level7") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level2',
                 winningScore: 10,
@@ -118,21 +118,106 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
     name.visible = false;
 });
 
-export const updateLevelButton = ((currentScene, name, settingsData): void => {
+export const updateLevelButton = ((currentScene, name, settingsData, level): void => {
+    alert("UPDATE");
     name.disableInteractive();
     name.setInteractive();
     name.on('pointerdown', () => {
         currentScene.scene.stop('MainMenu');
-        currentScene.scene.start('Gui', {
-            currentLevel: 'Level1',
-            winningScore: 7,
-            showGrid: settingsData.showGrid,
-            musicVolume: settingsData.musicVolume
-        });
-        currentScene.scene.start('Level1', {
-            showGrid: settingsData.showGrid,
-            musicVolume: settingsData.musicVolume
-        });
+        if(level == "level1") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut1',
+                winningScore: 1,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut1', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level2") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut2',
+                winningScore: 1,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut2', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level3") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut3',
+                winningScore: 2,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut3', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level4") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut4',
+                winningScore: 2,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut4', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level5") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'LevelTut5',
+                winningScore: 1,
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('LevelTut5', {
+                showGrid: settingsData.showGrid,
+                brightness: settingsData.brightness,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level7") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level2',
+                winningScore: 10,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level2', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        } else {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level1',
+                winningScore: 7,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level1', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });
 });
 

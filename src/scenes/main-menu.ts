@@ -23,6 +23,7 @@ export class MainMenu extends Phaser.Scene {
     public musicVolume: number;
     public board: Board;
     public sheep: SheepHorizontal;
+    public skipUpdateOnInitTwice: number;
 
     constructor() {
         super(sceneConfig);
@@ -30,6 +31,7 @@ export class MainMenu extends Phaser.Scene {
 
     init(data): void {
         initSettings(this, data);
+        this.skipUpdateOnInitTwice = 0;
     }
 
     preload(): void {
@@ -82,7 +84,6 @@ export class MainMenu extends Phaser.Scene {
         const level7 = this.add.image(width / 2 - 100, height / 2 + 100, 'seven');
         const level8 = this.add.image(width / 2, height / 2 + 100, 'eight');
         const level9 = this.add.image(width / 2 + 100, height / 2 + 100, 'nine');
-        // TODO rework buttons Init to pass all levels at once
         initLevelButton(this, level1, width, height, settingsData, "level1");
         initLevelButton(this, level2, width, height, settingsData, "level2")
         initLevelButton(this, level3, width, height, settingsData, "level3")
@@ -111,7 +112,20 @@ export class MainMenu extends Phaser.Scene {
                     showGrid: this.showGrid,
                     musicVolume: this.musicVolume,
                 };
-                updateLevelButton(this, level1, settingsDataNew);
+                if (this.skipUpdateOnInitTwice < 2) {
+                    this.skipUpdateOnInitTwice++;
+                }
+                else {
+                    updateLevelButton(this, level1, settingsDataNew, "level1");
+                    updateLevelButton(this, level2, settingsDataNew, "level2");
+                    updateLevelButton(this, level3, settingsDataNew, "level3");
+                    updateLevelButton(this, level4, settingsDataNew, "level4");
+                    updateLevelButton(this, level5, settingsDataNew, "level5");
+                    updateLevelButton(this, level6, settingsDataNew, "level6");
+                    updateLevelButton(this, level7, settingsDataNew, "level7");
+                    updateLevelButton(this, level8, settingsDataNew, "level8");
+                    updateLevelButton(this, level9, settingsDataNew, "level9");
+                }
             },
             space: {
                 top: 4,
@@ -137,7 +151,20 @@ export class MainMenu extends Phaser.Scene {
                     showGrid: this.showGrid,
                     musicVolume: this.musicVolume,
                 };
-                updateLevelButton(this, level1, settingsDataNew);
+                if (this.skipUpdateOnInitTwice < 2) {
+                    this.skipUpdateOnInitTwice++;
+                }
+                else {
+                    updateLevelButton(this, level1, settingsDataNew, "level1");
+                    updateLevelButton(this, level2, settingsDataNew, "level2");
+                    updateLevelButton(this, level3, settingsDataNew, "level3");
+                    updateLevelButton(this, level4, settingsDataNew, "level4");
+                    updateLevelButton(this, level5, settingsDataNew, "level5");
+                    updateLevelButton(this, level6, settingsDataNew, "level6");
+                    updateLevelButton(this, level7, settingsDataNew, "level7");
+                    updateLevelButton(this, level8, settingsDataNew, "level8");
+                    updateLevelButton(this, level9, settingsDataNew, "level9");
+                }
             }
         }).layout();
 
