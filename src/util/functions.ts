@@ -119,7 +119,6 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
 });
 
 export const updateLevelButton = ((currentScene, name, settingsData, level): void => {
-    alert("UPDATE");
     name.disableInteractive();
     name.setInteractive();
     name.on('pointerdown', () => {
