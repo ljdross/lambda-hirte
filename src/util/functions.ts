@@ -33,6 +33,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level5") {
             currentScene.scene.start('Gui', {
@@ -47,6 +48,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level6") {
             currentScene.scene.start('Gui', {
@@ -61,6 +63,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
@@ -75,6 +78,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level8") {
             currentScene.scene.start('Gui', {
@@ -89,6 +93,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level2") {
             currentScene.scene.start('Gui', {
@@ -101,6 +106,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass','sandToStone']});
         } else {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level1',
@@ -112,8 +118,8 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
-        currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });
     name.visible = false;
 });

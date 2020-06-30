@@ -4,6 +4,7 @@ export class TeleportGUIScene extends Phaser.Scene {
     public grassToStone: any;
     public stoneToSand: any;
     public sandToGrass: any;
+    public sandToStone: any;
 
     constructor() {
         super({
