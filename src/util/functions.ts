@@ -309,3 +309,11 @@ export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Grou
     }
 }
 
+export function MappingNumbers(n: number): string{
+    if (n == 1) return "ONE";
+    if (n == 2) return "TWO";
+    if (n == 3) return "THREE";
+    if (n == 4) return "FOUR";
+    if (n == 5) return "FIVE";
+}
+

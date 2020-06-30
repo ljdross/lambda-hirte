@@ -1,9 +1,13 @@
+import {MappingNumbers} from "../util/functions";
+
 export class TeleportGUIScene extends Phaser.Scene {
 
     public teleporters: string[];
     public grassToStone: any;
     public stoneToSand: any;
     public sandToGrass: any;
+    public keyboard: {[index: string]: Phaser.Input.Keyboard.Key};
+    public counter: number;
 
     constructor() {
         super({
@@ -15,6 +19,7 @@ export class TeleportGUIScene extends Phaser.Scene {
     init(data): void {
         this.data.set('teleportersActivated', false);
         this.data.set('placingTeleporter', null);
+        this.data.set('removeTeleporter', null);
         this.teleporters = data.teleporters;
     }
 
@@ -24,6 +29,7 @@ export class TeleportGUIScene extends Phaser.Scene {
 
         const teleportersButton = this.add.image(width - 100, 125, 'teleporters');
         let yCoordinateTeleport = 200;
+        this.counter= 1;
         for (const teleporter of this.teleporters)  {
            this[teleporter] = this.add.image(width - 100, yCoordinateTeleport, teleporter);
            yCoordinateTeleport += 75;
@@ -33,6 +39,13 @@ export class TeleportGUIScene extends Phaser.Scene {
            this[teleporter].on('pointerdown', () => {
                this.data.set('placingTeleporter', teleporter);
            });
+
+           const keyObject = this.input.keyboard.addKey(MappingNumbers(this.counter));
+           keyObject.on('down' , () => {
+               this.data.set('placingTeleporter', teleporter);
+           })
+            this.counter = this.counter + 1;
+
         }
         const powerOn = this.add.image(width - 100, yCoordinateTeleport, 'powerOn');
         let teleporterCounter = 10;
@@ -75,5 +88,26 @@ export class TeleportGUIScene extends Phaser.Scene {
                 this.data.set('teleportersActivated', false);
             }, 1000);
         });
+
+        const keyObject2 = this.input.keyboard.addKey("ENTER");
+        keyObject2.on('down' , () => {
+            teleporterCounter--;
+            teleporterCounterText.setText("You can activate teleporter \n" + teleporterCounter + " more times.");
+            this.data.set('teleportersActivated', true);
+            if (teleporterCounter == 0) {
+                powerOn.disableInteractive();
+                teleporterCounterText.setText("You can't activate teleporter \n anymore.");
+            }
+            setTimeout(() => {
+                this.data.set('teleportersActivated', false);
+            }, 1000);
+        })
+
+        const keyObject3 = this.input.keyboard.addKey("BACKSPACE");
+        keyObject3.on('down', () => {
+
+            this.data.set('placingTeleporter', false);
+        })
+
     }
 }
