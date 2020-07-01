@@ -81,47 +81,53 @@ export class LevelTut1 extends Phaser.Scene {
                             notAllowed.destroy();
                         }, 1500);
                     } else {
-                        //teleporter knows where he is .
                         const portalType = getPortalTypeWithKey(placingTeleporter);
                         const portal =new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
                         portal.setFromTile(tile);
                         portal.originTileType= tile.type
 
                         // if the first teleporter placed .
-                        if(tile.hasPortal == false) {
+                        if(tile.hasPortal == false){
                             tile.portal = portal;
                             tile.hasPortal = true;
                             this.portals.add(tile.portal);
+
                             //finding the goalTile
                             tile.portal.createAnim(this);
                             this.assignFunctionToPortalType(tile.portal);
                             const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
                             const tileType = getTileTypeWithKey(placingTeleporter);
-                            // change the tileType for the next teleporter
-                            tile.type = tileType;
+
+                            // changing the upperType of the Tile
+                            tile.upperType = tileType;
                             //setting the goalTile
                             const goalTile = this.board.findTile(tileType, goal);
+                            //console.log(goalTile);
                             tile.portal.setGoal(goalTile);
                             portal.setGoal(goalTile);
                             tile.portal.teleporterList.push(portal);
+
                         }
-                        //teleporter stacking
+                        // teleporter stacking
                         else{
                             tile.portal.createAnim(this);
+                            //assign function
                             this.assignFunctionToPortalType(portal);
-                            //finding the goal
+                            //finding GoalTile
                             const prePortal = tile.portal.teleporterList.pop();
                             const id = prePortal.toTile.tileNumber;
                             tile.portal.teleporterList.push(prePortal);
-                            const goal = tile.portal.whereToGo(this.board, id, tile.type);
+                            const goal = portal.whereToGo(this.board, id, tile.upperType);
                             const tileType = getTileTypeWithKey(placingTeleporter);
-                            // change the tileType for the next teleporter
-                            tile.type = tileType;
+                            // change the upperTileType for the next teleporter
+                            tile.upperType = tileType;
                             //setting the goalTile
                             const goalTile = this.board.findTile(tileType, goal);
                             portal.setGoal(goalTile);
                             tile.portal.teleporterList.push(portal);
+                            //console.log(tile.portal.teleporterList);
                         }
+
                         this.input.off('pointerdown');
 
                     }
@@ -194,8 +200,6 @@ export class LevelTut1 extends Phaser.Scene {
         this.physics.world.addCollider(this.sheep, this.portals, (sheep: Sheep, portal: Portal)=> {
             portal.executeTeleport(this ,this.board, this.portals, sheep);
             sheep.collide(portal);
-
-
 
         })
 

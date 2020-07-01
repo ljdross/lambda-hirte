@@ -77,13 +77,19 @@ export class Board {
 
   // works for any whole number, even negative numbers
   findTile(type: Type, tileNumber: number): Tile {
-    tileNumber %= this.getNumberOfTilesByType(type);
+    if(tileNumber != 0) {
+      tileNumber %= this.getNumberOfTilesByType(type);
+    }
+
     if (tileNumber < 0) tileNumber += this.getNumberOfTilesByType(type);
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const currentTile = this.tiles[x][y];
+        //console.log(' (' + x + ', ' + y + ')');
+        //console.log(currentTile.type+' '+ type);
         if (currentTile.type == type && currentTile.tileNumber == tileNumber) {
-          // console.log('found tile at position: (' + x + ', ' + y + ')');
+
+           //console.log('found tile at position: (' + x + ', ' + y + ')');
           return currentTile;
         }
       }
@@ -92,15 +98,20 @@ export class Board {
 
   // give back the coordination of a passed tile.
   public findTileCoord(tile: Tile): number[]{
+
     const coord = [];
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const currentTile = this.tiles[x][y];
-        if (currentTile == tile) {
-          // console.log('found tile at position: (' + x + ', ' + y + ')');
-          coord[0]= x;
-          coord[1]= y;
-          return coord;
+
+        if (currentTile.type == tile.type ) {
+          if(currentTile.tileNumber == tile.tileNumber) {
+
+            coord[0] = x;
+            coord[1] = y;
+            //console.log(x + " " + y );
+            return coord;
+          }
         }
       }
     }
