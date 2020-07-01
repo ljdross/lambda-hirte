@@ -160,6 +160,11 @@
         "type": "image",
         "key": "winningBackground",
         "url": "assets/menu/winningBackground.png"
+      },
+      {
+        "type": "image",
+        "key": "star",
+        "url": "assets/menu/star.png"
       }
     ]
   }
