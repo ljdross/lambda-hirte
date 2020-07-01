@@ -94,10 +94,10 @@ export class TeleportGUIScene extends Phaser.Scene {
 
         const keyObject2 = this.input.keyboard.addKey("ENTER");
         keyObject2.on('down' , () => {
-            teleporterCounter--;
-            teleporterCounterText.setText("You can activate teleporter \n" + teleporterCounter + " more times.");
+            this.teleporterCounter--;
+            teleporterCounterText.setText("You can activate teleporter \n" + this.teleporterCounter + " more times.");
             this.data.set('teleportersActivated', true);
-            if (teleporterCounter == 0) {
+            if (this.teleporterCounter == 0) {
                 powerOn.disableInteractive();
                 teleporterCounterText.setText("You can't activate teleporter \n anymore.");
             }
