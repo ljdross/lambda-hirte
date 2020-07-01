@@ -8,6 +8,7 @@ import {LevelTut5} from "./scenes/level-tut-5";
 import {Level6} from "./scenes/level-6";
 import {Level7} from "./scenes/level-7";
 import {Level8} from "./scenes/level-8";
+import {Level9} from "./scenes/level-9";
 import {GuiScene} from "./scenes/gui";
 import {TeleportGUIScene} from "./scenes/teleportGUI";
 
@@ -19,7 +20,7 @@ const config = {
         mode: Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [MainMenu, LevelTut1, LevelTut2, LevelTut3, LevelTut4, LevelTut5, Level6, Level7, Level8, GuiScene, TeleportGUIScene],
+    scene: [MainMenu, LevelTut1, LevelTut2, LevelTut3, LevelTut4, LevelTut5, Level6, Level7, Level8, Level9, GuiScene, TeleportGUIScene],
     physics: {
         default: 'arcade',
         arcade: {

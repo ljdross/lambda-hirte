@@ -30,7 +30,7 @@ export class Level7 extends Phaser.Scene {
 
     init(data): void {
         this.data.set('playerScore', 0);
-        this.data.set('playerWinningScore', 10);
+        this.data.set('playerWinningScore', 20);
         initSettings(this, data);
     }
 
