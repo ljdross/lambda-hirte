@@ -8,6 +8,7 @@ export class TeleportGUIScene extends Phaser.Scene {
     public sandToGrass: any;
     public keyboard: {[index: string]: Phaser.Input.Keyboard.Key};
     public counter: number;
+    public teleporterCounter: number;
 
     constructor() {
         super({
@@ -21,6 +22,8 @@ export class TeleportGUIScene extends Phaser.Scene {
         this.data.set('placingTeleporter', null);
         this.data.set('removeTeleporter', null);
         this.teleporters = data.teleporters;
+        this.teleporterCounter = 0;
+        this.data.set('teleportersCounter', this.teleporterCounter);
     }
 
     create() {
@@ -48,9 +51,8 @@ export class TeleportGUIScene extends Phaser.Scene {
 
         }
         const powerOn = this.add.image(width - 100, yCoordinateTeleport, 'powerOn');
-        let teleporterCounter = 0;
         const teleporterCounterText = this.add.text(width - 250, yCoordinateTeleport + 75,
-            "You have used teleporters \n" + teleporterCounter + " times.");
+            "You have used teleporters \n" + this.teleporterCounter + " times.");
         teleportersButton.setDisplaySize(0.04 * width, 0.08 * height);
         teleportersButton.setInteractive(({ useHandCursor: true }));
 
@@ -77,17 +79,14 @@ export class TeleportGUIScene extends Phaser.Scene {
         powerOn.setDisplaySize(0.03 * width, 0.06 * height);
         powerOn.setInteractive(({ useHandCursor: true }));
         powerOn.on('pointerdown', () => {
-            teleporterCounter++;
-            if (teleporterCounter == 1) {
+            this.teleporterCounter++;
+            this.data.set('teleportersCounter', this.teleporterCounter);
+            if (this.teleporterCounter == 1) {
                 teleporterCounterText.setText("You have used teleporters \n1 time.");
             } else {
-                teleporterCounterText.setText("You have used teleporters \n" + teleporterCounter + " times.");
+                teleporterCounterText.setText("You have used teleporters \n" + this.teleporterCounter + " times.");
             }
             this.data.set('teleportersActivated', true);
-            // if (teleporterCounter == 0) {
-            //    powerOn.disableInteractive();
-            //    teleporterCounterText.setText("You can't activate teleporter \n anymore.");
-            // }
             setTimeout(() => {
                 this.data.set('teleportersActivated', false);
             }, 1000);
@@ -95,10 +94,10 @@ export class TeleportGUIScene extends Phaser.Scene {
 
         const keyObject2 = this.input.keyboard.addKey("ENTER");
         keyObject2.on('down' , () => {
-            teleporterCounter--;
-            teleporterCounterText.setText("You can activate teleporter \n" + teleporterCounter + " more times.");
+            this.teleporterCounter--;
+            teleporterCounterText.setText("You can activate teleporter \n" + this.teleporterCounter + " more times.");
             this.data.set('teleportersActivated', true);
-            if (teleporterCounter == 0) {
+            if (this.teleporterCounter == 0) {
                 powerOn.disableInteractive();
                 teleporterCounterText.setText("You can't activate teleporter \n anymore.");
             }

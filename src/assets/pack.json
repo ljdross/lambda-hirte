@@ -150,6 +150,21 @@
         "type": "image",
         "key": "notAllowed",
         "url": "assets/menu/notAllowed.png"
+      },
+      {
+        "type": "image",
+        "key": "gameWon",
+        "url": "assets/menu/gameWon.png"
+      },
+      {
+        "type": "image",
+        "key": "winningBackground",
+        "url": "assets/menu/winningBackground.png"
+      },
+      {
+        "type": "image",
+        "key": "star",
+        "url": "assets/menu/star.png"
       }
     ]
   }
