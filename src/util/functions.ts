@@ -93,11 +93,23 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level7',
-                winningScore: 10,
+                winningScore: 3,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
             currentScene.scene.start('Level7', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level8") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level8',
+                winningScore: 10,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level8', {
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -196,11 +208,23 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level7',
-                winningScore: 10,
+                winningScore: 3,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
             currentScene.scene.start('Level7', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level8") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level8',
+                winningScore: 10,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level8', {
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
