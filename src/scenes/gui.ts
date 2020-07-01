@@ -43,6 +43,10 @@ export class GuiScene extends Phaser.Scene {
         const exitGame = this.add.image(width / 2, height / 2 + 150, `exit`);
         const menu = this.add.image(width - 100, 50, 'menu');
         const sheepCounter = this.add.text(width - 350, 40, "Save " + this.winningScore + " more sheeps!");
+        const gameWon = this.add.image(width / 2, height / 2, "gameWon");
+        gameWon.visible = false;
+        const winningBackground = this.add.image(width / 2, height / 2, "winningBackground");
+        winningBackground.visible = false;
         const settingsData = initOptionsButton(this, width, height);
         const settings = settingsData.settings;
         const volume = settingsData.volume;
@@ -171,15 +175,16 @@ export class GuiScene extends Phaser.Scene {
         });
         this.scene.get(this.currentLevel).data.events.on('changedata-playerScore', (scene, value) => {
             if (value >= this.winningScore) {
+                sheepCounter.setText("");
                 setTimeout(() => {
                     this.sound.stopAll();
                     this.scene.stop(this.currentLevel);
                     this.scene.stop('GuiScene');
                     this.scene.stop('teleportGUI');
-                    this.scene.start('MainMenu', {
-                        showGrid: this.showGrid,
-                        musicVolume: this.musicVolume
-                    });
+                    exitGame.visible = true;
+                    gameWon.visible = true;
+                    winningBackground.visible = true;
+                    menu.visible = false;
                 }, 2000);
             } else {
                 sheepCounter.setText("Save " + (this.winningScore - value) + " more sheeps!");
