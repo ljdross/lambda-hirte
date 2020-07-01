@@ -18,12 +18,14 @@ export enum portalType {
 
 export class Portal extends Phaser.Physics.Arcade.Sprite{
 
-    private context: Phaser.Structs.List<[Tile,Tile]> ;
+    teleporterList: any[];
     ptype: portalType;
     sizeOfTile: number;
     fromTile: Tile;
     toTile: Tile;
     chosen: boolean;
+    first: boolean;
+    originTileType: Type;
     pFunction = {add: null, multi: null} ;
 
     constructor(scene: Phaser.Scene ,x: number ,y: number, texture: string , ptyp: portalType) {
@@ -32,11 +34,16 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         this.setInteractive();
         this.ptype = ptyp;
         this.chosen= false;
+        this.first= false;
+        this.teleporterList= [];
 
     }
 
     public setGoal(tile: Tile): void{
         this.toTile = tile;
+    }
+    public setFromTile(tile: Tile): void{
+        this.fromTile = tile;
     }
 
     public  setFunction(x: number,y: number): void {
@@ -93,21 +100,30 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     need a sprites for the side effect
     */
     public executeTeleport ( scene: Scene ,board: Board,portals: Phaser.GameObjects.Group, sheep: Sheep): void{
-        if(this.toTile != null  && this.chosen == true){
+        for(let i = 0 ; i< this.teleporterList.length; i++ ){
 
-                const coord = board.findTileCoord(this.toTile);
-                this.toTile.portal = new Portal(scene , coord[0]* 128 +64 , coord[1]* 128 +64, "portal" ,this.ptype);
-                sheep.visible = false;
-                this.toTile.portal.setDepth(1);
-                this.createAnim(scene);
-                this.toTile.portal.play("Portal3",true);
-                this.toTile.portal.on("animationcomplete",()=>{
-                    sheep.x= this.toTile.portal.x;
-                    sheep.y= this.toTile.portal.y;
-                    sheep.visible = true;
-                    this.toTile.portal.destroy();
-                    sheep.stop = false;
-                })
+                const p = this.teleporterList[i];
+                this.setGoal(p.toTile);
+                console.log(this.toTile);
+                if(this.toTile != null  && this.chosen == true) {
+                    //console.log("here22");
+                    const coord = board.findTileCoord(this.toTile);
+                    this.toTile.portal = new Portal(scene, coord[0] * 128 + 64, coord[1] * 128 + 64, "portal", this.ptype);
+                    sheep.visible = false;
+                    this.toTile.portal.setDepth(1);
+                    this.createAnim(scene);
+                    this.toTile.portal.play("Portal3", true);
+                    this.toTile.portal.on("animationcomplete", () => {
+                        sheep.x = this.toTile.portal.x;
+                        sheep.y = this.toTile.portal.y;
+                        sheep.visible = true;
+                        this.toTile.portal.destroy();
+                        sheep.stop = false;
+                    })
+                }
+
+
+
         }
 
 

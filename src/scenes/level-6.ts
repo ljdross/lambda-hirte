@@ -121,14 +121,31 @@ export class Level6 extends Phaser.Scene {
         } else {
 
           const portalType = getPortalTypeWithKey(placingTeleporter);
-          tile.portal = new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
+          const portal =new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
+          portal.setFromTile(tile);
+          portal.originTileType= tile.type
+
+
+          if(tile.hasPortal == false){
+            tile.portal = portal;
+            tile.hasPortal= true;
+            this.portals.add(tile.portal);
+          }
+
           tile.portal.createAnim(this);
           this.assignFunctionToPortalType(tile.portal);
           const goal = tile.portal.whereToGo(this.board, tile.tileNumber,tile.type);
           const tileType = getTileTypeWithKey(placingTeleporter);
-          tile.portal.setGoal(this.board.findTile(tileType, goal));
-          this.portals.add(tile.portal);
+
+          tile.type = tileType;
+
+          const goalTile = this.board.findTile(tileType, goal);
+          tile.portal.setGoal(goalTile);
+          portal.setGoal(goalTile);
+          tile.portal.teleporterList.push(portal);
+
           this.input.off('pointerdown');
+
         }
 
 
@@ -140,14 +157,26 @@ export class Level6 extends Phaser.Scene {
       const teleportersActivated = scene.data.get('teleportersActivated');
       if (teleportersActivated) {
         this.portals.children.each((portal: Portal) =>{
-             portal.chosen = true;
-             portal.setTexture("portal");
-             portal.setSize(128, 128);
-             portal.play("Portal2",true);
-             portal.on("animationcomplete", ()=>{
-               portal.chosen = false ;
-               portal.destroy();
+
+          for (let i = portal.teleporterList.length-1  ; i > 0 ; i--){
+            const p= portal.teleporterList[i];
+            p.destroy();
+            portal.teleporterList.pop();
+
+          }
+
+          portal.chosen = true;
+          portal.fromTile.hasPortal = false;
+          portal.fromTile.type = portal.originTileType;
+          portal.setTexture("portal");
+          portal.setSize(128, 128);
+          portal.play("Portal2",true);
+          portal.on("animationcomplete", ()=>{
+
+            portal.teleporterList.pop();
+            portal.destroy();
              })
+          //console.log(portal.teleporterList);
 
         })
       }
@@ -160,10 +189,16 @@ export class Level6 extends Phaser.Scene {
         this.input.on("pointerdown",(pointer: Phaser.Input.Pointer) =>{
           const coordinates1 = this.getTile(pointer.x, pointer.y);
           const tile = this.board.tiles[coordinates1[0]][coordinates1[1]];
-          if(tile.portal != null){
+          if(tile.hasPortal){
             this.sheep.children.each((sheep: Sheep) =>{
               sheep.stop = false ;
             })
+            for (let i = tile.portal.teleporterList.length-1  ; i > 0 ; i--){
+              const p= tile.portal.teleporterList[i];
+              p.destroy();
+              tile.portal.teleporterList.pop();
+
+            }
             tile.portal.destroy();
           }
 
