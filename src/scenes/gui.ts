@@ -169,7 +169,7 @@ export class GuiScene extends Phaser.Scene {
             settings.visible = true;
             sheepCounter.visible = false;
         });
-        this.scene.get('Level1').data.events.on('changedata-playerScore', (scene, value) => {
+        this.scene.get('Level6').data.events.on('changedata-playerScore', (scene, value) => {
             if (value >= this.winningScore) {
                 sheepCounter.setText("You've won!");
             } else {
