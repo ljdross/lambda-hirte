@@ -171,7 +171,16 @@ export class GuiScene extends Phaser.Scene {
         });
         this.scene.get(this.currentLevel).data.events.on('changedata-playerScore', (scene, value) => {
             if (value >= this.winningScore) {
-                sheepCounter.setText("You've won!");
+                setTimeout(() => {
+                    this.sound.stopAll();
+                    this.scene.stop(this.currentLevel);
+                    this.scene.stop('GuiScene');
+                    this.scene.stop('teleportGUI');
+                    this.scene.start('MainMenu', {
+                        showGrid: this.showGrid,
+                        musicVolume: this.musicVolume
+                    });
+                }, 2000);
             } else {
                 sheepCounter.setText("Save " + (this.winningScore - value) + " more sheeps!");
             }

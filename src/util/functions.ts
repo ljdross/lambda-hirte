@@ -104,7 +104,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         } else {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level1',
-                winningScore: 7,
+                winningScore: 1,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
