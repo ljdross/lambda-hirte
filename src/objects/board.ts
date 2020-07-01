@@ -24,7 +24,7 @@ export class Board {
     for (let x = 0; x < widthInTiles; x++) {
       this.tiles[x] = [];
       for (let y = 0; y < heightInTiles; y++) {
-        this.tiles[x][y] = new Tile(Type.Grass,true);
+        this.tiles[x][y] = new Tile(Type.Grass);
       }
     }
   }
@@ -68,7 +68,7 @@ export class Board {
       currentTile.text.setOrigin(0.5, 0.5);
     }
     this.numberOfTilesByType[type]++;
-    if (this.tiles[x][y].hasPortal) this.tiles[x][y].portal = new Portal(scene, x * 128 + 64, y * 128 + 64, "portal", portalType.gtog).setVisible(false);
+    //if (this.tiles[x][y].hasPortal) this.tiles[x][y].portal = new Portal(scene, x * 128 + 64, y * 128 + 64, "portal", portalType.gtog).setVisible(false);
   }
 
   getNumberOfTilesByType(type: Type): number {

@@ -13,7 +13,7 @@ export class Tile {
   public text: Phaser.GameObjects.Text;
   public tileNumber: number;
   public isDestination: boolean;
-  public teleporterList: object; //should actually be teleporterList: Teleporter[];
+  public teleporterList: any[]; //should actually be teleporterList: Teleporter[];
   public hasPortal: boolean;
   public portal: Portal;
   
