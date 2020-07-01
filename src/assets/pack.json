@@ -133,13 +133,43 @@
       },
       {
         "type": "image",
+        "key": "grassToSand",
+        "url": "assets/menu/grassToSand.png"
+      },
+      {
+        "type": "image",
+        "key": "grassToGrass",
+        "url": "assets/menu/grassToGrass.png"
+      },
+      {
+        "type": "image",
         "key": "stoneToSand",
         "url": "assets/menu/stoneToSand.png"
       },
       {
         "type": "image",
+        "key": "stoneToGrass",
+        "url": "assets/menu/stoneToGrass.png"
+      },
+      {
+        "type": "image",
+        "key": "stoneToStone",
+        "url": "assets/menu/stoneToStone.png"
+      },
+      {
+        "type": "image",
         "key": "sandToGrass",
         "url": "assets/menu/sandToGrass.png"
+      },
+      {
+        "type": "image",
+        "key": "sandToSand",
+        "url": "assets/menu/sandToSand.png"
+      },
+      {
+        "type": "image",
+        "key": "sandToStone",
+        "url": "assets/menu/sandToStone.png"
       },
       {
         "type": "image",

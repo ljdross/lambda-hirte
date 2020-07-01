@@ -125,24 +125,41 @@ export class Level6 extends Phaser.Scene {
           portal.setFromTile(tile);
           portal.originTileType= tile.type
 
-
+          // if the first teleporter placed .
           if(tile.hasPortal == false){
             tile.portal = portal;
-            tile.hasPortal= true;
+            tile.hasPortal = true;
             this.portals.add(tile.portal);
+            console.log(this.portals);
+            //finding the goalTile
+            tile.portal.createAnim(this);
+            this.assignFunctionToPortalType(tile.portal);
+            const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+            const tileType = getTileTypeWithKey(placingTeleporter);
+            // change the tileType for the next teleporter
+            tile.type = tileType;
+            //setting the goalTile
+            const goalTile = this.board.findTile(tileType, goal);
+            tile.portal.setGoal(goalTile);
+            portal.setGoal(goalTile);
+            tile.portal.teleporterList.push(portal);
           }
-
-          tile.portal.createAnim(this);
-          this.assignFunctionToPortalType(tile.portal);
-          const goal = tile.portal.whereToGo(this.board, tile.tileNumber,tile.type);
-          const tileType = getTileTypeWithKey(placingTeleporter);
-
-          tile.type = tileType;
-
-          const goalTile = this.board.findTile(tileType, goal);
-          tile.portal.setGoal(goalTile);
-          portal.setGoal(goalTile);
-          tile.portal.teleporterList.push(portal);
+          // teleporter stacking
+          else{
+            tile.portal.createAnim(this);
+            this.assignFunctionToPortalType(portal);
+            const prePortal = tile.portal.teleporterList.pop();
+            const id = prePortal.toTile.tileNumber;
+            tile.portal.teleporterList.push(prePortal);
+            const goal = tile.portal.whereToGo(this.board, id, tile.type);
+            const tileType = getTileTypeWithKey(placingTeleporter);
+            // change the tileType for the next teleporter
+            tile.type = tileType;
+            //setting the goalTile
+            const goalTile = this.board.findTile(tileType, goal);
+            portal.setGoal(goalTile);
+            tile.portal.teleporterList.push(portal);
+          }
 
           this.input.off('pointerdown');
 

@@ -33,6 +33,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToGrass']});
         }
         else if(level == "level2") {
             currentScene.scene.start('Gui', {
@@ -47,6 +48,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToGrass']});
         }
         else if(level == "level3") {
             currentScene.scene.start('Gui', {
@@ -61,6 +63,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToGrass']});
         }
         else if(level == "level4") {
             currentScene.scene.start('Gui', {
@@ -75,6 +78,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToStone','sandToGrass']});
         }
         else if(level == "level5") {
             currentScene.scene.start('Gui', {
@@ -89,6 +93,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['stoneToStone', 'stoneToSand', 'sandToGrass','grassToStone']});
         }
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
@@ -136,8 +141,9 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
-        currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
+        //currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });
     name.visible = false;
 });
@@ -160,6 +166,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToGrass']});
         }
         else if(level == "level2") {
             currentScene.scene.start('Gui', {
@@ -174,6 +181,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToGrass']});
         }
         else if(level == "level3") {
             currentScene.scene.start('Gui', {
@@ -188,6 +196,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToGrass']});
         }
         else if(level == "level4") {
             currentScene.scene.start('Gui', {
@@ -202,6 +211,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToStone','sandToGrass']});
         }
         else if(level == "level5") {
             currentScene.scene.start('Gui', {
@@ -216,6 +226,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 brightness: settingsData.brightness,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['stoneToStone', 'stoneToSand', 'sandToGrass','grassToStone']});
         }
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
@@ -263,8 +274,9 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
-        currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
+        //currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });
 });
 
@@ -320,16 +332,22 @@ export const initOptionsButton = ((currentScene, width, height): any => {
 });
 
 export function getTileTypeWithKey(key): Type {
-    if (key == 'grassToStone') return Type.Stone;
-    if (key == 'sandToGrass') return Type.Grass;
-    if (key == 'stoneToSand') return Type.Sand;
+    if (key == 'grassToStone'||key == 'sandToStone'||key == 'stoneToStone') return Type.Stone;
+    if (key == 'sandToGrass'||key == 'grassToGrass'||key == 'stoneToGrass') return Type.Grass;
+    if (key == 'stoneToSand'||key == 'sandToSand'||key == 'grassToSand') return Type.Sand;
     return null;
 }
 
 export function getPortalTypeWithKey(key): portalType {
+    if (key == 'grassToGrass') return portalType.gtog;
+    if (key == 'grassToSand') return portalType.gtosa;
     if (key == 'grassToStone') return portalType.gtost;
-    if (key == 'sandToGrass') return portalType.satog;
     if (key == 'stoneToSand') return portalType.sttosa;
+    if (key == 'stoneToStone') return portalType.sttost;
+    if (key == 'stoneToGrass') return portalType.sttog;
+    if (key == 'sandToSand') return portalType.satosa;
+    if (key == 'sandToStone') return portalType.satost;
+    if (key == 'sandToGrass') return portalType.satog;
     return null;
 }
 
@@ -363,5 +381,10 @@ export function MappingNumbers(n: number): string{
     if (n == 3) return "THREE";
     if (n == 4) return "FOUR";
     if (n == 5) return "FIVE";
+    if (n == 6) return "SIX";
+    if (n == 7) return "SEVEN";
+    if (n == 8) return "EIGHT";
+    if (n == 9) return "NINE";
+
 }
 
