@@ -4,8 +4,13 @@ export class TeleportGUIScene extends Phaser.Scene {
 
     public teleporters: string[];
     public grassToStone: any;
+    public grassToSand: any;
+    public grassToGrass: any;
     public stoneToSand: any;
+    public stoneToStone: any;
+    public stoneToGrass: any;
     public sandToGrass: any;
+    public sandToSand: any;
     public sandToStone: any;
     public keyboard: {[index: string]: Phaser.Input.Keyboard.Key};
     public counter: number;
@@ -61,22 +66,30 @@ export class TeleportGUIScene extends Phaser.Scene {
         teleporterCounterText.visible = false;
         powerOn.visible = false;
         teleportersButton.on('pointerdown', () => {
-            if (teleportersVisible){
-                this.grassToStone.visible = false;
-                this.stoneToSand.visible = false;
-                this.sandToGrass.visible = false;
-                if(this.sandToStone) this.sandToStone.visible = false;
-                powerOn.visible = false;
+            if (teleportersVisible) {
+                for (const teleporter of this.teleporters) {
+                    this[teleporter].visible = false;
+                    powerOn.visible = false;
+                }
+                //this.grassToStone.visible = false;
+                //this.stoneToSand.visible = false;
+                //this.sandToGrass.visible = false;
+                //powerOn.visible = false;
                 teleporterCounterText.visible = false;
             } else {
-                this.grassToStone.visible = true;
-                this.stoneToSand.visible = true;
-                this.sandToGrass.visible = true;
-                if(this.sandToStone) this.sandToStone.visible = true;
-                powerOn.visible = true;
+                for (const teleporter of this.teleporters) {
+                    this[teleporter].visible = true;
+                    powerOn.visible = true;
+                    teleporterCounterText.visible = true;
+                }
+                //this.grassToStone.visible = true;
+                //this.stoneToSand.visible = true;
+                //this.sandToGrass.visible = true;
+                //powerOn.visible = true;
                 teleporterCounterText.visible = true;
             }
             teleportersVisible = !teleportersVisible;
+
         });
 
         powerOn.setDisplaySize(0.03 * width, 0.06 * height);
@@ -95,6 +108,7 @@ export class TeleportGUIScene extends Phaser.Scene {
             }, 1000);
         });
 
+
         const keyObject2 = this.input.keyboard.addKey("ENTER");
         keyObject2.on('down' , () => {
             this.teleporterCounter--;
@@ -109,11 +123,6 @@ export class TeleportGUIScene extends Phaser.Scene {
             }, 1000);
         })
 
-        const keyObject3 = this.input.keyboard.addKey("BACKSPACE");
-        keyObject3.on('down', () => {
-
-            this.data.set('placingTeleporter', false);
-        })
 
     }
 }

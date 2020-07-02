@@ -110,9 +110,9 @@ export class Level6 extends Phaser.Scene {
 
         const coordinates = this.getTile(pointer.x, pointer.y);
         const tile = this.board.tiles[coordinates[0]][coordinates[1]];
-        if ((placingTeleporter.startsWith('grass') && tile.type != Type.Grass) ||
-            (placingTeleporter.startsWith('stone') && tile.type != Type.Stone) ||
-            (placingTeleporter.startsWith('sand') && tile.type != Type.Sand)) {
+        if ((placingTeleporter.startsWith('grass') && tile.upperType != Type.Grass) ||
+            (placingTeleporter.startsWith('stone') && tile.upperType != Type.Stone) ||
+            (placingTeleporter.startsWith('sand') && tile.upperType != Type.Sand)) {
           const notAllowed = this.add.image(coordinates[0]* 128 + 64, coordinates[1]* 128 + 64,'notAllowed');
           notAllowed.setDisplaySize(50, 50);
           setTimeout(() => {
@@ -125,24 +125,47 @@ export class Level6 extends Phaser.Scene {
           portal.setFromTile(tile);
           portal.originTileType= tile.type
 
-
+          // if the first teleporter placed .
           if(tile.hasPortal == false){
             tile.portal = portal;
-            tile.hasPortal= true;
+            tile.hasPortal = true;
             this.portals.add(tile.portal);
+
+            //finding the goalTile
+            tile.portal.createAnim(this);
+            this.assignFunctionToPortalType(tile.portal);
+            const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
+            const tileType = getTileTypeWithKey(placingTeleporter);
+
+            // changing the upperType of the Tile
+            tile.upperType = tileType;
+            //setting the goalTile
+            const goalTile = this.board.findTile(tileType, goal);
+            //console.log(goalTile);
+            tile.portal.setGoal(goalTile);
+            portal.setGoal(goalTile);
+            tile.portal.teleporterList.push(portal);
+
           }
-
-          tile.portal.createAnim(this);
-          this.assignFunctionToPortalType(tile.portal);
-          const goal = tile.portal.whereToGo(this.board, tile.tileNumber,tile.type);
-          const tileType = getTileTypeWithKey(placingTeleporter);
-
-          tile.type = tileType;
-
-          const goalTile = this.board.findTile(tileType, goal);
-          tile.portal.setGoal(goalTile);
-          portal.setGoal(goalTile);
-          tile.portal.teleporterList.push(portal);
+          // teleporter stacking
+          else{
+            tile.portal.createAnim(this);
+            //assign function
+            this.assignFunctionToPortalType(portal);
+            //finding GoalTile
+            const prePortal = tile.portal.teleporterList.pop();
+            const id = prePortal.toTile.tileNumber;
+            tile.portal.teleporterList.push(prePortal);
+            const goal = portal.whereToGo(this.board, id, tile.upperType);
+            const tileType = getTileTypeWithKey(placingTeleporter);
+            // change the upperTileType for the next teleporter
+            tile.upperType = tileType;
+            //setting the goalTile
+            const goalTile = this.board.findTile(tileType, goal);
+            portal.setGoal(goalTile);
+            tile.portal.teleporterList.push(portal);
+            //console.log(tile.portal.teleporterList);
+          }
 
           this.input.off('pointerdown');
 

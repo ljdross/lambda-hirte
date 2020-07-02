@@ -86,10 +86,9 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
         if (this.pFunction.multi == null || this.pFunction.add == null) return 0;
 
-        else
-
-        return (this.pFunction.multi * id +this.pFunction.add) ;
-
+        else {
+            return (Math.floor(this.pFunction.multi * id )+ this.pFunction.add);
+        }
     }
 
     /*
@@ -100,13 +99,19 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
     need a sprites for the side effect
     */
     public executeTeleport ( scene: Scene ,board: Board,portals: Phaser.GameObjects.Group, sheep: Sheep): void{
-        for(let i = 0 ; i< this.teleporterList.length; i++ ){
 
-                const p = this.teleporterList[i];
-                this.setGoal(p.toTile);
+        for(const portal of this.teleporterList){
+
+
+
+            this.setGoal(portal.toTile);
+            const coord = board.findTileCoord(this.toTile);
+
                 if(this.toTile != null  && this.chosen == true) {
-                    //console.log("here22");
-                    const coord = board.findTileCoord(this.toTile);
+
+
+
+                    //console.log(coord);
                     this.toTile.portal = new Portal(scene, coord[0] * 128 + 64, coord[1] * 128 + 64, "portal", this.ptype);
                     sheep.visible = false;
                     this.toTile.portal.setDepth(1);
@@ -125,6 +130,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
         }
 
+        //this.fromTile.type = this.originTileType;
 
 
 
