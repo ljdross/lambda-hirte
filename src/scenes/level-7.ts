@@ -9,11 +9,11 @@ import {Fence} from "../objects/fence";
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
     active: false,
     visible: false,
-    key: 'Level2',
+    key: 'Level7',
     physics: physicsSettings
 };
 
-export class Level2 extends Phaser.Scene {
+export class Level7 extends Phaser.Scene {
 
 
     public sheep: Phaser.GameObjects.Group; //List of all Sheep
@@ -35,7 +35,7 @@ export class Level2 extends Phaser.Scene {
 
     init(data): void {
         this.data.set('playerScore', 0);
-        this.data.set('playerWinningScore', 10);
+        this.data.set('playerWinningScore', 20);
         initSettings(this, data);
     }
 

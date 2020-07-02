@@ -97,24 +97,48 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         }
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
-                currentLevel: 'Level2',
-                winningScore: 10,
+                currentLevel: 'Level7',
+                winningScore: 20,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
-            currentScene.scene.start('Level2', {
+            currentScene.scene.start('Level7', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level8") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level8',
+                winningScore: 3,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level8', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level9") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level9',
+                winningScore: 5,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level9', {
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
             currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass','sandToStone']});
         } else {
             currentScene.scene.start('Gui', {
-                currentLevel: 'Level1',
+                currentLevel: 'Level6',
                 winningScore: 7,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
-            currentScene.scene.start('Level1', {
+            currentScene.scene.start('Level6', {
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -201,23 +225,47 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
         }
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
-                currentLevel: 'Level2',
-                winningScore: 10,
+                currentLevel: 'Level7',
+                winningScore: 20,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
-            currentScene.scene.start('Level2', {
+            currentScene.scene.start('Level7', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level8") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level8',
+                winningScore: 3,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level8', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+        }
+        else if(level == "level9") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level9',
+                winningScore: 5,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level9', {
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
         } else {
             currentScene.scene.start('Gui', {
-                currentLevel: 'Level1',
+                currentLevel: 'Level6',
                 winningScore: 7,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
-            currentScene.scene.start('Level1', {
+            currentScene.scene.start('Level6', {
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -313,5 +361,13 @@ export function makeCollider(scene: Phaser.Scene, sheep: Phaser.GameObjects.Grou
                 })
         }
     }
+}
+
+export function MappingNumbers(n: number): string{
+    if (n == 1) return "ONE";
+    if (n == 2) return "TWO";
+    if (n == 3) return "THREE";
+    if (n == 4) return "FOUR";
+    if (n == 5) return "FIVE";
 }
 
