@@ -108,6 +108,7 @@ export class TeleportGUIScene extends Phaser.Scene {
             }, 1000);
         });
 
+
         const keyObject2 = this.input.keyboard.addKey("ENTER");
         keyObject2.on('down' , () => {
             this.teleporterCounter--;
