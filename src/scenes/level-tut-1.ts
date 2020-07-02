@@ -55,7 +55,7 @@ export class LevelTut1 extends Phaser.Scene {
     }
 
     create(): void {
-        this.board = new Board(7, 7, this.showGrid);
+        this.board = new Board(7, 6, this.showGrid);
 
         this.board.tiles[6][5].isDestination = true;
         this.board.draw(this);
@@ -64,6 +64,9 @@ export class LevelTut1 extends Phaser.Scene {
 
         const sheep1 = new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(50, 78)});
         this.sheep.addMultiple([sheep1]);
+
+        // text to display function value
+        this.add.text(this.sys.game.canvas.width - 170, 187, "+" + this.pFunction1.add, {font: "25px Arial"});
 
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');

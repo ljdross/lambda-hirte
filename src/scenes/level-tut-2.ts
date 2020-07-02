@@ -83,6 +83,10 @@ export class LevelTut2 extends Phaser.Scene {
         const f6 = new Fence(this, 4 * 128, 128 * 5.5, 'fence_v').setOrigin(0.5, 0.5);
         this.fences.addMultiple([f1, f2, f3, f4, f5, f6]);
 
+        // text to display function value
+        this.add.text(this.sys.game.canvas.width - 170, 187, "+" + this.pFunction1.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
+
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');
             if (placingTeleporter) {
