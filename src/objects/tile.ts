@@ -9,6 +9,7 @@ export enum Type {
 
 export class Tile {
   public type: Type;
+  public upperType: Type;
   public image: Phaser.GameObjects.Image;
   public text: Phaser.GameObjects.Text;
   public tileNumber: number;
@@ -19,6 +20,7 @@ export class Tile {
   
   constructor(typeOfTile: Type, hasPortal=false) {
     this.type = typeOfTile;
+    this.upperType= typeOfTile;
     this.isDestination = false;
     this.hasPortal = hasPortal;
   }
