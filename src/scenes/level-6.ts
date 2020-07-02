@@ -157,7 +157,6 @@ export class Level6 extends Phaser.Scene {
       const teleportersActivated = scene.data.get('teleportersActivated');
       if (teleportersActivated) {
         this.portals.children.each((portal: Portal) =>{
-
           for (let i = portal.teleporterList.length-1  ; i > 0 ; i--){
             const p= portal.teleporterList[i];
             p.destroy();
@@ -204,8 +203,6 @@ export class Level6 extends Phaser.Scene {
 
         })
     })
-
-
 
 
     for (const sheep of this.sheep.getChildren()) {

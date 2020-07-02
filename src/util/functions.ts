@@ -95,6 +95,19 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
             });
             currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
+        else if(level == "level6") {
+            currentScene.scene.start('Gui', {
+                currentLevel: 'Level6',
+                winningScore: 7,
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('Level6', {
+                showGrid: settingsData.showGrid,
+                musicVolume: settingsData.musicVolume
+            });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
+        }
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level7',
@@ -106,6 +119,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass', 'sandToStone']});
         }
         else if(level == "level8") {
             currentScene.scene.start('Gui', {
@@ -118,6 +132,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level9") {
             currentScene.scene.start('Gui', {
@@ -131,18 +146,6 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 musicVolume: settingsData.musicVolume
             });
             currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass','sandToStone']});
-        } else {
-            currentScene.scene.start('Gui', {
-                currentLevel: 'Level6',
-                winningScore: 7,
-                showGrid: settingsData.showGrid,
-                musicVolume: settingsData.musicVolume
-            });
-            currentScene.scene.start('Level6', {
-                showGrid: settingsData.showGrid,
-                musicVolume: settingsData.musicVolume
-            });
-            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
     });
     name.visible = false;
@@ -329,6 +332,7 @@ export function getTileTypeWithKey(key): Type {
     if (key == 'grassToStone') return Type.Stone;
     if (key == 'sandToGrass') return Type.Grass;
     if (key == 'stoneToSand') return Type.Sand;
+    if (key == 'sandToStone') return Type.Stone;
     return null;
 }
 
@@ -336,6 +340,7 @@ export function getPortalTypeWithKey(key): portalType {
     if (key == 'grassToStone') return portalType.gtost;
     if (key == 'sandToGrass') return portalType.satog;
     if (key == 'stoneToSand') return portalType.sttosa;
+    if (key == 'sandToStone') return portalType.satost;
     return null;
 }
 

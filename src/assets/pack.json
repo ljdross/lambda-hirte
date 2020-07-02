@@ -143,6 +143,11 @@
       },
       {
         "type": "image",
+        "key": "sandToStone",
+        "url": "assets/menu/sandToStone.png"
+      },
+      {
+        "type": "image",
         "key": "powerOn",
         "url": "assets/menu/powerOn.png"
       },

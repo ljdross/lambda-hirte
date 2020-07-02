@@ -65,12 +65,14 @@ export class TeleportGUIScene extends Phaser.Scene {
                 this.grassToStone.visible = false;
                 this.stoneToSand.visible = false;
                 this.sandToGrass.visible = false;
+                if(this.sandToStone) this.sandToStone.visible = false;
                 powerOn.visible = false;
                 teleporterCounterText.visible = false;
             } else {
                 this.grassToStone.visible = true;
                 this.stoneToSand.visible = true;
                 this.sandToGrass.visible = true;
+                if(this.sandToStone) this.sandToStone.visible = true;
                 powerOn.visible = true;
                 teleporterCounterText.visible = true;
             }
