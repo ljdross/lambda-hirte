@@ -104,9 +104,9 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
 
                 const p = this.teleporterList[i];
                 this.setGoal(p.toTile);
-                console.log(this.toTile);
+
                 if(this.toTile != null  && this.chosen == true) {
-                    //console.log("here22");
+
                     const coord = board.findTileCoord(this.toTile);
                     this.toTile.portal = new Portal(scene, coord[0] * 128 + 64, coord[1] * 128 + 64, "portal", this.ptype);
                     sheep.visible = false;
