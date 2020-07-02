@@ -87,7 +87,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
         if (this.pFunction.multi == null || this.pFunction.add == null) return 0;
 
         else {
-            return (this.pFunction.multi * id + this.pFunction.add);
+            return (Math.floor(this.pFunction.multi * id )+ this.pFunction.add);
         }
     }
 
