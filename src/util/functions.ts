@@ -106,6 +106,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass', 'sandToStone']});
         }
         else if(level == "level8") {
             currentScene.scene.start('Gui', {
@@ -118,6 +119,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
         }
         else if(level == "level9") {
             currentScene.scene.start('Gui', {

@@ -1,8 +1,8 @@
-import {Tile, Type, Board} from "../objects/board"
-import{Portal} from "../objects/Teleport";
-import {Sheep,SheepHorizontal, SheepVertical} from "../objects/sheep";
+import {Board, Tile, Type} from "../objects/board"
+import {Portal, portalType} from "../objects/Teleport";
+import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
-import {initSettings, makeCollider} from "../util/functions";
+import {getPortalTypeWithKey, getTileTypeWithKey, initSettings, makeCollider} from "../util/functions";
 import {Fence} from "../objects/fence";
 
 
@@ -23,6 +23,11 @@ export class Level7 extends Phaser.Scene {
     public showGrid: boolean;
     public musicVolume: number;
     public brightness: number;
+    public pFunction1 = {add: 3 , multi: 2};
+    public pFunction2 = {add: 5 , multi: 1};
+    public pFunction3 = {add: 2 , multi: 1};
+    public pFunction4 = {add: 1 , multi: 1};
+
 
     constructor() {
         super(sceneConfig);
@@ -34,12 +39,29 @@ export class Level7 extends Phaser.Scene {
         initSettings(this, data);
     }
 
+
+    /*
+    *passed the given functions to a different types of portals .
+    *this methode depends on hwo many portal types in the level.
+     */
+    public assignFunctionToPortalType(portal: Portal): void{
+
+        if(portal.ptype == portalType.gtost)  portal.setFunction(this.pFunction1.add, this.pFunction1.multi);
+        if(portal.ptype == portalType.sttosa) portal.setFunction(this.pFunction2.add, this.pFunction2.multi);
+        if(portal.ptype == portalType.satog) portal.setFunction(this.pFunction3.add, this.pFunction3.multi);
+        if(portal.ptype == portalType.satost) portal.setFunction(this.pFunction4.add, this.pFunction4.multi);
+
+    }
+
     // give back the tile with the coordinate(x,y)
-    public getTile(x: number,y: number): Tile {
+    public getTile(x: number,y: number): number[] {
+        const coordinates = [];
         const column = Math.floor(x / 128);
+        coordinates[0]=column;
         if(this.board.tiles[column] != null) {
             const row = Math.floor(y / 128);
-            return this.board.tiles[column][row];
+            coordinates[1]=row
+            return coordinates;
         }
         return null
     }
@@ -77,6 +99,7 @@ export class Level7 extends Phaser.Scene {
         this.board.draw(this);
         this.sheep = this.add.group();
         this.fences = this.add.group();
+        this.portals = this.physics.add.group();
 
         let i: number;
         for(i = 0; i < 5; i++) {
@@ -107,7 +130,122 @@ export class Level7 extends Phaser.Scene {
             this.fences.addMultiple([f1, f2, f3, f4]);
         }
 
+
+        this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
+            const placingTeleporter = scene.data.get('placingTeleporter');
+            if (placingTeleporter) {
+                this.input.on("pointerdown",(pointer: Phaser.Input.Pointer)=>{
+
+                    const coordinates = this.getTile(pointer.x, pointer.y);
+                    const tile = this.board.tiles[coordinates[0]][coordinates[1]];
+                    if ((placingTeleporter.startsWith('grass') && tile.type != Type.Grass) ||
+                        (placingTeleporter.startsWith('stone') && tile.type != Type.Stone) ||
+                        (placingTeleporter.startsWith('sand') && tile.type != Type.Sand)) {
+                        const notAllowed = this.add.image(coordinates[0]* 128 + 64, coordinates[1]* 128 + 64,'notAllowed');
+                        notAllowed.setDisplaySize(50, 50);
+                        setTimeout(() => {
+                            notAllowed.destroy();
+                        }, 1500);
+                    } else {
+
+                        const portalType = getPortalTypeWithKey(placingTeleporter);
+
+                        const portal =new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
+                        portal.setFromTile(tile);
+                        portal.originTileType= tile.type
+
+
+                        if(tile.hasPortal == false){
+                            tile.portal = portal;
+                            tile.hasPortal= true;
+                            this.portals.add(tile.portal);
+                        }
+
+                        tile.portal.createAnim(this);
+                        this.assignFunctionToPortalType(tile.portal);
+                        const goal = tile.portal.whereToGo(this.board, tile.tileNumber,tile.type);
+                        const tileType = getTileTypeWithKey(placingTeleporter);
+
+                        tile.type = tileType;
+
+                        const goalTile = this.board.findTile(tileType, goal);
+                        tile.portal.setGoal(goalTile);
+                        portal.setGoal(goalTile);
+                        tile.portal.teleporterList.push(portal);
+
+                        this.input.off('pointerdown');
+
+                    }
+
+
+                });
+            }
+        });
+
+        this.scene.get('teleportGUI').data.events.on('changedata-teleportersActivated', (scene, value) => {
+            const teleportersActivated = scene.data.get('teleportersActivated');
+            if (teleportersActivated) {
+                this.portals.children.each((portal: Portal) =>{
+
+                    for (let i = portal.teleporterList.length-1  ; i > 0 ; i--){
+                        const p= portal.teleporterList[i];
+                        p.destroy();
+                        portal.teleporterList.pop();
+
+                    }
+
+                    portal.chosen = true;
+                    portal.fromTile.hasPortal = false;
+                    portal.fromTile.type = portal.originTileType;
+                    portal.setTexture("portal");
+                    portal.setSize(128, 128);
+                    portal.play("Portal2",true);
+                    portal.on("animationcomplete", ()=>{
+
+                        portal.teleporterList.pop();
+                        portal.destroy();
+                    })
+                    //console.log(portal.teleporterList);
+
+                })
+            }
+        });
+
+        // remove Teleporter
+
+        const keyObject = this.input.keyboard.addKey("BACKSPACE");
+        keyObject.on('down',() =>{
+            this.input.on("pointerdown",(pointer: Phaser.Input.Pointer) =>{
+                const coordinates1 = this.getTile(pointer.x, pointer.y);
+                const tile = this.board.tiles[coordinates1[0]][coordinates1[1]];
+                if(tile.hasPortal){
+                    this.sheep.children.each((sheep: Sheep) =>{
+                        sheep.stop = false ;
+                    })
+                    for (let i = tile.portal.teleporterList.length-1  ; i > 0 ; i--){
+                        const p= tile.portal.teleporterList[i];
+                        p.destroy();
+                        tile.portal.teleporterList.pop();
+
+                    }
+                    tile.portal.destroy();
+                }
+
+            })
+        })
+
+
+
+
+        for (const sheep of this.sheep.getChildren()) {
+            sheep.data.events.on('changedata-saved', (scene, value) => {
+                this.data.set('playerScore', this.data.get('playerScore') + 1);
+            });
+        }
+
+        this.sys.events.once('shutdown', this.shutdown, this);
         makeCollider(this, this.sheep, this.fences, this.portals, this.board);
+
     }
 
     update(): void {
@@ -116,5 +254,13 @@ export class Level7 extends Phaser.Scene {
             s.update();
         }
         // TODO
+    }
+
+    shutdown(): void {
+        if (this.sheep.children){
+            this.sheep.children.each((sheep: Sheep) =>{
+                sheep.data.events.off('changedata-saved');
+            })
+        }
     }
 }
