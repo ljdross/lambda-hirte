@@ -22,8 +22,8 @@ export class Level6 extends Phaser.Scene {
   public showGrid: boolean;
   public musicVolume: number;
   public pFunction1 = {add: 3 , multi: 1};
-  public pFunction2 = {add: 4 , multi: 2};
-  public pFunction3 = {add: 8 , multi: 4};
+  public pFunction2 = {add: 4 , multi: 1};
+  public pFunction3 = {add: 8 , multi: 1};
   constructor() {
     super(sceneConfig);
   }
@@ -102,6 +102,11 @@ export class Level6 extends Phaser.Scene {
 
     this.fences = this.add.group();
     this.fences.addMultiple([f1, f2, f3, f4]);
+
+    // text to display function value
+    this.add.text(this.sys.game.canvas.width - 170, 187, "+" + this.pFunction1.add, {font: "25px Arial"});
+    this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
+    this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
 
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');
