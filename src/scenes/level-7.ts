@@ -101,8 +101,7 @@ export class Level7 extends Phaser.Scene {
         this.fences = this.add.group();
         this.portals = this.physics.add.group();
 
-        let i: number;
-        for(i = 0; i < 5; i++) {
+        for(let i = 0; i < 2; i++) {
             //top left
             const sheep1=new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(50, 78)});
             //top right
@@ -116,20 +115,40 @@ export class Level7 extends Phaser.Scene {
 
             const f1 = new Fence(this, (i + 1.5) * 128, 128 * 1, 'fence_h').setOrigin(0.5, 0.5);
             const f2 = new Fence(this, (i + 1.5) * 128, 128 * 6, 'fence_h').setOrigin(0.5, 0.5);
-            const f3 = new Fence(this, 1 * 128, 128 * (i + 1.5), 'fence_v').setOrigin(0.5, 0.5);
-            const f4 = new Fence(this, 6 * 128, 128 * (i + 1.5), 'fence_v').setOrigin(0.5, 0.5);
+            const f3 = new Fence(this, (i + 3.5) * 128, 128 * 1, 'fence_h').setOrigin(0.5, 0.5);
+            const f4 = new Fence(this, (i + 3.5) * 128, 128 * 6, 'fence_h').setOrigin(0.5, 0.5);
+            const f5 = new Fence(this, 1 * 128, 128 * (i + 1.5), 'fence_v').setOrigin(0.5, 0.5);
+            const f6 = new Fence(this, 6 * 128, 128 * (i + 1.5), 'fence_v').setOrigin(0.5, 0.5);
+            const f7 = new Fence(this, 1 * 128, 128 * (i + 3.5), 'fence_v').setOrigin(0.5, 0.5);
+            const f8 = new Fence(this, 6 * 128, 128 * (i + 3.5), 'fence_v').setOrigin(0.5, 0.5);
 
-            if(i < 5 && i > 1) {
-                const f5 = new Fence(this, (i + 0.5) * 128, 128 * 2, 'fence_h').setOrigin(0.5, 0.5);
-                const f6 = new Fence(this, (i + 0.5) * 128, 128 * 5, 'fence_h').setOrigin(0.5, 0.5);
-                const f7 = new Fence(this, 2 * 128, 128 * (i + 0.5), 'fence_v').setOrigin(0.5, 0.5);
-                const f8 = new Fence(this, 5 * 128, 128 * (i + 0.5), 'fence_v').setOrigin(0.5, 0.5);
-                this.fences.addMultiple([f5, f6, f7, f8]);
+            const f13 = new Fence(this, (i + 2.5) * 128, 128 * 2, 'fence_h').setOrigin(0.5, 0.5);
+            const f14 = new Fence(this, (i + 2.5) * 128, 128 * 5, 'fence_h').setOrigin(0.5, 0.5);
+            const f15 = new Fence(this, 2 * 128, 128 * (i + 2.5), 'fence_v').setOrigin(0.5, 0.5);
+            const f16 = new Fence(this, 5 * 128, 128 * (i + 2.5), 'fence_v').setOrigin(0.5, 0.5);
+
+            if(i > 0) {
+                const f9 = new Fence(this, (i + 4.5) * 128, 128 * 1, 'fence_h').setOrigin(0.5, 0.5);
+                const f10 = new Fence(this, (i + 4.5) * 128, 128 * 6, 'fence_h').setOrigin(0.5, 0.5);
+                const f11 = new Fence(this, 1 * 128, 128 * (i + 4.5), 'fence_v').setOrigin(0.5, 0.5);
+                const f12 = new Fence(this, 6 * 128, 128 * (i + 4.5), 'fence_v').setOrigin(0.5, 0.5);
+
+                const f17 = new Fence(this, (i + 3.5) * 128, 128 * 2, 'fence_h').setOrigin(0.5, 0.5);
+                const f18 = new Fence(this, (i + 3.5) * 128, 128 * 5, 'fence_h').setOrigin(0.5, 0.5);
+                const f19 = new Fence(this, 2 * 128, 128 * (i + 3.5), 'fence_v').setOrigin(0.5, 0.5);
+                const f20 = new Fence(this, 5 * 128, 128 * (i + 3.5), 'fence_v').setOrigin(0.5, 0.5);
+                this.fences.addMultiple([f9, f10, f11, f12, f17, f18, f19, f20]);
             }
 
-            this.fences.addMultiple([f1, f2, f3, f4]);
+            this.fences.addMultiple([f1, f2, f3, f4, f5, f6, f7, f8, f13, f14, f15, f16]);
         }
 
+
+        // text to display function value
+        this.add.text(this.sys.game.canvas.width - 200, 187, "*" + this.pFunction1.multi + " +" + this.pFunction1.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 3, "+" + this.pFunction4.add, {font: "25px Arial"});
 
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');

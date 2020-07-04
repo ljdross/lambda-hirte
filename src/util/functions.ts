@@ -242,6 +242,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass', 'sandToStone']});
         }
         else if(level == "level8") {
             currentScene.scene.start('Gui', {
