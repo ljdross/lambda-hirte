@@ -21,15 +21,18 @@ export class Level6 extends Phaser.Scene {
   public board: Board;
   public showGrid: boolean;
   public musicVolume: number;
-  public pFunction1 = {add: 3 , multi: 1};
-  public pFunction2 = {add: 4 , multi: 1};
-  public pFunction3 = {add: 8 , multi: 1};
+  public pFunction1 = {add: 7 , multi: 1};
+  public pFunction2 = {add: 1 , multi: 1};
+  public pFunction3 = {add: 5 , multi: 1};
+  public pFunction4 = {add: 5 , multi: 1};
+  public pFunction5 = {add: 3 , multi: 1};
   constructor() {
     super(sceneConfig);
   }
 
   init(data): void {
     this.data.set('playerScore', 0);
+    this.data.set('playerWinningScore', 1); // MUST be 1?? it seems to be more likely to crash when it's not
     initSettings(this, data);
   }
 
@@ -37,7 +40,9 @@ export class Level6 extends Phaser.Scene {
 
     if(portal.ptype == portalType.gtost)  portal.setFunction(this.pFunction1.add, this.pFunction1.multi);
     if(portal.ptype == portalType.sttosa) portal.setFunction(this.pFunction2.add, this.pFunction2.multi);
-    if(portal.ptype == portalType.satog) portal.setFunction(this.pFunction3.add, this.pFunction3.multi);
+    if(portal.ptype == portalType.satost) portal.setFunction(this.pFunction3.add, this.pFunction3.multi);
+    if(portal.ptype == portalType.satog) portal.setFunction(this.pFunction4.add, this.pFunction4.multi);
+    if(portal.ptype == portalType.gtosa) portal.setFunction(this.pFunction5.add, this.pFunction5.multi);
 
   }
 
@@ -69,6 +74,11 @@ export class Level6 extends Phaser.Scene {
     this.board.tiles[5][4] = new Tile(Type.Sand);
     this.board.tiles[4][5] = new Tile(Type.Sand);
 
+
+    this.board.tiles[1][1] = new Tile(Type.Stone);
+    this.board.tiles[2][1] = new Tile(Type.Stone);
+    this.board.tiles[2][0] = new Tile(Type.Stone);
+
     this.board.tiles[3][2] = new Tile(Type.Stone);
     this.board.tiles[5][2] = new Tile(Type.Stone);
     this.board.tiles[3][1] = new Tile(Type.Stone);
@@ -83,16 +93,28 @@ export class Level6 extends Phaser.Scene {
     this.sheep = this.add.group();
     this.portals = this.physics.add.group();
 
-    let i: number;
-    for (i = 0; i < 5; i++) {
-      const sheep1 = new SheepHorizontal({
-        scene: this,
-        x: Phaser.Math.Between(50, 206),
-        y: Phaser.Math.Between(30, 206)
-      });
-      const sheep2 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 206), y: Phaser.Math.Between(30, 206)});
-      this.sheep.addMultiple([sheep1, sheep2]);
-    }
+
+    // start 1
+    const sheep1 = new SheepHorizontal({scene: this, x: Phaser.Math.Between(50, 92), y: Phaser.Math.Between(50, 78)});
+    const sheep2 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 78), y: Phaser.Math.Between(50, 78)});
+
+    // start 2
+    const sheep3 = new SheepHorizontal({scene: this, x: Phaser.Math.Between(50 + 128, 92 + 128), y: Phaser.Math.Between(50, 78)});
+    const sheep4 = new SheepHorizontal({scene: this, x: Phaser.Math.Between(50 + 128, 92 + 128), y: Phaser.Math.Between(50, 78)});
+
+    // start 3
+    const sheep5 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 78), y: Phaser.Math.Between(50 + 128, 78 + 128)});
+    const sheep6 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 78), y: Phaser.Math.Between(50 + 128, 78 + 128)});
+
+    // start 4
+    const sheep7 = new SheepHorizontal({scene: this, x: Phaser.Math.Between(50 + 128, 92 + 128), y: Phaser.Math.Between(50 + 128, 78 + 128)});
+    const sheep8 = new SheepVertical({scene: this, x: Phaser.Math.Between(50 + 128, 78 + 128), y: Phaser.Math.Between(50 + 128, 78 + 128)});
+
+    // start 5
+    const sheep9 = new SheepVertical({scene: this, x: Phaser.Math.Between(50, 78), y: Phaser.Math.Between(50 + 128 * 2, 78 + 128 * 2)});
+
+    this.sheep.addMultiple([sheep1, sheep2, sheep3, sheep4, sheep5, sheep6, sheep7, sheep8, sheep9]);
+
 
     //fancy fences
     const f1 = new Fence(this, 2 * 128, 128 * 0.5, 'fence_v').setOrigin(0.5, 0.5);
@@ -107,6 +129,8 @@ export class Level6 extends Phaser.Scene {
     this.add.text(this.sys.game.canvas.width - 170, 187, "+" + this.pFunction1.add, {font: "25px Arial"});
     this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
     this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
+    this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 3, "+" + this.pFunction4.add, {font: "25px Arial"});
+    this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 4, "+" + this.pFunction5.add, {font: "25px Arial"});
 
     this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
       const placingTeleporter = scene.data.get('placingTeleporter');

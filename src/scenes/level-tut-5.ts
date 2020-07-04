@@ -34,7 +34,7 @@ export class LevelTut5 extends Phaser.Scene {
 
     init(data): void {
         this.data.set('playerScore', 0);
-        this.data.set('playerWinningScore', 1); //doesn't work
+        this.data.set('playerWinningScore', 1); // MUST be 1?? it seems to be more likely to crash when it's not
         initSettings(this, data);
     }
 
@@ -158,10 +158,10 @@ export class LevelTut5 extends Phaser.Scene {
         this.fences.addMultiple([fv11,fv12,fv13,fv14,fv15,fv16,fv21,fv22,fv23,fv24,fv31,fv32,fv41,fv51,fv52,fv53,fv61,fv62,fv63,fv64,fv65]);
 
         // text to display function value
-        this.add.text(this.sys.game.canvas.width - 175, 187, "*" + this.pFunction1.multi, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 185, 187, "*" + this.pFunction1.multi, {font: "25px Arial"});
         this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
         this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
-        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 3, this.pFunction4.add.toString(), {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 3, "" + this.pFunction4.add, {font: "25px Arial"});
 
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');
