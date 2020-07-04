@@ -101,7 +101,7 @@ export class LevelTut4 extends Phaser.Scene {
         this.add.text(this.sys.game.canvas.width - 170, 187, "+" + this.pFunction1.add, {font: "25px Arial"});
         this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
         this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
-        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 3, "+" + this.pFunction4.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 180, 187 + 75 * 3, "+" + this.pFunction4.add, {font: "25px Arial"});
 
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');
