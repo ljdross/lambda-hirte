@@ -45,7 +45,7 @@ export class GuiScene extends Phaser.Scene {
         const continueGame = this.add.image(width / 2, height / 2 - 75, `continue`);
         const exitGame = this.add.image(width / 2, height / 2 + 150, `exit`);
         const menu = this.add.image(width - 100, 50, 'menu');
-        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.winningScore + " more sheeps!");
+        const sheepCounter = this.add.text(width - 350, 40, "Save " + this.winningScore + " more sheep!");
         const gameWon = this.add.image(width / 2, height / 2, "gameWon");
         gameWon.visible = false;
         const firstStar = this.add.image(width / 2 - 50, height / 2 - 150, "star");
@@ -201,7 +201,7 @@ export class GuiScene extends Phaser.Scene {
                     if (teleportersCounter < 5) thirdStar.visible = true;
                 }, 2000);
             } else {
-                sheepCounter.setText("Save " + (this.winningScore - value) + " more sheeps!");
+                sheepCounter.setText("Save " + (this.winningScore - value) + " more sheep!");
             }
         });
     }

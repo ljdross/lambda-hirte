@@ -98,7 +98,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level7',
-                winningScore: 20,
+                winningScore: 8,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -136,7 +136,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
         } else {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level6',
-                winningScore: 7,
+                winningScore: 9,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -144,7 +144,7 @@ export const initLevelButton = ((currentScene, name, width, height, settingsData
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
-            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToStone', 'sandToGrass', 'grassToSand']});
         }
         //currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });
@@ -234,7 +234,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
         else if(level == "level7") {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level7',
-                winningScore: 20,
+                winningScore: 8,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -272,7 +272,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
         } else {
             currentScene.scene.start('Gui', {
                 currentLevel: 'Level6',
-                winningScore: 7,
+                winningScore: 9,
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
@@ -280,7 +280,7 @@ export const updateLevelButton = ((currentScene, name, settingsData, level): voi
                 showGrid: settingsData.showGrid,
                 musicVolume: settingsData.musicVolume
             });
-            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
+            currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToStone', 'sandToGrass', 'grassToSand']});
         }
         //currentScene.scene.start('teleportGUI', {teleporters: ['grassToStone', 'stoneToSand', 'sandToGrass']});
     });

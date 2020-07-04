@@ -33,7 +33,7 @@ export class Level8 extends Phaser.Scene {
 
     init(data): void {
         this.data.set('playerScore', 0);
-        this.data.set('playerWinningScore', 1); //doesn't work
+        this.data.set('playerWinningScore', 1); // MUST be 1?? it seems to be more likely to crash when it's not
         initSettings(this, data);
     }
 
