@@ -170,6 +170,7 @@ export class GuiScene extends Phaser.Scene {
                 showGrid: this.showGrid,
                 musicVolume: this.musicVolume
             });
+            window.location.reload(false);
         });
 
         menu.setDisplaySize(50, 50);
