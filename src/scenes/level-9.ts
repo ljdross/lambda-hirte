@@ -98,10 +98,11 @@ export class Level9 extends Phaser.Scene {
 
         // text to display function value
         this.add.text(this.sys.game.canvas.width - 170, 187, "" + this.pFunction1.add, {font: "25px Arial"});
-        this.add.text(this.sys.game.canvas.width - 170, 187 + 75, "+" + this.pFunction2.add, {font: "25px Arial"});
-        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
-        this.add.text(this.sys.game.canvas.width - 170, 187 + 75 * 3, "" + this.pFunction4.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 100, "+" + this.pFunction2.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 100 * 2, "+" + this.pFunction3.add, {font: "25px Arial"});
+        this.add.text(this.sys.game.canvas.width - 170, 187 + 100 * 3, "" + this.pFunction4.add, {font: "25px Arial"});
 
+        let os = 10;
         this.scene.get('teleportGUI').data.events.on('changedata-placingTeleporter', (scene, value) => {
             const placingTeleporter = scene.data.get('placingTeleporter');
             if (placingTeleporter) {
@@ -118,13 +119,14 @@ export class Level9 extends Phaser.Scene {
                             notAllowed.destroy();
                         }, 1500);
                     } else {
-                        const portalType = getPortalTypeWithKey(placingTeleporter);
-                        const portal =new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
-                        portal.setFromTile(tile);
-                        portal.originTileType= tile.type
+
 
                         // if the first teleporter placed .
                         if(tile.hasPortal == false){
+                            const portalType = getPortalTypeWithKey(placingTeleporter);
+                            const portal =new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64, placingTeleporter, portalType);
+                            portal.setFromTile(tile);
+                            portal.originTileType= tile.type;
                             tile.portal = portal;
                             tile.hasPortal = true;
                             this.portals.add(tile.portal);
@@ -135,7 +137,7 @@ export class Level9 extends Phaser.Scene {
                             const goal = tile.portal.whereToGo(this.board, tile.tileNumber, tile.type);
                             const tileType = getTileTypeWithKey(placingTeleporter);
 
-                           // changing the upperType of the Tile
+                            // changing the upperType of the Tile
                             tile.upperType = tileType;
                             //setting the goalTile
                             const goalTile = this.board.findTile(tileType, goal);
@@ -147,6 +149,11 @@ export class Level9 extends Phaser.Scene {
                         }
                         // teleporter stacking
                         else{
+                            const portalType = getPortalTypeWithKey(placingTeleporter);
+                            const portal =new Portal( this,coordinates[0]* 128 + 64,coordinates[1]* 128 + 64- os, placingTeleporter, portalType);
+                            os += 10
+                            portal.setFromTile(tile);
+                            portal.originTileType= tile.type;
                             tile.portal.createAnim(this);
                             //assign function
                             this.assignFunctionToPortalType(portal);
@@ -179,6 +186,7 @@ export class Level9 extends Phaser.Scene {
                     //destroy all the stacked teleporters and pop them from the lest
 
                     //setting back the origin attributs of the tile and play the anim.
+                    os = 10;
                     portal.chosen = true;
                     portal.fromTile.hasPortal = false;
                     //portal.fromTile.type = portal.originTileType;
@@ -220,11 +228,13 @@ export class Level9 extends Phaser.Scene {
                         tile.portal.teleporterList.pop();
 
                     }
+                    os = 10;
+                    tile.hasPortal = false;
+                    tile.portal.fromTile.upperType = tile.portal.originTileType;
                     tile.portal.destroy();
                 }
             })
         })
-
         for (const sheep of this.sheep.getChildren()) {
             sheep.data.events.on('changedata-saved', (scene, value) => {
                 this.data.set('playerScore', this.data.get('playerScore') + 1);
