@@ -122,7 +122,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite{
                         sheep.y = this.toTile.portal.y;
                         sheep.visible = true;
                         this.toTile.portal.destroy();
-                        sheep.stop = false;
+                        sheep.stopped = false;
                     })
                 }
 

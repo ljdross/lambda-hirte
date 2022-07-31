@@ -12,7 +12,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
     protected eating: boolean;
     protected cooldown: number;
     protected eatTimer: number;
-    public stop: boolean;
+    public stopped: boolean;
 
     protected constructor(protected config, sprite, speed?: number, collision?: boolean) {
         super(config.scene, config.x, config.y, sprite, 0);
@@ -31,7 +31,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         this.setOffset(17, 85);
         this.body.debugShowBody = false;
         this.setData('saved', false);
-        this.stop = false;
+        this.stopped = false;
     }
 
     //needs to be updated in scene for each sheep
@@ -124,7 +124,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
         else this.cooldown -= 1;
 
         if(this.eating) this.eatAnim();
-        else if(!this.goal && !this.stop) {
+        else if(!this.goal && !this.stopped) {
             if (this.onSand()) this.move(this.sandSpeed);
             else this.move(this.speed);
         }
@@ -132,7 +132,7 @@ export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {
 
     public collide(obj: Phaser.Physics.Arcade.Sprite): void {
         if(obj instanceof Portal) {
-            this.stop = true;
+            this.stopped = true;
             this.anims.pause();
         } else if(!(obj instanceof Sheep) || (this.collision && !(obj.x == this.x && obj.y == this.y))) {
             if ((this.front() == 1 && this.body.y > obj.body.y) || (this.front() == 2 && this.x < obj.x)

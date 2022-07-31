@@ -63,7 +63,7 @@ export class Board {
     if (this.showTileNumbers) {
       currentTile.text = scene.add.text(x * 128 + 64, y * 128 + 64, currentTile.tileNumber.toString(), {
         font: "25px Arial",
-        fill: "black"
+        color: "black"
       });
       currentTile.text.setOrigin(0.5, 0.5);
     }

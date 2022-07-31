@@ -269,7 +269,7 @@ export class Level7 extends Phaser.Scene {
                 const tile = this.board.tiles[coordinates1[0]][coordinates1[1]];
                 if(tile.hasPortal){
                     this.sheep.children.each((sheep: Sheep) =>{
-                        sheep.stop = false ;
+                        sheep.stopped = false ;
                     })
                     for (let i = tile.portal.teleporterList.length-1  ; i > 0 ; i--){
                         const p= tile.portal.teleporterList[i];
