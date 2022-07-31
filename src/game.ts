@@ -10,7 +10,7 @@ import {Level7} from "./scenes/level-7";
 import {Level8} from "./scenes/level-8";
 import {Level9} from "./scenes/level-9";
 import {GuiScene} from "./scenes/gui";
-import {TeleportGUIScene} from "./scenes/teleportGUI";
+import {TeleportGUIScene} from "./scenes/teleport-gui";
 
 const config = {
     type: Phaser.AUTO,

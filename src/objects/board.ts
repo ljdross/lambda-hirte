@@ -1,5 +1,5 @@
 import {Tile, Type} from "./tile";
-import {Portal, portalType} from "./Teleport";
+import {Portal, portalType} from "./teleport";
 import 'phaser';
 
 export {Tile, Type}

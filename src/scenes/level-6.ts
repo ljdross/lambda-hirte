@@ -1,5 +1,5 @@
 import {Board, Tile, Type} from "../objects/board"
-import {Portal, portalType} from "../objects/Teleport";
+import {Portal, portalType} from "../objects/teleport";
 import {Sheep, SheepHorizontal, SheepVertical} from "../objects/sheep";
 import {physicsSettings} from "../util/data";
 import {getTileTypeWithKey, initSettings, getPortalTypeWithKey, makeCollider} from "../util/functions";

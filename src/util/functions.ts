@@ -1,5 +1,5 @@
 import {Type} from "../objects/tile";
-import {Portal, portalType} from "../objects/Teleport";
+import {Portal, portalType} from "../objects/teleport";
 import {Fence} from "../objects/fence";
 import Scene = Phaser.Scene;
 import {Sheep} from "../objects/sheep";

@@ -1,6 +1,6 @@
 import 'phaser';
 import {Tile, Type} from "./tile";
-import {Portal} from "./Teleport";
+import {Portal} from "./teleport";
 
 
 export abstract class Sheep extends Phaser.Physics.Arcade.Sprite {

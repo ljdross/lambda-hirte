@@ -1,4 +1,4 @@
-import {Portal} from "./Teleport";
+import {Portal} from "./teleport";
 import 'phaser';
 
 export enum Type {
