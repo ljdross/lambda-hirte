@@ -19,7 +19,7 @@ npm install
 
 ## Run
 ```bash
-sudo npm run start
+sudo npm run start # without sudo on PowerShell
 ```
 Your terminal will produce a lot of output so you might have to scroll up to find a line saying: `ℹ ｢wds｣: Project is running at http://127.0.0.1:8080/`. Open this IP address either by typing it into the address bar of your (local) browser or by clicking on it.
 
