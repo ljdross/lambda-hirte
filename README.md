@@ -26,14 +26,15 @@ Your terminal will produce a lot of output so you might have to scroll up to fin
 ## Play
 The goal is to bring all sheep home.
 
-To achieve this, you need to place teleporters on the map:
+To achieve this, you need to use teleporters:
 
-Choose a teleporter from the right side of the screen by clicking on it or by pressing the corresponding number on your keyboard (`1` for the first, `2` for the second, etc.). You can also stack teleporters on top of each other. Sheep will automatically stop once they encountered a teleporter.
+Choose a teleporter from the right side of the screen by clicking on it or by pressing the corresponding number on your keyboard (`1` for the first, `2` for the second, etc.). Then, place it on the map by clicking on the desired tile of the map. You can also stack teleporters on top of each other. Sheep will automatically stop once they encountered a teleporter.
 
-Then, press `Enter` or the teleporter button on the right to activate all teleporters.
+Then, press `Enter` or the teleporter button on the right to activate all teleporters simultaneously. (Sheep will only get teleported if teleporters get activated while they're standing on them.)
 
 All levels can be solved by activating the teleporters only once! Can you do that?
 
+---
 
 Below is the original README:
 # Lambda Hirte
