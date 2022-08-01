@@ -1,4 +1,42 @@
 # Lambda Hirte
+Lambda Hirte is a cute HTML5 game for your browser. It was developed with the Phaser 3 game framework in TypeScript.
+
+It was a university project to practice Scrum and CI/CD. The focus of this project was not on game design even though we learned a lot during the process.
+
+## Install
+### Dependencies
+You'll need to have `node` and `npm` installed on your machine. If you're using `snap`, you can install it with the following command:
+```bash
+sudo snap install node --classic
+```
+Otherwise, refer to [npm Docs on how to install `node` and `npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+### Install
+```bash
+git clone https://github.com/ljdross/lambda-hirte.git
+cd lambda-hirte
+npm install
+```
+
+## Run
+```bash
+sudo npm run start
+```
+Your terminal will produce a lot of output so you might have to scroll up to find a line saying: `ℹ ｢wds｣: Project is running at http://127.0.0.1:8080/`. Open this IP address either by typing it into the address bar of your (local) browser or by clicking on it.
+
+## Play
+The goal is to bring all sheep home.
+
+To achieve this, you need to place teleporters on the map:
+
+Choose a teleporter from the right side of the screen by clicking on it or by pressing the corresponding number on your keyboard (`1` for the first, `2` for the second, etc.). You can also stack teleporters on top of each other. Sheep will automatically stop once they encountered a teleporter.
+
+Then, press `Enter` or the teleporter button on the right to activate all teleporters.
+
+All levels can be solved by activating the teleporters only once! Can you do that?
+
+
+Below is the original README:
+# Lambda Hirte
 
 * Aufgabe: Lambda-Kalkül / Lemminge
 * Chat: https://chat.mtv.tu-berlin.de/modysy-2020sose/channels/lambda-hirte
